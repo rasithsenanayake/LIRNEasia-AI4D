@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ChevronDownIcon, MenuIcon, SearchIcon } from 'lucide-react';
 import { navGroups } from '../../data/navigation';
@@ -45,12 +46,13 @@ export function Header() {
       <header className="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/85">
         <div className="mx-auto flex h-16 max-w-[96rem] items-center gap-4 px-5 sm:px-8 lg:h-[72px] lg:gap-8 lg:px-12">
           <Link to="/" className="flex shrink-0 items-center gap-2.5 rounded" aria-label="Asia AI4D Observatory — home">
-            <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded bg-accent">
+            <Image src="/imagers/fav%20icon.png" alt="" width={36} height={36} priority className="h-9 w-9 rounded object-cover" />
+            {/* <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded bg-accent">
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="white" strokeWidth="1.6">
                 <circle cx="12" cy="12" r="8.5" />
                 <path d="M3.5 12h17M12 3.5c2.4 2.6 2.4 14.4 0 17M12 3.5c-2.4 2.6-2.4 14.4 0 17" />
               </svg>
-            </span>
+            </span> */}
             <span className="leading-tight">
               <span className="block font-serif text-[1.0625rem] font-semibold text-ink">Asia AI4D</span>
               <span className="block text-[0.6875rem] uppercase tracking-[0.14em] text-ink-muted">Observatory</span>
