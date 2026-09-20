@@ -83,7 +83,7 @@ export function UniversalSearch() {
               to={b.to}
               className="group flex h-full items-center gap-3 rounded-lg border border-line bg-surface p-4 transition-[border-color,box-shadow] duration-150 ease-out hover:border-line-strong hover:shadow-lift">
               
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-accent-wash text-accent">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center text-accent">
                   <b.icon className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <span>
