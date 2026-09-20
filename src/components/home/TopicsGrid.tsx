@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/Link';
 import { topics } from '../../data/taxonomy';
 import { topicColorMap } from '../../types';
 import { Container, SectionHeading } from '../ui/Primitives';

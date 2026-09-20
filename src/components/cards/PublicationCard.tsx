@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/Link';
 import { FileTextIcon } from 'lucide-react';
 import type { Publication } from '../../types';
 import { Tag, TypeLabel } from '../ui/Tag';

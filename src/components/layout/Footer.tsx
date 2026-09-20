@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/Link';
 import { footerColumns } from '../../data/navigation';
 import { partners } from '../../data/network';
 import { Container } from '../ui/Primitives';

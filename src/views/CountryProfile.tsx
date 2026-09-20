@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { ArrowRightIcon } from 'lucide-react';
 import { Breadcrumbs, Container, DemoDataNote, EmptyState, MetricCard, SectionHeading } from '../components/ui/Primitives';
 import { ChartFigure } from '../components/charts/ChartFigure';
@@ -17,10 +16,10 @@ import { publications } from '../data/publications';
 import { datasets } from '../data/datasets';
 import { organizations, people } from '../data/network';
 import { events } from '../data/happenings';
+import { Link } from '../components/ui/Link';
 
-export function CountryProfile() {
-  const { slug } = useParams();
-  const country = slug ? countryBySlug(slug) : undefined;
+export function CountryProfile({ slug }: { slug: string }) {
+  const country = countryBySlug(slug);
   if (!country) return <NotFound />;
 
   const name = country.name;

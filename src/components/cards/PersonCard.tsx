@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/Link';
 import type { Person } from '../../types';
 import { Tag } from '../ui/Tag';
 

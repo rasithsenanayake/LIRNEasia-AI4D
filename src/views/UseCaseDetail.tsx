@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { ExternalLinkIcon, LinkIcon, ShareIcon } from 'lucide-react';
 import { Breadcrumbs, Container } from '../components/ui/Primitives';
 import { Tag, TypeLabel } from '../components/ui/Tag';
@@ -13,10 +12,10 @@ import { organizations, people } from '../data/network';
 import { eventById } from '../data/happenings';
 import { countryByName } from '../data/countries';
 import { formatDate, formatShortDate } from '../utils/format';
+import { Link } from '../components/ui/Link';
 
-export function UseCaseDetail() {
-  const { slug } = useParams();
-  const useCase = slug ? useCaseBySlug(slug) : undefined;
+export function UseCaseDetail({ slug }: { slug: string }) {
+  const useCase = useCaseBySlug(slug);
   if (!useCase) return <NotFound />;
 
   const country = countryByName(useCase.country);

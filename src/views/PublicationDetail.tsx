@@ -1,5 +1,6 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
 import { CheckIcon, DownloadIcon, LinkIcon, QuoteIcon, ShareIcon } from 'lucide-react';
 import { Breadcrumbs, Container } from '../components/ui/Primitives';
 import { Tag, TypeLabel } from '../components/ui/Tag';
@@ -12,10 +13,10 @@ import { useCaseById } from '../data/useCases';
 import { people } from '../data/network';
 import { countryByName } from '../data/countries';
 import { formatDate, formatShortDate } from '../utils/format';
+import { Link } from '../components/ui/Link';
 
-export function PublicationDetail() {
-  const { slug } = useParams();
-  const publication = slug ? publicationBySlug(slug) : undefined;
+export function PublicationDetail({ slug }: { slug: string }) {
+  const publication = publicationBySlug(slug);
   const [copied, setCopied] = useState<string | null>(null);
   const [metaOpen, setMetaOpen] = useState(
     typeof window !== 'undefined' ? window.innerWidth >= 1024 : true

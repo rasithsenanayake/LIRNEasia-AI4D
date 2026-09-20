@@ -1,9 +1,12 @@
+'use client';
+
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { ArrowRightIcon, SearchIcon, XIcon } from 'lucide-react';
 import { groupQuickResults } from '../../utils/searchIndex';
 import { TypeLabel } from '../ui/Tag';
 import { Skeleton } from '../ui/Primitives';
+import { Link } from '../ui/Link';
 
 const SUGGESTIONS = ['AI Governance', 'Healthcare', 'Inclusive AI', 'Sri Lanka', 'Public Sector'];
 
@@ -12,7 +15,7 @@ export function SearchDialog({ open, onClose }: {open: boolean;onClose: () => vo
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     if (open) {
@@ -62,7 +65,7 @@ export function SearchDialog({ open, onClose }: {open: boolean;onClose: () => vo
 
   function submit(value: string) {
     onClose();
-    navigate(`/explore?q=${encodeURIComponent(value)}`);
+    router.push(`/explore?q=${encodeURIComponent(value)}`);
   }
 
   return (

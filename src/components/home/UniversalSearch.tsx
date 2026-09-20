@@ -1,7 +1,10 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { GlobeIcon, LayersIcon, SearchIcon, TagIcon } from 'lucide-react';
 import { Container } from '../ui/Primitives';
+import { Link } from '../ui/Link';
 
 const CHIPS = ['AI Governance', 'Healthcare', 'Inclusive AI', 'Sri Lanka', 'Public Sector'];
 
@@ -13,7 +16,7 @@ const BROWSE = [
 
 export function UniversalSearch() {
   const [value, setValue] = useState('');
-  const navigate = useNavigate();
+  const router = useRouter();
 
   return (
     <section aria-labelledby="universal-search-heading" className="bg-canvas">
@@ -29,7 +32,7 @@ export function UniversalSearch() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              navigate(`/explore?q=${encodeURIComponent(value.trim())}`);
+              router.push(`/explore?q=${encodeURIComponent(value.trim())}`);
             }}
             role="search"
             className="mt-6 flex flex-col gap-3 sm:flex-row">

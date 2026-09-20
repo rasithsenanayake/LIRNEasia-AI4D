@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/Link';
 import { ArrowRightIcon, Building2Icon, MapPinIcon } from 'lucide-react';
 import type { UseCase } from '../../types';
 import { Tag, TypeLabel } from '../ui/Tag';

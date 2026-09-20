@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/Link';
 import { DatabaseIcon, RefreshCwIcon } from 'lucide-react';
 import type { Dataset } from '../../types';
 import { Tag, TypeLabel } from '../ui/Tag';

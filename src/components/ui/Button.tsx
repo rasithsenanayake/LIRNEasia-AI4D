@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { cn } from '../../utils/cn';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'inverse';
@@ -49,9 +49,9 @@ export function LinkButton({
   className,
   children,
   ...rest
-}: CommonProps & {to: string;} & Omit<React.ComponentProps<typeof Link>, 'to' | 'className' | 'children'>) {
+}: CommonProps & {to: string;} & Omit<React.ComponentProps<typeof Link>, 'href' | 'className' | 'children'>) {
   return (
-    <Link to={to} className={cn(base, variants[variant], sizes[size], className)} {...rest}>
+    <Link href={to} className={cn(base, variants[variant], sizes[size], className)} {...rest}>
       {children}
     </Link>);
 

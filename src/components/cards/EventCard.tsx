@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/Link';
 import { MapPinIcon, MonitorIcon, UsersIcon } from 'lucide-react';
 import type { ObservatoryEvent } from '../../types';
 import { dateParts } from '../../utils/format';

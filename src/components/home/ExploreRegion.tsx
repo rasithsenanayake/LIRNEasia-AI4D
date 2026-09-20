@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/Link';
 import { ArrowRightIcon } from 'lucide-react';
 import { countries } from '../../data/countries';
 import type { Country } from '../../types';

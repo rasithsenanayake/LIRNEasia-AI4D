@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../components/ui/Link';
 import { ArrowRightIcon, SearchIcon } from 'lucide-react';
 import { Breadcrumbs, Container, DemoDataNote, EmptyState } from '../components/ui/Primitives';
 import { RegionMap } from '../components/maps/RegionMap';

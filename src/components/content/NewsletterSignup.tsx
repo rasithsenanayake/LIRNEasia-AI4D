@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { CheckCircle2Icon } from 'lucide-react';
 import { Container } from '../ui/Primitives';

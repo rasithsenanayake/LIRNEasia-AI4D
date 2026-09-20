@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   BookOpenIcon,
   Building2Icon,
@@ -33,6 +35,7 @@ import {
 '../data/taxonomy';
 import { emptyFilters, filterRecords, sortRecords, type SortKey } from '../utils/searchIndex';
 import { cn } from '../utils/cn';
+import { Link } from '../components/ui/Link';
 
 const CONTENT_TYPES = [
 'Use Case',
@@ -71,7 +74,8 @@ const QUICK_BROWSE = [
 
 
 export function Explore() {
-  const [params, setParams] = useSearchParams();
+  const params = useSearchParams();
+  const router = useRouter();
   const [view, setView] = useState<'card' | 'list'>('card');
   const [sort, setSort] = useState<SortKey>('relevance');
   const [loading, setLoading] = useState(false);
@@ -119,7 +123,8 @@ export function Explore() {
   function updateParams(mutate: (p: URLSearchParams) => void) {
     const next = new URLSearchParams(params);
     mutate(next);
-    setParams(next, { replace: false });
+    const queryString = next.toString();
+    router.push(queryString ? `/explore?${queryString}` : '/explore');
   }
 
   function toggle(key: string, value: string) {

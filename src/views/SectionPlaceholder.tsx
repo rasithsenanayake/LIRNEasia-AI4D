@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import { Breadcrumbs, Container } from '../components/ui/Primitives';
 import { LinkButton } from '../components/ui/Button';
 
@@ -68,7 +70,7 @@ const SECTION_TITLES: Record<string, {title: string;description: string;}> = {
 };
 
 export function SectionPlaceholder() {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
   const key = pathname.split('/').filter(Boolean)[0] ?? '';
   const section = SECTION_TITLES[key] ?? {
     title: 'Section in specification',
