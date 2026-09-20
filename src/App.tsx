@@ -14,6 +14,9 @@ function ScrollToTop() {
 }
 
 export function App({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  if (pathname.startsWith('/admin')) return <>{children}</>;
+
   return (
     <>
       <ScrollToTop />
