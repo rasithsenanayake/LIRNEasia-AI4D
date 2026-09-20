@@ -1,5 +1,7 @@
 import type { Publication } from '../types';
 
+export const PUBLICATION_TYPES = ['Report', 'Policy Brief', 'Research Brief', 'Innovation Brief', 'Mapping Study', 'Commentary'] as const;
+
 /** Illustrative publication records for prototype evaluation. No real findings are represented. */
 export const publications: Publication[] = [
 {
@@ -17,7 +19,6 @@ export const publications: Publication[] = [
   language: 'English',
   fileType: 'PDF',
   fileSize: '4.8 MB',
-  doi: '10.0000/demo.ai4d.0001',
   keyTakeaways: [
   'Placeholder takeaway describing where institutional mandates for AI oversight currently sit across the five countries studied.',
   'Placeholder takeaway on the gap between published strategy documents and operational capacity inside implementing agencies.',
@@ -106,7 +107,7 @@ export const publications: Publication[] = [
   type: 'Report',
   title: 'The Asian AI ecosystem: actors, funding and capacity, 2026',
   summary:
-  'A full-length regional report mapping the organisations, funding flows and capacity-building initiatives that make up AI ecosystems across nineteen countries.',
+  'A full-length regional report mapping the organisations, funding flows and capacity-building initiatives that make up AI ecosystems across the region.',
   authors: ['S. Kaur', 'R. Nguyen', 'A. Perera'],
   organization: 'South Asia Technology Observatory',
   date: '2026-06-30',
@@ -115,7 +116,6 @@ export const publications: Publication[] = [
   language: 'English',
   fileType: 'PDF',
   fileSize: '9.4 MB',
-  doi: '10.0000/demo.ai4d.0004',
   keyTakeaways: [
   'Placeholder takeaway on ecosystem concentration.',
   'Placeholder takeaway on public versus private funding balance.',

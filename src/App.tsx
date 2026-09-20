@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
+import { PrototypeNotice } from './components/layout/PrototypeNotice';
 
 function ScrollToTop() {
   const pathname = usePathname();
@@ -28,6 +29,7 @@ export function App({ children }: { children: React.ReactNode }) {
           Skip to main content
         </a>
         <Header />
+        <PrototypeNotice />
         <main id="main" className="flex-1">{children}</main>
         <Footer />
       </div>

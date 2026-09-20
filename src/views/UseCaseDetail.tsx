@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalLinkIcon, LinkIcon, ShareIcon } from 'lucide-react';
+import { LinkIcon, ShareIcon } from 'lucide-react';
 import { Breadcrumbs, Container } from '../components/ui/Primitives';
 import { Tag, TypeLabel } from '../components/ui/Tag';
 import { LinkButton, Button } from '../components/ui/Button';
@@ -120,16 +120,7 @@ export function UseCaseDetail({ slug }: { slug: string }) {
               </div>
 
               <div className="mt-7 flex flex-wrap gap-3">
-                <a
-                  href="https://example.org/project"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-md bg-accent px-4 text-[0.9375rem] font-medium text-white transition-colors duration-150 ease-out hover:bg-accent-dark">
-                  
-                  Visit project
-                  <ExternalLinkIcon className="h-4 w-4" aria-hidden="true" />
-                  <span className="sr-only">(opens in a new tab)</span>
-                </a>
+                <Button type="button" disabled title="No verified external project URL is available in the prototype">Project link unavailable</Button>
                 <LinkButton to="#connected-heading" variant="secondary">
                   View related research
                 </LinkButton>

@@ -34,7 +34,7 @@ export function CountryExplorer() {
             <div>
               <h1 className="font-serif text-[2rem] leading-tight text-ink sm:text-[2.5rem]">Explore by Country</h1>
               <p className="mt-3 max-w-xl text-[1.0625rem] leading-relaxed text-ink-soft">
-                Nineteen country hubs bring together the research, initiatives, organisations, experts and datasets
+                Country knowledge hubs bring together the research, initiatives, organisations, experts and datasets
                 the Observatory holds for each country. Select a tile on the map or search the list below.
               </p>
               {selected &&
@@ -93,7 +93,7 @@ export function CountryExplorer() {
         <div className="mt-6">
             <EmptyState
             title="No countries match that search."
-            description="Check the spelling, or clear the search to see all nineteen countries in the Observatory."
+            description="Check the spelling, or clear the search to see all country knowledge hubs in the prototype."
             actions={
             <button
               type="button"

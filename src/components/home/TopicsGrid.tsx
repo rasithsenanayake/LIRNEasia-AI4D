@@ -4,6 +4,7 @@ import { topics } from '../../data/taxonomy';
 import { topicColorMap } from '../../types';
 import { Container, SectionHeading } from '../ui/Primitives';
 import { LinkButton } from '../ui/Button';
+import { topicResourceCount } from '../../utils/repositoryStats';
 
 export function TopicsGrid() {
   return (
@@ -38,7 +39,7 @@ export function TopicsGrid() {
                   </span>
                 </span>
                 <span className="mt-2.5 text-[0.9375rem] leading-relaxed text-ink-soft">{topic.description}</span>
-                <span className="mt-auto pt-4 text-meta text-ink-muted">{topic.resourceCount} resources</span>
+                <span className="mt-auto pt-4 text-meta text-ink-muted">{topicResourceCount(topic.name)} resources</span>
               </Link>
             </li>
           )}

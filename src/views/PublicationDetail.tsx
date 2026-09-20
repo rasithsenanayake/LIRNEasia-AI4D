@@ -23,6 +23,7 @@ export function PublicationDetail({ slug }: { slug: string }) {
   );
 
   if (!publication) return <NotFound />;
+  const files = publication.files ?? [];
 
   const citation = `${publication.authors.join(', ')} (${publication.date.slice(0, 4)}). ${publication.title}. ${publication.organization}, Asia AI4D Observatory.${publication.doi ? ` https://doi.org/${publication.doi}` : ''}`;
 
@@ -82,8 +83,7 @@ export function PublicationDetail({ slug }: { slug: string }) {
   { label: 'Topics', value: publication.topics.join(', ') },
   { label: 'Document type', value: publication.type },
   { label: 'Language', value: publication.language },
-  { label: 'File type', value: publication.fileType },
-  { label: 'File size', value: publication.fileSize },
+  ...(files.length > 0 ? [{ label: 'File type', value: publication.fileType }, { label: 'File size', value: publication.fileSize }] : []),
   ...(publication.doi ? [{ label: 'DOI', value: publication.doi }] : [])];
 
 
@@ -122,10 +122,10 @@ export function PublicationDetail({ slug }: { slug: string }) {
             </div>
 
             <div className="mt-7 flex flex-wrap gap-3">
-              <Button type="button">
+              {files.map((file) => <Button key={file.url} type="button" disabled={!file.url}>
                 <DownloadIcon className="h-4 w-4" aria-hidden="true" />
-                Download {publication.fileType} · {publication.fileSize}
-              </Button>
+                Download {file.type} · {file.size}
+              </Button>)}
               <Button variant="secondary" type="button" onClick={() => copy('citation', citation)}>
                 {copied === 'citation' ?
                 <CheckIcon className="h-4 w-4 text-accent" aria-hidden="true" /> :
@@ -179,14 +179,14 @@ export function PublicationDetail({ slug }: { slug: string }) {
               )}
             </section>
 
-            <section className="mt-10">
+            {files.length > 0 && <section className="mt-10">
               <h2 className="font-serif text-2xl leading-tight text-ink">About this publication</h2>
               <p className="mt-3 text-[1.0625rem] leading-[1.75] text-ink-soft">
                 Placeholder descriptive text about the publication’s purpose, its intended audience and how it fits
                 within the Observatory’s wider programme of regional research. Final copy will be supplied by
                 LIRNEasia.
               </p>
-            </section>
+            </section>}
 
             {publication.keyFindings.length > 0 &&
             <section className="mt-10">
@@ -209,36 +209,18 @@ export function PublicationDetail({ slug }: { slug: string }) {
               </section>
             }
 
-            <section className="mt-10">
+            {files.length > 0 && <section className="mt-10">
               <h2 className="font-serif text-2xl leading-tight text-ink">Files</h2>
               <ul className="mt-4 space-y-3">
-                <li className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-line bg-surface p-4">
-                  <span>
-                    <span className="block text-[0.9375rem] font-medium text-ink">Full {publication.type.toLowerCase()}</span>
-                    <span className="block text-meta text-ink-muted">
-                      {publication.fileType} · {publication.fileSize} · English
-                    </span>
-                  </span>
-                  <Button type="button" size="sm">
-                    <DownloadIcon className="h-4 w-4" aria-hidden="true" />
-                    Download
-                  </Button>
-                </li>
-                <li className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-line bg-surface p-4">
-                  <span>
-                    <span className="block text-[0.9375rem] font-medium text-ink">Summary for policymakers</span>
-                    <span className="block text-meta text-ink-muted">PDF · 640 KB · English</span>
-                  </span>
-                  <Button type="button" size="sm" variant="secondary">
-                    <DownloadIcon className="h-4 w-4" aria-hidden="true" />
-                    Download
-                  </Button>
-                </li>
+                {files.map((file) => <li key={file.url} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-line bg-surface p-4">
+                  <span><span className="block text-[0.9375rem] font-medium text-ink">{file.label}</span><span className="block text-meta text-ink-muted">{file.type} · {file.size} · English</span></span>
+                  <Button type="button" size="sm" disabled={!file.url}><DownloadIcon className="h-4 w-4" aria-hidden="true" />Download</Button>
+                </li>)}
               </ul>
               <p className="mt-3 text-meta text-ink-muted">
                 File sizes are shown before download so readers on metered connections can choose.
               </p>
-            </section>
+            </section>}
 
             <section className="mt-10">
               <h2 className="font-serif text-2xl leading-tight text-ink">Authors</h2>

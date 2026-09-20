@@ -1,6 +1,6 @@
 import { countries } from '../data/countries';
 import { datasets } from '../data/datasets';
-import { events, learningResources } from '../data/happenings';
+import { events, learningResources, news, opportunities } from '../data/happenings';
 import { organizations, people } from '../data/network';
 import { publications } from '../data/publications';
 import { useCases } from '../data/useCases';
@@ -121,6 +121,31 @@ const learningRecords: SearchRecord[] = learningResources.map((l) => ({
   keywords: [l.title, l.description, l.provider, l.format, l.topics.join(' ')].join(' ').toLowerCase()
 }));
 
+const opportunityRecords: SearchRecord[] = opportunities.map((o) => ({
+  id: o.id,
+  type: 'Opportunity',
+  title: o.title,
+  description: o.description,
+  href: `/opportunities#${o.id}`,
+  topics: [],
+  organization: o.organization,
+  year: year(o.deadline),
+  date: o.deadline,
+  keywords: [o.title, o.description, o.organization, o.type, o.region].join(' ').toLowerCase()
+}));
+
+const newsRecords: SearchRecord[] = news.map((item) => ({
+  id: item.id,
+  type: 'News',
+  title: item.title,
+  description: item.description,
+  href: `/news#${item.id}`,
+  topics: [],
+  year: year(item.date),
+  date: item.date,
+  keywords: [item.title, item.description, item.category].join(' ').toLowerCase()
+}));
+
 export const searchIndex: SearchRecord[] = [
 ...publicationRecords,
 ...useCaseRecords,
@@ -128,7 +153,9 @@ export const searchIndex: SearchRecord[] = [
 ...personRecords,
 ...organizationRecords,
 ...eventRecords,
-...learningRecords];
+...learningRecords,
+...opportunityRecords,
+...newsRecords];
 
 
 export interface RepositoryFilters {
@@ -183,6 +210,7 @@ export function sortRecords(records: SearchRecord[], sort: SortKey): SearchRecor
   const copy = [...records];
   if (sort === 'newest') return copy.sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
   if (sort === 'oldest') return copy.sort((a, b) => (a.date ?? '').localeCompare(b.date ?? ''));
+  if (sort === 'relevance') return copy.sort((a, b) => b.year - a.year || (b.date ?? '').localeCompare(a.date ?? ''));
   return copy;
 }
 
@@ -197,7 +225,9 @@ export function groupQuickResults(query: string): {label: string;records: Search
   { label: 'Datasets', match: (r) => r.type === 'Dataset' },
   { label: 'People', match: (r) => r.type === 'Person' },
   { label: 'Organizations', match: (r) => r.type === 'Organization' },
-  { label: 'Events', match: (r) => r.type === 'Event' }];
+  { label: 'Events', match: (r) => r.type === 'Event' },
+  { label: 'Opportunities', match: (r) => r.type === 'Opportunity' },
+  { label: 'News', match: (r) => r.type === 'News' }];
 
   return groups.
   map((g) => ({ label: g.label, records: hits.filter(g.match).slice(0, 3) })).

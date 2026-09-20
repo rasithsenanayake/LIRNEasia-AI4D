@@ -9,7 +9,7 @@ import { Link } from '../ui/Link';
 const CHIPS = ['AI Governance', 'Healthcare', 'Inclusive AI', 'Sri Lanka', 'Public Sector'];
 
 const BROWSE = [
-{ label: 'Explore by Country', to: '/countries', icon: GlobeIcon, hint: '19 country hubs' },
+{ label: 'Explore by Country', to: '/countries', icon: GlobeIcon, hint: 'Country knowledge hubs' },
 { label: 'Explore by Topic', to: '/topics', icon: TagIcon, hint: '7 research topics' },
 { label: 'Explore by Content Type', to: '/explore', icon: LayersIcon, hint: 'Research, data, people' }];
 
@@ -26,7 +26,7 @@ export function UniversalSearch() {
             What are you looking for?
           </h2>
           <p className="mt-2 text-[1.0625rem] text-ink-soft">
-            One search across research, use cases, datasets, people, organizations and events.
+            One search across research, use cases, datasets, people, organizations, events and opportunities.
           </p>
 
           <form

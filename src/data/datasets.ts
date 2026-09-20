@@ -7,7 +7,7 @@ export const datasets: Dataset[] = [
   slug: 'regional-ai-policy-tracker',
   title: 'Regional AI policy tracker',
   description:
-  'Structured record of national AI strategies, guidelines and draft regulation across nineteen countries in South and Southeast Asia, with status and responsible institution.',
+  'Structured record of national AI strategies, guidelines and draft regulation across South and Southeast Asia, with status and responsible institution.',
   countries: ['Sri Lanka', 'India', 'Bangladesh', 'Indonesia', 'Viet Nam', 'Philippines'],
   topics: ['AI Governance', 'Data Governance'],
   year: 2026,
@@ -15,7 +15,7 @@ export const datasets: Dataset[] = [
   source: 'Observatory policy research team',
   access: 'Open',
   updated: '2026-08-30',
-  coverage: '19 countries · 2018–2026',
+  coverage: 'Selected countries · 2018–2026',
   maintainer: 'LIRNEasia',
   licence: 'Placeholder licence — to be confirmed (CC BY 4.0 proposed)'
 },
@@ -49,7 +49,7 @@ export const datasets: Dataset[] = [
   source: 'South Asia Technology Observatory',
   access: 'Registration required',
   updated: '2026-07-15',
-  coverage: '19 countries · annual refresh',
+  coverage: 'Selected countries · annual refresh',
   maintainer: 'South Asia Technology Observatory',
   licence: 'Placeholder licence — to be confirmed'
 },
@@ -66,7 +66,7 @@ export const datasets: Dataset[] = [
   source: 'Observatory country research teams',
   access: 'Open',
   updated: '2026-09-02',
-  coverage: '19 countries · rolling updates',
+  coverage: 'Selected countries · rolling updates',
   maintainer: 'LIRNEasia',
   licence: 'Placeholder licence — to be confirmed'
 }];

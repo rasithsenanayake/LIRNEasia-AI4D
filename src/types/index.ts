@@ -13,7 +13,8 @@ export type ContentType =
 'Person' |
 'Organization' |
 'Learning Resource' |
-'Opportunity';
+'Opportunity' |
+'News';
 
 export type OrganizationType =
 'Government' |
@@ -88,6 +89,7 @@ export interface Publication {
   fileType: string;
   fileSize: string;
   doi?: string;
+  files?: {label: string;url: string;type: string;size: string;}[];
   keyTakeaways: string[];
   executiveSummary: string[];
   keyFindings: string[];
@@ -156,7 +158,7 @@ export interface Organization {
   type: OrganizationType;
   country: string;
   description: string;
-  website: string;
+  website?: string;
   topics: string[];
   abbr: string;
 }
@@ -204,7 +206,7 @@ export interface Partner {
   abbr: string;
   role: string;
   description: string;
-  website: string;
+  website?: string;
 }
 
 export interface SearchRecord {

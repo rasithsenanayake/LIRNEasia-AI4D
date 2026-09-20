@@ -29,6 +29,13 @@ export function CountryProfile({ slug }: { slug: string }) {
   const countryPeople = people.filter((p) => p.country === name);
   const countryDatasets = datasets.filter((d) => d.countries.includes(name));
   const countryEvents = events.filter((e) => e.country === name);
+  const metrics = {
+    useCases: countryUseCases.length,
+    publications: countryPublications.length,
+    organizations: countryOrganizations.length,
+    experts: countryPeople.length,
+    datasets: countryDatasets.length
+  };
 
   const exploreLink = `/explore?country=${encodeURIComponent(name)}`;
 
@@ -65,18 +72,18 @@ export function CountryProfile({ slug }: { slug: string }) {
               </h2>
               <ul className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
                 {[
-                ['Use cases', country.metrics.useCases],
-                ['Publications', country.metrics.publications],
-                ['Organizations', country.metrics.organizations],
-                ['Experts', country.metrics.experts],
-                ['Datasets', country.metrics.datasets]].
+                ['Use cases', metrics.useCases],
+                ['Publications', metrics.publications],
+                ['Organizations', metrics.organizations],
+                ['Experts', metrics.experts],
+                ['Datasets', metrics.datasets]].
                 map(([label, value]) =>
                 <li key={String(label)}>
                     <MetricCard label={String(label)} value={value as number} />
                   </li>
                 )}
               </ul>
-              <DemoDataNote className="mt-4" />
+              <DemoDataNote className="mt-4">Counts are calculated from the illustrative records currently in this prototype.</DemoDataNote>
             </div>
           </div>
         </Container>

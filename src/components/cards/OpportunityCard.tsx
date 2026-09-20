@@ -1,5 +1,5 @@
 import React from 'react';
-import { CalendarClockIcon, ExternalLinkIcon } from 'lucide-react';
+import { CalendarClockIcon } from 'lucide-react';
 import type { Opportunity } from '../../types';
 import { formatDate, daysUntil } from '../../utils/format';
 
@@ -34,16 +34,7 @@ export function OpportunityCard({ opportunity }: {opportunity: Opportunity;}) {
         <CalendarClockIcon className="h-4 w-4 text-ink-muted" aria-hidden="true" />
         Deadline: {formatDate(opportunity.deadline)}
       </p>
-      <a
-        href="https://example.org/opportunity"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-2 inline-flex items-center gap-1.5 text-meta font-semibold text-accent underline-offset-4 hover:underline">
-        
-        Apply on organiser site
-        <ExternalLinkIcon className="h-3.5 w-3.5" aria-hidden="true" />
-        <span className="sr-only">(opens in a new tab)</span>
-      </a>
+      <span className="mt-2 text-meta text-ink-muted">Application link will be provided by the Client.</span>
     </article>);
 
 }

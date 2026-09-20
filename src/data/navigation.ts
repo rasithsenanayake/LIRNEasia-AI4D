@@ -20,7 +20,7 @@ export const navGroups: NavGroup[] = [
     heading: 'Browse the repository',
     links: [
     { label: 'Responsible AI Use Cases', to: '/use-cases', description: 'Documented initiatives across the region' },
-    { label: 'Countries', to: '/countries', description: 'Nineteen country knowledge hubs' },
+    { label: 'Countries', to: '/countries', description: 'Country knowledge hubs' },
     { label: 'Topics', to: '/topics', description: 'Governance, inclusion, data and more' }]
 
   },
@@ -144,10 +144,10 @@ export const navGroups: NavGroup[] = [
   }],
 
   highlight: {
-    label: 'Next event',
-    title: 'Regional roundtable, Colombo',
-    description: 'Oversight of algorithmic systems in public services · 14 October 2026.',
-    to: '/events/regional-policy-roundtable-2026'
+    label: 'Regional engagement',
+    title: 'Events and regional engagement',
+    description: 'Discover upcoming roundtables, workshops and Observatory activities.',
+    to: '/events'
   }
 },
 {
@@ -193,7 +193,7 @@ export const footerColumns = [
   heading: 'Research & Data',
   links: [
   { label: 'Research & Insights', to: '/research' },
-  { label: 'Publications', to: '/explore?type=Report' },
+  { label: 'Publications', to: '/research' },
   { label: 'Datasets', to: '/explore?type=Dataset' },
   { label: 'Data & Maps', to: '/data-maps' }]
 

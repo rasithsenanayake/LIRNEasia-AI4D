@@ -4,14 +4,22 @@ import React, { useState } from 'react';
 import { Link } from '../ui/Link';
 import { ArrowRightIcon } from 'lucide-react';
 import { countries } from '../../data/countries';
+import { useCases } from '../../data/useCases';
+import { publications } from '../../data/publications';
+import { datasets } from '../../data/datasets';
+import { organizations, people } from '../../data/network';
+import { events } from '../../data/happenings';
 import type { Country } from '../../types';
 import { RegionMap } from '../maps/RegionMap';
 import { Container, DemoDataNote, SectionHeading } from '../ui/Primitives';
 import { LinkButton } from '../ui/Button';
 
 function total(c: Country): number {
-  const m = c.metrics;
-  return m.useCases + m.publications + m.organizations + m.experts + m.datasets;
+  return countryRecords(c).reduce((sum, value) => sum + value, 0);
+}
+
+function countryRecords(c: Country): number[] {
+  return [useCases.filter((u) => u.country === c.name).length, publications.filter((p) => p.countries.includes(c.name)).length, organizations.filter((o) => o.country === c.name).length, people.filter((p) => p.country === c.name).length, datasets.filter((d) => d.countries.includes(c.name)).length, events.filter((e) => e.country === c.name).length];
 }
 
 const MAX = Math.max(...countries.map(total));
@@ -21,12 +29,13 @@ export function ExploreRegion() {
     countries.find((c) => c.slug === 'sri-lanka') ?? countries[0]
   );
 
+  const [useCaseCount, publicationCount, organizationCount, peopleCount, datasetCount] = countryRecords(selected);
   const rows: {label: string;value: number;}[] = [
-  { label: 'Responsible AI use cases', value: selected.metrics.useCases },
-  { label: 'Research publications', value: selected.metrics.publications },
-  { label: 'Organizations', value: selected.metrics.organizations },
-  { label: 'Experts', value: selected.metrics.experts },
-  { label: 'Datasets', value: selected.metrics.datasets }];
+  { label: 'Responsible AI use cases', value: useCaseCount },
+  { label: 'Research publications', value: publicationCount },
+  { label: 'Organizations', value: organizationCount },
+  { label: 'Experts', value: peopleCount },
+  { label: 'Datasets', value: datasetCount }];
 
 
   return (
@@ -35,7 +44,7 @@ export function ExploreRegion() {
         <SectionHeading
           id="region-heading"
           eyebrow="Explore the region"
-          title="Nineteen countries, one connected evidence base"
+          title="Explore responsible AI knowledge across South and Southeast Asia"
           description="Select a country to see what the Observatory holds for it. Each tile is a keyboard-accessible control, and the same information is available as a list below."
           action={
           <LinkButton to="/countries" variant="secondary">
@@ -52,8 +61,8 @@ export function ExploreRegion() {
               maxValue={MAX}
               selectedCode={selected.code}
               onSelect={setSelected}
-              legendLabel="Total linked records"
-              unit="linked records" />
+              legendLabel="Illustrative linked records"
+              unit="illustrative linked records" />
             
             <DemoDataNote className="mt-4" />
           </div>

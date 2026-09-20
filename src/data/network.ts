@@ -87,7 +87,6 @@ export const organizations: Organization[] = [
   country: 'Sri Lanka',
   description:
   'Placeholder description of an independent research institute working on digital and AI policy for South Asia.',
-  website: 'https://example.org/cidp',
   topics: ['AI Governance', 'Data Governance']
 },
 {
@@ -98,7 +97,6 @@ export const organizations: Organization[] = [
   type: 'Government',
   country: 'Sri Lanka',
   description: 'Placeholder description of a government body coordinating national digital and AI strategy.',
-  website: 'https://example.gov/ndps',
   topics: ['AI Governance', 'AI Readiness']
 },
 {
@@ -109,7 +107,6 @@ export const organizations: Organization[] = [
   type: 'Civil Society / NGO',
   country: 'Bangladesh',
   description: 'Placeholder description of a civil-society organisation researching technology and labour.',
-  website: 'https://example.org/dcts',
   topics: ['Inclusion', 'Responsible Innovation']
 },
 {
@@ -120,7 +117,6 @@ export const organizations: Organization[] = [
   type: 'Civil Society / NGO',
   country: 'Indonesia',
   description: 'Placeholder description of an open-data laboratory supporting public-sector data stewardship.',
-  website: 'https://example.org/npdl',
   topics: ['Data Governance', 'AI Readiness']
 },
 {
@@ -131,7 +127,6 @@ export const organizations: Organization[] = [
   type: 'University / Research Institution',
   country: 'Viet Nam',
   description: 'Placeholder description of a university centre evaluating AI in health and public services.',
-  website: 'https://example.edu/murc',
   topics: ['Responsible Innovation', 'AI Readiness']
 },
 {
@@ -142,7 +137,6 @@ export const organizations: Organization[] = [
   type: 'Regional Organization',
   country: 'Singapore',
   description: 'Placeholder description of a regional coordination body for digital and AI governance.',
-  website: 'https://example.org/adcf',
   topics: ['AI Governance', 'AI Ecosystem']
 },
 {
@@ -153,7 +147,6 @@ export const organizations: Organization[] = [
   type: 'University / Research Institution',
   country: 'India',
   description: 'Placeholder description of a research observatory mapping regional technology ecosystems.',
-  website: 'https://example.org/sato',
   topics: ['AI Ecosystem', 'AI Governance']
 },
 {
@@ -164,7 +157,6 @@ export const organizations: Organization[] = [
   type: 'Private Sector',
   country: 'Nepal',
   description: 'Placeholder description of a cooperative network deploying advisory tools for smallholder farmers.',
-  website: 'https://example.com/acn',
   topics: ['Sustainability', 'Inclusion']
 }];
 
@@ -190,7 +182,6 @@ export const partners: Partner[] = [
   abbr: 'AI4D',
   role: 'Programme partner',
   description: 'Placeholder description of the programme partnership supporting artificial intelligence for development.',
-  website: 'https://example.org/ai4d'
 },
 {
   id: 'pt-3',
@@ -198,7 +189,6 @@ export const partners: Partner[] = [
   abbr: 'RRC',
   role: 'Research network partner',
   description: 'Placeholder partner description — contributing country research teams across South and Southeast Asia.',
-  website: 'https://example.org/rrc'
 },
 {
   id: 'pt-4',
@@ -206,7 +196,6 @@ export const partners: Partner[] = [
   abbr: 'APEX',
   role: 'Policy engagement partner',
   description: 'Placeholder partner description — convening policymaker roundtables and translating evidence for government.',
-  website: 'https://example.org/apex'
 },
 {
   id: 'pt-5',
@@ -214,5 +203,4 @@ export const partners: Partner[] = [
   abbr: 'ODF',
   role: 'Data infrastructure partner',
   description: 'Placeholder partner description — supporting dataset curation, licensing and long-term access.',
-  website: 'https://example.org/odf'
 }];

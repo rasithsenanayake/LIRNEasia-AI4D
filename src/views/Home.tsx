@@ -19,7 +19,7 @@ import { ResourceCard } from '../components/cards/ResourceCard';
 import { publications } from '../data/publications';
 import { datasets } from '../data/datasets';
 import { useCases } from '../data/useCases';
-import { organizations, partners, people } from '../data/network';
+import { organizations, people } from '../data/network';
 import { events, opportunities } from '../data/happenings';
 import { searchIndex } from '../utils/searchIndex';
 
@@ -96,7 +96,7 @@ export function Home() {
             eyebrow="Latest research"
             title="Recently published"
             action={
-            <LinkButton to="/explore?type=Report" variant="secondary">
+            <LinkButton to="/research" variant="secondary">
                 View all research
               </LinkButton>
             } />
@@ -206,13 +206,15 @@ export function Home() {
             Partners and funders
           </h2>
           <ul className="mt-6 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
-            {partners.map((p) =>
-            <li key={p.id} className="border-t border-line pt-4">
-                <p className="text-[1.0625rem] font-semibold text-ink">{p.name}</p>
-                <p className="mt-0.5 text-meta font-medium text-accent">{p.role}</p>
-                <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-soft">{p.description}</p>
-              </li>
-            )}
+            <li className="border-t border-line pt-4">
+              <p className="text-[1.0625rem] font-semibold text-ink">LIRNEasia</p>
+              <p className="mt-0.5 text-meta font-medium text-accent">Host institution</p>
+              <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-soft">Partner identities and branding to be provided by the Client.</p>
+            </li>
+            <li className="border-t border-line pt-4 sm:col-span-2 lg:col-span-2">
+              <p className="text-meta font-semibold uppercase tracking-[0.08em] text-ink-muted">Illustrative partner layout</p>
+              <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-soft">Partner Institution · Regional Partner · Research Partner · Funding Partner</p>
+            </li>
           </ul>
           <p className="mt-8">
             <LinkButton to="/partners" variant="secondary">
