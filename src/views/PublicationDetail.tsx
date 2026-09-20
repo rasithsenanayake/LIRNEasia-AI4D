@@ -101,7 +101,7 @@ export function PublicationDetail({ slug }: { slug: string }) {
           
           <div className="mt-6 max-w-3xl">
             <TypeLabel type={publication.type} />
-            <h1 className="mt-3 font-serif text-[2rem] leading-[1.15] text-ink sm:text-[2.5rem]">
+            <h1 className="mt-3 font-serif font-semibold text-[2rem] leading-[1.15] text-ink sm:text-[2.5rem]">
               {publication.title}
             </h1>
             <p className="mt-4 text-[1.125rem] leading-relaxed text-ink-soft">{publication.summary}</p>

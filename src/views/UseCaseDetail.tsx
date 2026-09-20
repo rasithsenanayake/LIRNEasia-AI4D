@@ -103,7 +103,7 @@ export function UseCaseDetail({ slug }: { slug: string }) {
           <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-16">
             <div>
               <TypeLabel type="Responsible AI Use Case" />
-              <h1 className="mt-3 max-w-3xl font-serif text-[2rem] leading-[1.15] text-ink sm:text-[2.5rem]">
+              <h1 className="mt-3 max-w-3xl font-serif font-semibold text-[2rem] leading-[1.15] text-ink sm:text-[2.5rem]">
                 {useCase.title}
               </h1>
               <p className="mt-4 max-w-2xl text-[1.125rem] leading-relaxed text-ink-soft">{useCase.summary}</p>
