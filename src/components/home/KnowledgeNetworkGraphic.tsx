@@ -1,12 +1,12 @@
 import React from 'react';
 
 const NODES = [
-{ id: 'research', label: 'Research', x: 50, y: 14, r: 30 },
-{ id: 'countries', label: 'Countries', x: 14, y: 42, r: 26 },
-{ id: 'usecases', label: 'Use Cases', x: 86, y: 42, r: 28 },
-{ id: 'people', label: 'People', x: 26, y: 80, r: 24 },
-{ id: 'orgs', label: 'Organizations', x: 74, y: 80, r: 30 },
-{ id: 'data', label: 'Datasets', x: 50, y: 56, r: 26 }];
+{ id: 'research', label: 'Research', x: 50, y: 14, r: 10 },
+{ id: 'countries', label: 'Countries', x: 14, y: 42, r: 10 },
+{ id: 'usecases', label: 'Use Cases', x: 86, y: 42, r: 10 },
+{ id: 'people', label: 'People', x: 26, y: 80, r: 8 },
+{ id: 'orgs', label: 'Organizations', x: 74, y: 80, r: 12 },
+{ id: 'data', label: 'Datasets', x: 50, y: 56, r: 10 }];
 
 
 const EDGES: [string, string][] = [
@@ -56,7 +56,7 @@ export function KnowledgeNetworkGraphic() {
             <circle
             cx={n.x}
             cy={n.y}
-            r={n.r / 5}
+            r={n.r}
             fill={i === 0 || i === 5 ? '#0E5265' : '#FFFFFF'}
             stroke="#0E5265"
             strokeWidth="0.5" />
