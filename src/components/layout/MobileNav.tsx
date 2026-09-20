@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../ui/Link';
 import { ChevronDownIcon, SearchIcon, XIcon } from 'lucide-react';
 import { navGroups } from '../../data/navigation';
 import { cn } from '../../utils/cn';
@@ -31,12 +33,13 @@ export function MobileNav({
   if (!open) return null;
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Site menu"
-      className="fixed inset-0 z-50 flex flex-col bg-surface lg:hidden">
-      
+    <div className="fixed inset-0 z-50 bg-ink/35 lg:hidden" onClick={onClose}>
+      <aside
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site menu"
+        onClick={(e) => e.stopPropagation()}
+        className="ml-auto flex h-full w-[min(22rem,calc(100%-2rem))] flex-col bg-surface shadow-panel">
       <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-5">
         <span className="font-serif text-[1.0625rem] font-semibold text-ink">Menu</span>
         <button
@@ -108,6 +111,7 @@ export function MobileNav({
           Subscribe to the newsletter
         </Link>
       </div>
+      </aside>
     </div>);
 
 }

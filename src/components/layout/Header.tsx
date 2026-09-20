@@ -1,22 +1,25 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import { ChevronDownIcon, MenuIcon, SearchIcon } from 'lucide-react';
 import { navGroups } from '../../data/navigation';
 import { SearchDialog } from '../search/SearchDialog';
 import { MobileNav } from './MobileNav';
 import { cn } from '../../utils/cn';
+import { Link } from '../ui/Link';
 
 export function Header() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
+  const pathname = usePathname();
 
   useEffect(() => {
     setOpenMenu(null);
     setMobileOpen(false);
-  }, [location.pathname, location.search]);
+  }, [pathname]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -40,7 +43,7 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/85">
-        <div className="mx-auto flex h-16 max-w-content items-center gap-4 px-5 sm:px-8 lg:h-[72px] lg:gap-8 lg:px-12">
+        <div className="mx-auto flex h-16 max-w-[96rem] items-center gap-4 px-5 sm:px-8 lg:h-[72px] lg:gap-8 lg:px-12">
           <Link to="/" className="flex shrink-0 items-center gap-2.5 rounded" aria-label="Asia AI4D Observatory — home">
             <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded bg-accent">
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="white" strokeWidth="1.6">
@@ -56,7 +59,7 @@ export function Header() {
 
           <div ref={navRef} className="hidden flex-1 lg:block">
             <nav aria-label="Main">
-              <ul className="flex items-center gap-1">
+              <ul className="flex items-center gap-1 whitespace-nowrap">
                 {navGroups.map((group) => {
                   const isOpen = openMenu === group.label;
                   return (
@@ -67,7 +70,7 @@ export function Header() {
                         aria-haspopup="true"
                         onClick={() => setOpenMenu(isOpen ? null : group.label)}
                         className={cn(
-                          'inline-flex items-center gap-1 rounded px-2.5 py-2 text-[0.9375rem] font-medium transition-colors duration-150 ease-out',
+                          'inline-flex items-center gap-1 whitespace-nowrap rounded px-2.5 py-2 text-[0.9375rem] font-medium transition-colors duration-150 ease-out',
                           isOpen ? 'bg-accent-wash text-accent-dark' : 'text-ink-soft hover:text-accent'
                         )}>
                         
