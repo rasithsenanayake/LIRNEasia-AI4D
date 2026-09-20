@@ -1,0 +1,23 @@
+{
+  "version": "1.3.10",
+  "installedAt": "2026-09-20T17:24:17.405Z",
+  "source": "AshenDulsanka/agent-arche",
+  "sourceType": "npm",
+  "scope": "skills-memory",
+  "profile": "general",
+  "platform": "codex",
+  "hash": "sha512-VgglZ/wOZXKEAQku+cIcqQTzhcdvZJL+qHZIHCfar11gUa/sVO/e/Cw431uxBp0AJ3ABYlMbXR1TtRXC8a2MLQ==",
+  "selectedSkills": [
+    "implement",
+    "diagnosing-bugs",
+    "tdd",
+    "code-review",
+    "karpathy-guidelines",
+    "security-review",
+    "git",
+    "handoff",
+    "design",
+    "seo",
+    "postgres-patterns"
+  ]
+}
