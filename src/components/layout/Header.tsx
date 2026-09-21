@@ -87,7 +87,7 @@ export function Header() {
                         onClick={() => setOpenMenu(isOpen ? null : group.label)}
                         className={cn(
                           'inline-flex items-center gap-1 whitespace-nowrap rounded px-2.5 py-2 text-[0.9375rem] font-medium transition-colors duration-150 ease-out',
-                          isOpen || isActive ? 'bg-accent-wash text-accent-dark' : 'text-ink-soft hover:text-accent'
+                          isOpen || isActive ? 'font-semibold text-accent-dark' : 'text-ink-soft hover:font-semibold hover:text-accent'
                         )}>
                         
                         {group.label}
