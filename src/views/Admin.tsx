@@ -134,7 +134,7 @@ function Sidebar({ activeView, onNavigate, mobileOpen, onClose }: { activeView: 
           ))}
           <div className="border-t border-white/10 pt-5">
             <p className="px-3 pb-2 text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-white/42">Website</p>
-            <button type="button" className="flex min-h-[42px] w-full items-center gap-3 rounded px-3 text-left text-sm text-white/68 hover:bg-white/8 hover:text-white">
+            <button type="button" onClick={() => onNavigate('dashboard')} className="flex min-h-[42px] w-full items-center gap-3 rounded px-3 text-left text-sm text-white/68 hover:bg-white/8 hover:text-white">
               <Settings className="h-[17px] w-[17px]" strokeWidth={1.8} />
               Settings
             </button>
@@ -174,7 +174,7 @@ function Topbar({ title, onOpenMenu, search, onSearch }: { title: string; onOpen
           <input value={search} onChange={(event) => onSearch(event.target.value)} className="min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-ink-muted" placeholder="Search content" aria-label="Search content" />
           <kbd className="rounded border border-line bg-raised px-1.5 py-0.5 text-[0.625rem] text-ink-muted">⌘K</kbd>
         </label>
-        <button type="button" className="relative inline-flex h-10 w-10 items-center justify-center rounded border border-line bg-surface text-ink-soft hover:bg-raised" aria-label="Notifications">
+        <button type="button" onClick={() => window.alert('No new notifications')} className="relative inline-flex h-10 w-10 items-center justify-center rounded border border-line bg-surface text-ink-soft hover:bg-raised" aria-label="Notifications">
           <Bell className="h-[17px] w-[17px]" />
           <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#b97839]" aria-hidden="true" />
         </button>
@@ -214,7 +214,7 @@ function FilterBar({ search, onSearch, placeholder, children }: { search: string
 }
 
 function SelectFilter({ label }: { label: string }) {
-  return <button type="button" className="inline-flex min-h-[40px] items-center justify-between gap-4 rounded border border-line bg-surface px-3 text-sm text-ink-soft hover:bg-raised">{label}<ChevronDown className="h-4 w-4 text-ink-muted" /></button>;
+  return <label className="inline-flex min-h-[40px] items-center gap-2 rounded border border-line bg-surface px-3 text-sm text-ink-soft hover:bg-raised"><span className="sr-only">Filter by {label}</span><select defaultValue="" className="appearance-none bg-transparent outline-none"><option value="">{label}</option><option>All</option><option>Published</option><option>Draft</option><option>Needs review</option></select><ChevronDown className="h-4 w-4 text-ink-muted" aria-hidden="true" /></label>;
 }
 
 function PublicationsView({ initialEditor = false, onCloseEditor }: { initialEditor?: boolean; onCloseEditor?: () => void }) {
