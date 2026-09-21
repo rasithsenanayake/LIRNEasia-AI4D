@@ -38,11 +38,11 @@ export function CountryExplorer() {
                 the Observatory holds for each country. Select a tile on the map or search the list below.
               </p>
               {selected &&
-              <div aria-live="polite" className="mt-6 rounded-lg border border-line bg-canvas p-5">
+              <div className="mt-6 rounded-lg border border-line bg-canvas p-5">
                   <p className="text-meta font-semibold uppercase tracking-[0.08em] text-accent">
                     {selected.subregion}
                   </p>
-                  <h2 className="mt-1 font-serif text-2xl text-ink">{selected.name}</h2>
+                  <h2 aria-live="polite" aria-atomic="true" className="mt-1 font-serif text-2xl text-ink">{selected.name}</h2>
                   <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-soft">{selected.overview}</p>
                   <LinkButton to={`/countries/${selected.slug}`} className="mt-4">
                     Explore {selected.name}
@@ -110,13 +110,13 @@ export function CountryExplorer() {
             {filtered.map((c) =>
           <li key={c.code}>
                 <article className="group flex h-full flex-col rounded-lg border border-line bg-surface p-5 shadow-card transition-[border-color,box-shadow] duration-150 ease-out hover:border-line-strong hover:shadow-lift">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <h3 className="font-serif text-xl leading-snug text-ink">
+                  <div className="flex min-w-0 items-baseline justify-between gap-3">
+                    <h3 className="min-w-0 font-serif text-xl leading-snug text-ink">
                       <Link to={`/countries/${c.slug}`} className="rounded group-hover:text-accent">
                         {c.name}
                       </Link>
                     </h3>
-                    <span className="text-meta text-ink-muted">{c.subregion}</span>
+                    <span className="max-w-[45%] shrink-0 text-right text-meta text-ink-muted">{c.subregion}</span>
                   </div>
                   <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-meta">
                     {[

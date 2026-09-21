@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   BookOpenIcon,
@@ -36,6 +36,7 @@ import {
 import { emptyFilters, filterRecords, sortRecords, type SortKey } from '../utils/searchIndex';
 import { cn } from '../utils/cn';
 import { Link } from '../components/ui/Link';
+import { copyToClipboard } from '../utils/browser';
 
 const CONTENT_TYPES = [
 'Use Case',
@@ -80,7 +81,9 @@ export function Explore() {
   const [sort, setSort] = useState<SortKey>('relevance');
   const [loading, setLoading] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'unavailable'>('idle');
+  const filterButtonRef = useRef<HTMLButtonElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
 
   const query = params.get('q') ?? '';
   const [inputValue, setInputValue] = useState(query);
@@ -146,11 +149,43 @@ export function Explore() {
     });
   }
 
-  function copyLink() {
-    void navigator.clipboard?.writeText(window.location.href);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
+  async function copyLink() {
+    setCopyStatus(await copyToClipboard(window.location.href) ? 'copied' : 'unavailable');
+    window.setTimeout(() => setCopyStatus('idle'), 2000);
   }
+
+  useEffect(() => {
+    if (!sheetOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    const filterButton = filterButtonRef.current;
+    document.body.style.overflow = 'hidden';
+    const focusables = () => Array.from(sheetRef.current?.querySelectorAll<HTMLElement>('button, input, select, [href]') ?? []);
+    focusables()[0]?.focus();
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setSheetOpen(false);
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const items = focusables();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = previousOverflow;
+      filterButton?.focus();
+    };
+  }, [sheetOpen]);
 
   const filterPanel =
   <FilterPanel
@@ -281,13 +316,16 @@ export function Explore() {
                   onClick={copyLink}
                   className="inline-flex min-h-[40px] items-center gap-1.5 rounded-md border border-line px-3 text-meta font-medium text-ink-soft transition-colors duration-150 ease-out hover:bg-raised">
                   
-                  {copied ?
+                  {copyStatus === 'copied' ?
                   <CheckIcon className="h-4 w-4 text-accent" aria-hidden="true" /> :
 
                   <LinkIcon className="h-4 w-4" aria-hidden="true" />
                   }
-                  {copied ? 'Link copied' : 'Copy search link'}
+                  {copyStatus === 'copied' ? 'Link copied' : 'Copy search link'}
                 </button>
+                <span role="status" aria-live="polite" className="sr-only">
+                  {copyStatus === 'copied' ? 'Search link copied.' : copyStatus === 'unavailable' ? 'Copying is unavailable in this browser.' : ''}
+                </span>
 
                 <div>
                   <label htmlFor="sort" className="sr-only">
@@ -393,8 +431,11 @@ export function Explore() {
       {/* Mobile filter trigger + bottom sheet */}
       <div className="sticky bottom-0 z-30 border-t border-line bg-surface/95 p-3 backdrop-blur lg:hidden">
         <button
+          ref={filterButtonRef}
           type="button"
           onClick={() => setSheetOpen(true)}
+          aria-controls="mobile-filters"
+          aria-expanded={sheetOpen}
           className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-md bg-ink px-4 text-[1rem] font-medium text-ink-inverse">
           
           <SlidersHorizontalIcon className="h-5 w-5" aria-hidden="true" />
@@ -409,13 +450,15 @@ export function Explore() {
       <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-ink/40" onClick={() => setSheetOpen(false)} aria-hidden="true" />
           <div
+          ref={sheetRef}
+          id="mobile-filters"
           role="dialog"
           aria-modal="true"
-          aria-label="Filters"
+          aria-labelledby="mobile-filters-heading"
           className="absolute inset-x-0 bottom-0 flex max-h-[85vh] flex-col rounded-t-xl border-t border-line bg-surface motion-safe:animate-[sheetIn_220ms_cubic-bezier(0.23,1,0.32,1)]">
           
             <div className="flex shrink-0 items-center justify-between border-b border-line px-5 py-3">
-              <h2 className="text-[1.0625rem] font-semibold text-ink">Filters</h2>
+              <h2 id="mobile-filters-heading" className="text-[1.0625rem] font-semibold text-ink">Filters</h2>
               <button
               type="button"
               onClick={() => setSheetOpen(false)}

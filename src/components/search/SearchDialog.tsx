@@ -127,6 +127,9 @@ export function SearchDialog({
         </form>
 
         <div className="max-h-[60vh] overflow-y-auto p-4">
+          <p className="sr-only" role="status" aria-live="polite">
+            {loading ? 'Searching.' : query ? `${total} ${total === 1 ? 'result' : 'results'} found.` : ''}
+          </p>
           {!query &&
           <div>
               <p className="text-meta font-semibold uppercase tracking-[0.08em] text-ink-muted">Suggested searches</p>
@@ -155,7 +158,7 @@ export function SearchDialog({
           }
 
           {query && !loading && total === 0 &&
-          <div aria-live="polite">
+          <div>
               <p className="font-serif text-lg text-ink">No exact matches were found.</p>
               <ul className="mt-3 space-y-2 text-[0.9375rem] text-ink-soft">
                 <li>· Try a related topic, such as AI Governance or Inclusion</li>
@@ -181,7 +184,7 @@ export function SearchDialog({
           }
 
           {query && !loading && total > 0 &&
-          <div className="space-y-5" aria-live="polite">
+          <div className="space-y-5">
               {groups.map((group) =>
             <section key={group.label}>
                   <div className="flex items-baseline justify-between">

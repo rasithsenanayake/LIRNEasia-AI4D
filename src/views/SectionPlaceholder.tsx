@@ -81,17 +81,17 @@ export function SectionPlaceholder() {
     <Container className="py-12">
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: section.title }]} />
       <div className="mt-6 max-w-2xl">
-        <h1 className="font-serif text-3xl leading-tight text-ink sm:text-4xl">{section.title}</h1>
+        <p className="text-meta font-semibold uppercase tracking-[0.09em] text-accent">Prototype scope</p>
+        <h1 className="mt-2 font-serif text-3xl leading-tight text-ink sm:text-4xl">{section.title}</h1>
         <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink-soft">{section.description}</p>
         <div className="mt-8 rounded-lg border border-line bg-surface p-6">
           <h2 className="text-meta font-semibold uppercase tracking-[0.08em] text-ink-muted">
-            Prototype scope
+            Preview only
           </h2>
           <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-soft">
-            This prototype builds the six priority screens end to end so the connected-knowledge model can be evaluated:
-            home, the knowledge repository, a responsible AI use case, data &amp; maps, a country profile and a
-            publication. Every other section is specified in the information architecture and reuses the same card,
-            filter, tag and metadata components.
+            This route is mapped in the information architecture but is not interactive in this preview build yet. The
+            six priority journeys are available end to end: home, repository, use case, data &amp; maps, country profile
+            and publication.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <LinkButton to="/explore">Explore the repository</LinkButton>

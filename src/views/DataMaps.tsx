@@ -9,6 +9,7 @@ import { ChartFigure } from '../components/charts/ChartFigure';
 import { Button, LinkButton } from '../components/ui/Button';
 import { countries } from '../data/countries';
 import type { Country } from '../types';
+import { copyToClipboard } from '../utils/browser';
 
 const INDICATORS = [
 { id: 'policy', label: 'National AI policy maturity' },
@@ -53,17 +54,8 @@ export function DataMaps() {
   }
 
   async function copyLink() {
-    if (!navigator.clipboard) {
-      setCopyStatus('unavailable');
-      return;
-    }
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setCopyStatus('copied');
-      window.setTimeout(() => setCopyStatus('idle'), 2000);
-    } catch {
-      setCopyStatus('unavailable');
-    }
+    setCopyStatus(await copyToClipboard(window.location.href) ? 'copied' : 'unavailable');
+    window.setTimeout(() => setCopyStatus('idle'), 2000);
   }
 
   return (

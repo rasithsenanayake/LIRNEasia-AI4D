@@ -67,14 +67,12 @@ export function ExploreRegion() {
             <DemoDataNote className="mt-4" />
           </div>
 
-          <aside
-            aria-live="polite"
-            className="flex flex-col rounded-lg border border-line bg-canvas p-6">
+          <aside className="flex flex-col rounded-lg border border-line bg-canvas p-6">
             
             <p className="text-meta font-semibold uppercase tracking-[0.08em] text-accent">
               {selected.subregion}
             </p>
-            <h3 className="mt-1 font-serif text-2xl leading-tight text-ink">{selected.name}</h3>
+            <h3 aria-live="polite" aria-atomic="true" className="mt-1 font-serif text-2xl leading-tight text-ink">{selected.name}</h3>
             <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-soft">{selected.overview}</p>
 
             <dl className="mt-6 divide-y divide-line border-y border-line">

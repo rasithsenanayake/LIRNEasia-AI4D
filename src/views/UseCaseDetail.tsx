@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { LinkIcon, ShareIcon } from 'lucide-react';
 import { Breadcrumbs, Container } from '../components/ui/Primitives';
 import { Tag, TypeLabel } from '../components/ui/Tag';
@@ -13,10 +15,31 @@ import { eventById } from '../data/happenings';
 import { countryByName } from '../data/countries';
 import { formatDate, formatShortDate } from '../utils/format';
 import { Link } from '../components/ui/Link';
+import { copyToClipboard } from '../utils/browser';
 
 export function UseCaseDetail({ slug }: { slug: string }) {
   const useCase = useCaseBySlug(slug);
+  const [status, setStatus] = useState<'idle' | 'copied' | 'shared' | 'unavailable'>('idle');
   if (!useCase) return <NotFound />;
+
+  async function copyLink() {
+    setStatus(await copyToClipboard(window.location.href) ? 'copied' : 'unavailable');
+    window.setTimeout(() => setStatus('idle'), 2000);
+  }
+
+  async function share() {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: useCase?.title ?? 'Asia AI4D Observatory', url: window.location.href });
+        setStatus('shared');
+        window.setTimeout(() => setStatus('idle'), 2000);
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+      }
+    }
+    await copyLink();
+  }
 
   const country = countryByName(useCase.country);
 
@@ -120,19 +143,22 @@ export function UseCaseDetail({ slug }: { slug: string }) {
               </div>
 
               <div className="mt-7 flex flex-wrap gap-3">
-                <Button type="button" disabled title="No verified external project URL is available in the prototype">Project link unavailable</Button>
+                <Button type="button" variant="secondary" disabled title="No verified external project URL is available in the prototype">Project link unavailable in preview</Button>
                 <LinkButton to="#connected-heading" variant="secondary">
                   View related research
                 </LinkButton>
-                <Button variant="ghost" type="button">
+                <Button variant="ghost" type="button" onClick={share}>
                   <ShareIcon className="h-4 w-4" aria-hidden="true" />
-                  Share
+                  {status === 'shared' ? 'Shared' : 'Share'}
                 </Button>
-                <Button variant="ghost" type="button">
+                <Button variant="ghost" type="button" onClick={copyLink}>
                   <LinkIcon className="h-4 w-4" aria-hidden="true" />
-                  Copy link
+                  {status === 'copied' ? 'Link copied' : status === 'unavailable' ? 'Copy unavailable' : 'Copy link'}
                 </Button>
               </div>
+              <p role="status" aria-live="polite" className="mt-3 min-h-[1.25rem] text-meta text-ink-muted">
+                {status === 'copied' ? 'Link copied.' : status === 'shared' ? 'Share sheet opened.' : status === 'unavailable' ? 'Copying is unavailable in this browser.' : ''}
+              </p>
             </div>
           </div>
         </Container>
@@ -171,7 +197,7 @@ export function UseCaseDetail({ slug }: { slug: string }) {
                 {metadata.map((m) =>
                 <div key={m.label} className="py-2.5 first:pt-0">
                     <dt className="text-meta text-ink-muted">{m.label}</dt>
-                    <dd className="mt-0.5 text-[0.9375rem] leading-snug text-ink">{m.value}</dd>
+                    <dd className="mt-0.5 break-words text-[0.9375rem] leading-snug text-ink">{m.value}</dd>
                   </div>
                 )}
               </dl>

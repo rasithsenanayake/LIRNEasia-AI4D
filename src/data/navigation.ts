@@ -112,7 +112,7 @@ export const navGroups: NavGroup[] = [
     heading: 'Opportunities',
     links: [
     { label: 'Opportunities', to: '/opportunities' },
-    { label: 'Newsletter', to: '/newsletter' }]
+    { label: 'Newsletter preview', to: '/newsletter' }]
 
   }],
 
@@ -184,7 +184,7 @@ export const footerColumns = [
   heading: 'About',
   links: [
   { label: 'About the Observatory', to: '/about' },
-  { label: 'Newsletter', to: '/newsletter' },
+  { label: 'Newsletter preview', to: '/newsletter' },
   { label: 'Contact', to: '/contact' },
   { label: 'Accessibility', to: '/accessibility' },
   { label: 'Privacy', to: '/privacy' }]

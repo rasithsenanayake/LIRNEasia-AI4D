@@ -6,16 +6,16 @@ import { Breadcrumbs, Container, DemoDataNote } from '../components/ui/Primitive
 import { Button } from '../components/ui/Button';
 import { NotFound } from './NotFound';
 import { datasetBySlug } from '../data/datasets';
+import { copyToClipboard } from '../utils/browser';
 
 export function DatasetDetail({ slug }: { slug: string }) {
   const dataset = datasetBySlug(slug);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<'copied' | 'unavailable' | null>(null);
   if (!dataset) return <NotFound />;
 
-  function copyLink() {
-    void navigator.clipboard?.writeText(window.location.href);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
+  async function copyLink() {
+    setCopied(await copyToClipboard(window.location.href) ? 'copied' : 'unavailable');
+    window.setTimeout(() => setCopied(null), 2000);
   }
 
   const fields = [
@@ -32,9 +32,12 @@ export function DatasetDetail({ slug }: { slug: string }) {
         <h1 className="mt-3 font-serif text-[2rem] leading-tight text-ink sm:text-[2.75rem]">{dataset.title}</h1>
         <p className="mt-4 text-[1.125rem] leading-relaxed text-ink-soft">{dataset.description}</p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button type="button" disabled title="No verified access URL is available in the prototype">Access dataset</Button>
-          <Button type="button" variant="secondary" onClick={copyLink}>{copied ? <CheckIcon className="h-4 w-4" /> : <LinkIcon className="h-4 w-4" />}{copied ? 'Link copied' : 'Copy link'}</Button>
+          <Button type="button" variant="secondary" disabled title="No verified access URL is available in the prototype">Access unavailable in preview</Button>
+          <Button type="button" variant="secondary" onClick={copyLink}>{copied === 'copied' ? <CheckIcon className="h-4 w-4" /> : <LinkIcon className="h-4 w-4" />}{copied === 'copied' ? 'Link copied' : copied === 'unavailable' ? 'Copy unavailable' : 'Copy link'}</Button>
         </div>
+        <p role="status" aria-live="polite" className="mt-3 min-h-[1.25rem] text-meta text-ink-muted">
+          {copied === 'copied' ? 'Link copied.' : copied === 'unavailable' ? 'Copying is unavailable in this browser.' : ''}
+        </p>
         <DemoDataNote className="mt-5">This record is illustrative. No download is shown because no verified file is attached.</DemoDataNote>
       </div>
 
@@ -46,7 +49,7 @@ export function DatasetDetail({ slug }: { slug: string }) {
           <p className="mt-3 text-[1.0625rem] leading-[1.75] text-ink-soft">Access conditions, citation guidance and download instructions will appear here when a verified dataset file is available.</p>
         </section>
         <dl className="divide-y divide-line rounded-lg border border-line bg-surface p-5">
-          {fields.map(([label, value]) => <div key={label} className="py-2.5 first:pt-0"><dt className="text-meta text-ink-muted">{label}</dt><dd className="mt-0.5 text-[0.9375rem] text-ink">{value}</dd></div>)}
+          {fields.map(([label, value]) => <div key={label} className="py-2.5 first:pt-0"><dt className="text-meta text-ink-muted">{label}</dt><dd className="mt-0.5 break-words text-[0.9375rem] text-ink">{value}</dd></div>)}
         </dl>
       </div>
     </Container>

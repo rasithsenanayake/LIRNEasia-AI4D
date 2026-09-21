@@ -14,10 +14,11 @@ import { people } from '../data/network';
 import { countryByName } from '../data/countries';
 import { formatDate, formatShortDate } from '../utils/format';
 import { Link } from '../components/ui/Link';
+import { copyToClipboard } from '../utils/browser';
 
 export function PublicationDetail({ slug }: { slug: string }) {
   const publication = publicationBySlug(slug);
-  const [copied, setCopied] = useState<string | null>(null);
+  const [copied, setCopied] = useState<'citation' | 'link' | 'citation2' | 'shared' | 'unavailable' | null>(null);
   const [metaOpen, setMetaOpen] = useState(
     typeof window !== 'undefined' ? window.innerWidth >= 1024 : true
   );
@@ -27,10 +28,23 @@ export function PublicationDetail({ slug }: { slug: string }) {
 
   const citation = `${publication.authors.join(', ')} (${publication.date.slice(0, 4)}). ${publication.title}. ${publication.organization}, Asia AI4D Observatory.${publication.doi ? ` https://doi.org/${publication.doi}` : ''}`;
 
-  function copy(kind: string, value: string) {
-    void navigator.clipboard?.writeText(value);
-    setCopied(kind);
+  async function copy(kind: 'citation' | 'link' | 'citation2', value: string) {
+    setCopied(await copyToClipboard(value) ? kind : 'unavailable');
     window.setTimeout(() => setCopied(null), 2000);
+  }
+
+  async function share() {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: publication?.title ?? 'Asia AI4D Observatory', url: window.location.href });
+        setCopied('shared');
+        window.setTimeout(() => setCopied(null), 2000);
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+      }
+    }
+    await copy('link', window.location.href);
   }
 
   const groups: ConnectedGroup[] = [
@@ -132,11 +146,11 @@ export function PublicationDetail({ slug }: { slug: string }) {
 
                 <QuoteIcon className="h-4 w-4" aria-hidden="true" />
                 }
-                {copied === 'citation' ? 'Citation copied' : 'Copy citation'}
+                {copied === 'citation' ? 'Citation copied' : copied === 'unavailable' ? 'Copy unavailable' : 'Copy citation'}
               </Button>
-              <Button variant="ghost" type="button">
+              <Button variant="ghost" type="button" onClick={share}>
                 <ShareIcon className="h-4 w-4" aria-hidden="true" />
-                Share
+                {copied === 'shared' ? 'Shared' : 'Share'}
               </Button>
               <Button variant="ghost" type="button" onClick={() => copy('link', window.location.href)}>
                 {copied === 'link' ?
@@ -144,9 +158,12 @@ export function PublicationDetail({ slug }: { slug: string }) {
 
                 <LinkIcon className="h-4 w-4" aria-hidden="true" />
                 }
-                {copied === 'link' ? 'Link copied' : 'Copy link'}
+                {copied === 'link' ? 'Link copied' : copied === 'unavailable' ? 'Copy unavailable' : 'Copy link'}
               </Button>
             </div>
+            <p role="status" aria-live="polite" className="mt-3 min-h-[1.25rem] text-meta text-ink-muted">
+              {copied === 'citation' ? 'Citation copied.' : copied === 'link' ? 'Link copied.' : copied === 'shared' ? 'Share sheet opened.' : copied === 'unavailable' ? 'Copying is unavailable in this browser.' : ''}
+            </p>
           </div>
         </Container>
       </div>
@@ -182,9 +199,8 @@ export function PublicationDetail({ slug }: { slug: string }) {
             {files.length > 0 && <section className="mt-10">
               <h2 className="font-serif text-2xl leading-tight text-ink">About this publication</h2>
               <p className="mt-3 text-[1.0625rem] leading-[1.75] text-ink-soft">
-                Placeholder descriptive text about the publication’s purpose, its intended audience and how it fits
-                within the Observatory’s wider programme of regional research. Final copy will be supplied by
-                LIRNEasia.
+                This section will explain the publication’s purpose, intended audience and place within the Observatory’s
+                wider programme of regional research. Final editorial copy will be supplied by LIRNEasia.
               </p>
             </section>}
 
