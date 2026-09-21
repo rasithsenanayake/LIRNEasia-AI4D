@@ -21,6 +21,7 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const mobileButtonRef = useRef<HTMLButtonElement>(null);
+  const searchButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -153,6 +154,7 @@ export function Header() {
 
           <div className="ml-auto flex items-center gap-1.5 lg:gap-3">
             <button
+              ref={searchButtonRef}
               type="button"
               onClick={() => setSearchOpen(true)}
               className="inline-flex min-h-[44px] items-center gap-2 rounded-md px-2.5 text-ink-soft transition-colors duration-150 ease-out hover:bg-raised hover:text-ink sm:border sm:border-line sm:bg-raised/60 sm:pr-3">
@@ -177,7 +179,7 @@ export function Header() {
               to="/newsletter"
               className="hidden min-h-[44px] items-center rounded-md bg-accent px-4 text-[0.9375rem] font-medium text-white transition-colors duration-150 ease-out hover:bg-accent-dark sm:inline-flex">
               
-              Subscribe
+              Newsletter preview
             </Link>
 
             <button
@@ -194,7 +196,11 @@ export function Header() {
         </div>
       </header>
 
-      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <SearchDialog
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        returnFocusRef={searchButtonRef}
+      />
       <MobileNav
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}

@@ -16,6 +16,7 @@ const BROWSE = [
 
 export function UniversalSearch() {
   const [value, setValue] = useState('');
+  const [error, setError] = useState('');
   const router = useRouter();
 
   return (
@@ -32,7 +33,13 @@ export function UniversalSearch() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              router.push(`/explore?q=${encodeURIComponent(value.trim())}`);
+              const query = value.trim();
+              if (!query) {
+                setError('Enter a topic, country, or keyword to search.');
+                return;
+              }
+              setError('');
+              router.push(`/explore?q=${encodeURIComponent(query)}`);
             }}
             role="search"
             className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -49,7 +56,12 @@ export function UniversalSearch() {
                 id="home-search"
                 type="search"
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                  if (error) setError('');
+                }}
+                aria-invalid={Boolean(error)}
+                aria-describedby={error ? 'home-search-error' : undefined}
                 placeholder="Search research, projects, people, organizations, datasets…"
                 className="min-h-[60px] w-full rounded-lg border border-line-strong bg-surface pl-12 pr-4 text-[1rem] text-ink shadow-card placeholder:text-ink-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30" />
               
@@ -61,6 +73,7 @@ export function UniversalSearch() {
               Search
             </button>
           </form>
+          {error && <p id="home-search-error" role="alert" className="mt-2 text-meta font-medium text-cat-readiness">{error}</p>}
 
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
             <span className="text-meta text-ink-muted">Try:</span>

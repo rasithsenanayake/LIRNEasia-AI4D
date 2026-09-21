@@ -20,13 +20,13 @@ const REFERENCE_YEAR = '2025';
 
 export function DataMaps() {
   const [indicatorId, setIndicatorId] = useState('policy');
-  const [selected, setSelected] = useState<Country>(countries.find((c) => c.slug === 'sri-lanka')!);
+  const [selected, setSelected] = useState<Country>(countries.find((c) => c.slug === 'sri-lanka') ?? countries[0]);
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'unavailable'>('idle');
 
   const valueFor = (c: Country) => c.indicators.find((i) => i.id === indicatorId)?.value ?? 0;
   const max = Math.max(...countries.map(valueFor));
-  const indicatorLabel = INDICATORS.find((i) => i.id === indicatorId)!.label;
-  const selectedIndicator = selected.indicators.find((i) => i.id === indicatorId)!;
+  const indicatorLabel = INDICATORS.find((i) => i.id === indicatorId)?.label ?? INDICATORS[0].label;
+  const selectedIndicator = selected.indicators.find((i) => i.id === indicatorId) ?? selected.indicators[0];
 
   const tableData = countries.
   map((c) => ({ label: c.name, value: valueFor(c), note: 'Illustrative demo value' })).
@@ -110,7 +110,7 @@ export function DataMaps() {
             <select
               id="country-jump"
               value={selected.slug}
-              onChange={(e) => setSelected(countries.find((c) => c.slug === e.target.value)!)}
+              onChange={(e) => setSelected(countries.find((c) => c.slug === e.target.value) ?? selected)}
               className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] text-ink focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30">
               
               {countries.map((c) =>
@@ -145,9 +145,9 @@ export function DataMaps() {
             </div>
           </section>
 
-          <aside aria-live="polite" className="rounded-lg border border-line bg-surface p-5 sm:p-6">
+          <aside className="rounded-lg border border-line bg-surface p-5 sm:p-6">
             <p className="text-meta font-semibold uppercase tracking-[0.08em] text-accent">{selected.subregion}</p>
-            <h2 className="mt-1 font-serif text-2xl text-ink">{selected.name}</h2>
+            <h2 aria-live="polite" aria-atomic="true" className="mt-1 font-serif text-2xl text-ink">{selected.name}</h2>
             <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-soft">{selected.overview}</p>
 
             <dl className="mt-6 divide-y divide-line border-y border-line">
@@ -205,8 +205,7 @@ export function DataMaps() {
             Use this data
           </h2>
           <p className="mt-2 max-w-2xl text-[0.9375rem] leading-relaxed text-ink-soft">
-            Indicator files are published with their methodology so results can be reproduced. File sizes are shown
-            before download for readers on metered or low-bandwidth connections.
+            Download the current indicator data as CSV for further analysis.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Button type="button" onClick={downloadData}>
@@ -221,7 +220,7 @@ export function DataMaps() {
               <LinkIcon className="h-4 w-4" aria-hidden="true" />
               {copyStatus === 'copied' ? 'Link copied' : 'Copy link'}
             </Button>
-            <span role="status" aria-live="polite" className="self-center text-meta text-ink-muted">
+            <span role="status" aria-live="polite" className="inline-flex min-h-[1.15rem] min-w-[14rem] items-center self-center text-meta text-ink-muted">
               {copyStatus === 'copied' ? 'Link copied.' : copyStatus === 'unavailable' ? 'Copying is unavailable in this browser.' : ''}
             </span>
           </div>
@@ -230,12 +229,12 @@ export function DataMaps() {
         {/* Methodology */}
         <section id="methodology" aria-labelledby="methodology-heading" className="mt-10 max-w-reading">
           <h2 id="methodology-heading" className="font-serif text-2xl text-ink">
-            Methodology and data trust
+            Planned methodology and data trust
           </h2>
           <p className="mt-3 text-[1.0625rem] leading-[1.75] text-ink-soft">
-            Placeholder methodology text for prototype review. In production this section records how each indicator is
-            constructed, which sources feed it, how missing values are handled, and when the series was last refreshed.
-            Every chart and map carries its source, update date and a link back to this section.
+            The production version will document how each indicator is constructed, which sources feed it, how missing
+            values are handled, and when the series was last refreshed. Every chart and map carries its source, update
+            date and a link back to this section.
           </p>
           <p className="mt-3 text-[1.0625rem] leading-[1.75] text-ink-soft">
             Indicator values in this prototype are illustrative and must not be cited. Verified data will replace them

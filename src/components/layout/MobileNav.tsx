@@ -137,7 +137,7 @@ export function MobileNav({
           onClick={onClose}
           className="flex min-h-[52px] w-full items-center justify-center rounded-md bg-accent px-4 text-[1rem] font-medium text-white">
           
-          Subscribe to the newsletter
+          Newsletter preview
         </Link>
       </div>
       </aside>

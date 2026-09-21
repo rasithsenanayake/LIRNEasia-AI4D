@@ -29,7 +29,7 @@ export function NewsletterSignup() {
               Stay informed about responsible AI across Asia
             </h2>
             <p className="mt-3 max-w-xl text-[1.0625rem] leading-relaxed text-accent-soft">
-              Subscribe for quarterly updates featuring research, responsible AI use cases, datasets, events and opportunities from across South and Southeast Asia.
+              Preview the quarterly updates featuring research, responsible AI use cases, datasets, events and opportunities from across South and Southeast Asia.
             </p>
           </div>
 

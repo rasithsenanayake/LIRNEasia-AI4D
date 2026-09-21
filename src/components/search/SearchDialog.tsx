@@ -10,7 +10,11 @@ import { Link } from '../ui/Link';
 
 const SUGGESTIONS = ['AI Governance', 'Healthcare', 'Inclusive AI', 'Sri Lanka', 'Public Sector'];
 
-export function SearchDialog({ open, onClose }: {open: boolean;onClose: () => void;}) {
+export function SearchDialog({
+  open,
+  onClose,
+  returnFocusRef
+}: {open: boolean;onClose: () => void;returnFocusRef?: React.RefObject<HTMLElement>;}) {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -21,16 +25,17 @@ export function SearchDialog({ open, onClose }: {open: boolean;onClose: () => vo
   useEffect(() => {
     if (open) {
       previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      const focusTarget = returnFocusRef?.current ?? previousFocusRef.current;
       setQuery('');
       const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 30);
       document.body.style.overflow = 'hidden';
       return () => {
         window.clearTimeout(focusTimer);
         document.body.style.overflow = '';
-        previousFocusRef.current?.focus();
+        focusTarget?.focus();
       };
     }
-  }, [open]);
+  }, [open, returnFocusRef]);
 
   useEffect(() => {
     if (!query) {
