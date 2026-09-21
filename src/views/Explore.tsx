@@ -281,6 +281,22 @@ export function Explore() {
           </aside>
 
           <div className="min-w-0">
+            <div className="mb-5 lg:hidden">
+              <button
+                ref={filterButtonRef}
+                type="button"
+                onClick={() => setSheetOpen(true)}
+                aria-controls="mobile-filters"
+                aria-expanded={sheetOpen}
+                className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-md bg-ink px-4 text-[1rem] font-medium text-ink-inverse">
+                <SlidersHorizontalIcon className="h-5 w-5" aria-hidden="true" />
+                Filters
+                {activeChips.length > 0 &&
+                <span className="rounded bg-white/20 px-2 py-0.5 text-meta">{activeChips.length}</span>
+                }
+              </button>
+            </div>
+
             {activeChips.length > 0 &&
             <div className="mb-5 flex flex-wrap items-center gap-2">
                 <span className="text-meta font-semibold uppercase tracking-[0.08em] text-ink-muted">
@@ -428,24 +444,7 @@ export function Explore() {
         </div>
       </Container>
 
-      {/* Mobile filter trigger + bottom sheet */}
-      <div className="sticky bottom-0 z-30 border-t border-line bg-surface/95 p-3 backdrop-blur lg:hidden">
-        <button
-          ref={filterButtonRef}
-          type="button"
-          onClick={() => setSheetOpen(true)}
-          aria-controls="mobile-filters"
-          aria-expanded={sheetOpen}
-          className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-md bg-ink px-4 text-[1rem] font-medium text-ink-inverse">
-          
-          <SlidersHorizontalIcon className="h-5 w-5" aria-hidden="true" />
-          Filters
-          {activeChips.length > 0 &&
-          <span className="rounded bg-white/20 px-2 py-0.5 text-meta">{activeChips.length}</span>
-          }
-        </button>
-      </div>
-
+      {/* Mobile filter sheet */}
       {sheetOpen &&
       <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-ink/40" onClick={() => setSheetOpen(false)} aria-hidden="true" />
