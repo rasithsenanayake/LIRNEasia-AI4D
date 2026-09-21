@@ -314,8 +314,80 @@ function MediaView() {
   return <div className="space-y-6"><PageHeading title="Media library" description="Manage files and images used across the observatory." action={<button type="button" className="inline-flex min-h-[42px] items-center gap-2 self-start rounded bg-accent px-4 text-sm font-medium text-white hover:bg-accent-dark"><Plus className="h-4 w-4" />Upload media</button>} /><div className="border border-line bg-surface"><div className="flex flex-col gap-3 border-b border-line p-4 sm:flex-row"><label className="flex min-h-[40px] flex-1 items-center gap-2 rounded border border-line bg-canvas px-3 text-ink-muted"><Search className="h-4 w-4" /><input className="min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-ink-muted" placeholder="Search files" aria-label="Search files" /></label><SelectFilter label="All file types" /><button type="button" className="inline-flex min-h-[40px] items-center justify-center gap-2 rounded border border-line bg-surface px-3 text-sm font-medium text-ink-soft hover:bg-raised"><FileImage className="h-4 w-4" />Grid</button></div><div className="grid gap-px bg-line sm:grid-cols-2 xl:grid-cols-4">{files.map((file) => <article key={file.name} className="bg-surface p-5"><div className="flex h-32 items-center justify-center border border-line bg-raised text-ink-muted">{file.type === 'PDF' ? <FileText className="h-10 w-10" strokeWidth={1.4} /> : <FileImage className="h-10 w-10" strokeWidth={1.4} />}</div><h2 className="mt-4 truncate text-sm font-medium text-ink" title={file.name}>{file.name}</h2><p className="mt-1 text-xs text-ink-muted">{file.type} · {file.size}</p><p className="mt-3 text-xs text-ink-soft">Used on: {file.used}</p><div className="mt-4 flex gap-2"><button type="button" className="text-xs font-medium text-accent hover:underline">Edit details</button><button type="button" className="text-xs font-medium text-ink-muted hover:text-ink">Copy URL</button></div></article>)}</div></div></div>;
 }
 
+const analyticsChartData = [
+  { label: '22 Aug', pageViews: 11200, downloads: 620 },
+  { label: '25 Aug', pageViews: 12800, downloads: 710 },
+  { label: '28 Aug', pageViews: 10500, downloads: 580 },
+  { label: '31 Aug', pageViews: 14600, downloads: 820 },
+  { label: '03 Sep', pageViews: 13900, downloads: 760 },
+  { label: '06 Sep', pageViews: 15800, downloads: 940 },
+  { label: '09 Sep', pageViews: 16700, downloads: 1020 },
+  { label: '12 Sep', pageViews: 15100, downloads: 880 },
+  { label: '15 Sep', pageViews: 17600, downloads: 1100 },
+  { label: '18 Sep', pageViews: 19400, downloads: 1260 },
+  { label: '20 Sep', pageViews: 18742, downloads: 1246 },
+];
+
+function AnalyticsAreaChart() {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const width = 720;
+  const height = 280;
+  const chartTop = 18;
+  const chartBottom = 218;
+  const maxValue = 20000;
+  const x = (index: number) => (index / (analyticsChartData.length - 1)) * width;
+  const y = (value: number) => chartBottom - (value / maxValue) * (chartBottom - chartTop);
+  const linePath = (key: 'pageViews' | 'downloads') => analyticsChartData.map((point, index) => `${index === 0 ? 'M' : 'L'} ${x(index)} ${y(point[key])}`).join(' ');
+  const areaPath = (key: 'pageViews' | 'downloads') => `${linePath(key)} L ${width} ${chartBottom} L 0 ${chartBottom} Z`;
+  const activePoint = activeIndex === null ? null : analyticsChartData[activeIndex];
+  const activeX = activeIndex === null ? 0 : x(activeIndex);
+  const tooltipX = Math.min(Math.max(activeX - 77, 8), width - 162);
+
+  return <div>
+    <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex items-center gap-4 text-xs text-ink-muted" aria-label="Chart legend">
+        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-[#0e5265]" aria-hidden="true" />Page views</span>
+        <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-[#b97839]" aria-hidden="true" />Downloads</span>
+      </div>
+      {activePoint && <p className="text-xs text-ink-soft" aria-live="polite">{activePoint.label}: {activePoint.pageViews.toLocaleString()} views · {activePoint.downloads.toLocaleString()} downloads</p>}
+    </div>
+    <svg viewBox={`0 0 ${width} ${height}`} className="mt-5 h-64 w-full overflow-visible" role="img" aria-labelledby="traffic-chart-title traffic-chart-description">
+      <title id="traffic-chart-title">Traffic over time</title>
+      <desc id="traffic-chart-description">Page views and downloads across the last 30 days. Hover or focus a date to inspect its values.</desc>
+      <defs>
+        <linearGradient id="analytics-page-views-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0e5265" stopOpacity="0.28" />
+          <stop offset="100%" stopColor="#0e5265" stopOpacity="0.02" />
+        </linearGradient>
+        <linearGradient id="analytics-downloads-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#b97839" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#b97839" stopOpacity="0.02" />
+        </linearGradient>
+      </defs>
+      {[0, 5000, 10000, 15000, 20000].map((value) => <line key={value} x1="0" x2={width} y1={y(value)} y2={y(value)} stroke="#e5e1d8" strokeDasharray="2 5" />)}
+      <path d={areaPath('pageViews')} fill="url(#analytics-page-views-fill)" />
+      <path d={areaPath('downloads')} fill="url(#analytics-downloads-fill)" />
+      <path d={linePath('pageViews')} fill="none" stroke="#0e5265" strokeWidth="2.5" />
+      <path d={linePath('downloads')} fill="none" stroke="#b97839" strokeWidth="2" />
+      {analyticsChartData.map((point, index) => <rect key={point.label} x={x(index) - width / (analyticsChartData.length - 1) / 2} y={chartTop} width={width / (analyticsChartData.length - 1)} height={chartBottom - chartTop} fill="transparent" role="button" tabIndex={0} aria-label={`${point.label}: ${point.pageViews.toLocaleString()} page views, ${point.downloads.toLocaleString()} downloads`} onMouseEnter={() => setActiveIndex(index)} onMouseLeave={() => setActiveIndex(null)} onFocus={() => setActiveIndex(index)} onBlur={() => setActiveIndex(null)} />)}
+      {activePoint && <g pointerEvents="none">
+        <line x1={activeX} x2={activeX} y1={chartTop} y2={chartBottom} stroke="#7c8790" strokeDasharray="3 4" />
+        <circle cx={activeX} cy={y(activePoint.pageViews)} r="4.5" fill="#fbfaf7" stroke="#0e5265" strokeWidth="2" />
+        <circle cx={activeX} cy={y(activePoint.downloads)} r="4" fill="#fbfaf7" stroke="#b97839" strokeWidth="2" />
+        <g transform={`translate(${tooltipX} 8)`}>
+          <rect width="154" height="60" rx="3" fill="#17343d" />
+          <text x="10" y="18" fill="#ffffff" fontSize="11" fontWeight="600">{activePoint.label}</text>
+          <text x="10" y="35" fill="#d5e1e4" fontSize="10">{activePoint.pageViews.toLocaleString()} views</text>
+          <text x="10" y="49" fill="#d5e1e4" fontSize="10">{activePoint.downloads.toLocaleString()} downloads</text>
+        </g>
+      </g>}
+    </svg>
+    <div className="flex justify-between text-[0.6875rem] text-ink-muted"><span>22 Aug</span><span>31 Aug</span><span>09 Sep</span><span>20 Sep</span></div>
+  </div>;
+}
+
 function AnalyticsView() {
-  return <div className="space-y-6"><PageHeading title="Analytics overview" description="Understand what people are reading, searching for, and downloading." action={<SelectFilter label="Last 30 days" />} /><div className="grid grid-cols-2 gap-3 lg:grid-cols-4"><Metric value="4,218" label="Visitors" note="+8.4% vs previous period" /><Metric value="18,742" label="Page views" note="Across 128 published items" /><Metric value="1,246" label="Downloads" note="Most: Governance toolkit" /><Metric value="386" label="Searches" note="74 zero-result searches" /></div><div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]"><section className="border border-line bg-surface p-5"><div className="flex items-start justify-between"><div><h2 className="text-sm font-semibold text-ink">Traffic over time</h2><p className="mt-1 text-xs text-ink-muted">Daily page views</p></div><BarChart3 className="h-4 w-4 text-ink-muted" /></div><svg viewBox="0 0 720 230" className="mt-7 h-56 w-full" role="img" aria-label="Traffic over time line chart"><path d="M0 190H720M0 125H720M0 60H720" stroke="#e5e1d8" strokeDasharray="2 5" /><path d="M0 180 C48 186 74 158 112 164 S171 108 213 130 S273 152 318 102 S362 80 404 110 S460 78 503 91 S554 118 595 66 S643 87 720 26" fill="none" stroke="#0e5265" strokeWidth="3" /><circle cx="720" cy="26" r="5" fill="#0e5265" /></svg><div className="flex justify-between text-[0.6875rem] text-ink-muted"><span>22 Aug</span><span>29 Aug</span><span>05 Sep</span><span>12 Sep</span><span>20 Sep</span></div></section><section className="border border-line bg-surface"><div className="border-b border-line px-5 py-4"><h2 className="text-sm font-semibold text-ink">Popular searches</h2><p className="mt-1 text-xs text-ink-muted">Searches with the most visitor demand.</p></div><ul className="divide-y divide-line">{[['AI procurement', '46', '0 results'], ['AI governance', '38', '12 results'], ['data protection', '31', '8 results'], ['public sector AI', '24', '4 results']].map(([term, count, result]) => <li key={term} className="flex items-center justify-between gap-3 px-5 py-4"><span className="text-sm text-ink">{term}<span className="mt-1 block text-xs text-ink-muted">{result}</span></span><span className="text-sm font-semibold text-ink">{count}</span></li>)}</ul></section></div><section className="border border-line bg-surface"><div className="border-b border-line px-5 py-4"><h2 className="text-sm font-semibold text-ink">Top content</h2></div><div className="overflow-x-auto"><table className="w-full min-w-[560px] text-left text-sm"><thead className="bg-raised/65 text-xs text-ink-muted"><tr><th className="px-5 py-3 font-medium">Content</th><th className="px-3 py-3 font-medium">Type</th><th className="px-3 py-3 font-medium">Views</th><th className="px-3 py-3 font-medium">Downloads</th><th className="px-5 py-3 font-medium">Engagement</th></tr></thead><tbody className="divide-y divide-line">{[['AI Governance in Sri Lanka', 'Publication', '2,184', '284', '4m 12s'], ['Responsible AI Readiness Index', 'Dataset', '1,476', '192', '3m 48s'], ['Regional map', 'Visualization', '982', '—', '2m 06s']].map((row) => <tr key={row[0]}><td className="px-5 py-4 font-medium text-ink">{row[0]}</td><td className="px-3 py-4 text-ink-soft">{row[1]}</td><td className="px-3 py-4 text-ink-soft">{row[2]}</td><td className="px-3 py-4 text-ink-soft">{row[3]}</td><td className="px-5 py-4 text-ink-soft">{row[4]}</td></tr>)}</tbody></table></div></section></div>;
+  return <div className="space-y-6"><PageHeading title="Analytics overview" description="Understand what people are reading, searching for, and downloading." action={<SelectFilter label="Last 30 days" />} /><div className="grid grid-cols-2 gap-3 lg:grid-cols-4"><Metric value="4,218" label="Visitors" note="+8.4% vs previous period" /><Metric value="18,742" label="Page views" note="Across 128 published items" /><Metric value="1,246" label="Downloads" note="Most: Governance toolkit" /><Metric value="386" label="Searches" note="74 zero-result searches" /></div><div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]"><section className="border border-line bg-surface p-5"><div className="flex items-start justify-between"><div><h2 className="text-sm font-semibold text-ink">Traffic over time</h2><p className="mt-1 text-xs text-ink-muted">Daily page views and downloads</p></div><BarChart3 className="h-4 w-4 text-ink-muted" /></div><AnalyticsAreaChart /></section><section className="border border-line bg-surface"><div className="border-b border-line px-5 py-4"><h2 className="text-sm font-semibold text-ink">Popular searches</h2><p className="mt-1 text-xs text-ink-muted">Searches with the most visitor demand.</p></div><ul className="divide-y divide-line">{[['AI procurement', '46', '0 results'], ['AI governance', '38', '12 results'], ['data protection', '31', '8 results'], ['public sector AI', '24', '4 results']].map(([term, count, result]) => <li key={term} className="flex items-center justify-between gap-3 px-5 py-4"><span className="text-sm text-ink">{term}<span className="mt-1 block text-xs text-ink-muted">{result}</span></span><span className="text-sm font-semibold text-ink">{count}</span></li>)}</ul></section></div><section className="border border-line bg-surface"><div className="border-b border-line px-5 py-4"><h2 className="text-sm font-semibold text-ink">Top content</h2></div><div className="overflow-x-auto"><table className="w-full min-w-[560px] text-left text-sm"><thead className="bg-raised/65 text-xs text-ink-muted"><tr><th className="px-5 py-3 font-medium">Content</th><th className="px-3 py-3 font-medium">Type</th><th className="px-3 py-3 font-medium">Views</th><th className="px-3 py-3 font-medium">Downloads</th><th className="px-5 py-3 font-medium">Engagement</th></tr></thead><tbody className="divide-y divide-line">{[['AI Governance in Sri Lanka', 'Publication', '2,184', '284', '4m 12s'], ['Responsible AI Readiness Index', 'Dataset', '1,476', '192', '3m 48s'], ['Regional map', 'Visualization', '982', '—', '2m 06s']].map((row) => <tr key={row[0]}><td className="px-5 py-4 font-medium text-ink">{row[0]}</td><td className="px-3 py-4 text-ink-soft">{row[1]}</td><td className="px-3 py-4 text-ink-soft">{row[2]}</td><td className="px-3 py-4 text-ink-soft">{row[3]}</td><td className="px-5 py-4 text-ink-soft">{row[4]}</td></tr>)}</tbody></table></div></section></div>;
 }
 
 function UsersView() {
