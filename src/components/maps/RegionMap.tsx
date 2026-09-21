@@ -2,6 +2,12 @@ import React from 'react';
 import type { Country } from '../../types';
 import { cn } from '../../utils/cn';
 
+function flagFor(code: string) {
+  return String.fromCodePoint(
+    ...code.toUpperCase().split('').map((character) => 127397 + character.charCodeAt(0))
+  );
+}
+
 interface Props {
   countries: Country[];
   valueFor: (country: Country) => number;
@@ -52,6 +58,7 @@ export function RegionMap({
               type="button"
               onClick={() => onSelect(country)}
               aria-pressed={selected}
+              aria-label={`${country.name}: ${value}${unit ? ` ${unit}` : ''}`}
               title={`${country.name} — ${value}${unit ? ` ${unit}` : ''}`}
               className={cn(
                 'group relative flex aspect-square flex-col items-center justify-center rounded border text-center transition-[transform,border-color] duration-150 ease-out',
@@ -65,8 +72,8 @@ export function RegionMap({
                 backgroundColor: `rgba(14, 82, 101, ${0.08 + intensity * 0.82})`
               }}>
               
-              <span className={cn('text-[0.6875rem] font-semibold uppercase tracking-wide', dark ? 'text-white/90' : 'text-ink-soft')}>
-                {country.code}
+              <span aria-hidden="true" className="text-xl leading-none">
+                {flagFor(country.code)}
               </span>
               <span
                 className={cn(
@@ -79,7 +86,7 @@ export function RegionMap({
               <span className="sr-only">
                 {country.name}, {value} {unit ?? ''}
               </span>
-              <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 max-w-[calc(100vw-2rem)] -translate-x-1/2 truncate whitespace-nowrap rounded bg-ink px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+              <span role="tooltip" className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 max-w-[calc(100vw-2rem)] -translate-x-1/2 whitespace-nowrap rounded bg-ink px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
                 {country.name}
               </span>
             </button>);

@@ -50,7 +50,9 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/85">
+      <header
+        onMouseLeave={() => setOpenMenu(null)}
+        className="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/85">
         <div className="mx-auto flex h-16 max-w-[96rem] items-center gap-4 px-5 sm:px-8 lg:h-[72px] lg:gap-8 lg:px-12">
           <Link to="/" className="flex shrink-0 items-center gap-2.5 rounded" aria-label="Asia AI4D Observatory — home">
             <Image src="/imagers/fav%20icon.png" alt="" width={36} height={36} priority className="h-9 w-9 rounded object-cover" />
