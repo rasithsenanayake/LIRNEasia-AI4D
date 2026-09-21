@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Image from 'next/image';
 import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import {
@@ -16,12 +17,14 @@ import {
   FileText,
   FolderKanban,
   LayoutDashboard,
+  LogOut,
   Menu,
   MoreHorizontal,
   Plus,
   Search,
   Settings,
   ShieldCheck,
+  UserRound,
   Users,
   X,
 } from 'lucide-react';
@@ -95,13 +98,15 @@ function StatusBadge({ status }: { status: ContentStatus }) {
 }
 
 function Sidebar({ activeView, onNavigate, mobileOpen, onClose }: { activeView: AdminView; onNavigate: (view: AdminView) => void; mobileOpen: boolean; onClose: () => void }) {
+  const [profileOpen, setProfileOpen] = useState(false);
+
   return (
     <>
       {mobileOpen && <button type="button" aria-label="Close navigation" onClick={onClose} className="fixed inset-0 z-40 bg-ink/35 lg:hidden" />}
-      <aside className={cn('fixed inset-y-0 left-0 z-50 flex w-[258px] -translate-x-full flex-col bg-[#17343d] text-white transition-transform duration-200 ease-out lg:static lg:z-auto lg:translate-x-0', mobileOpen && 'translate-x-0')}>
+      <aside className={cn('fixed inset-y-0 left-0 z-50 flex w-[258px] -translate-x-full flex-col overflow-y-auto bg-[#17343d] text-white transition-transform duration-200 ease-out lg:static lg:z-auto lg:translate-x-0', mobileOpen && 'translate-x-0')}>
         <div className="flex h-[76px] shrink-0 items-center justify-between border-b border-white/10 px-5">
           <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded bg-[#2f6d78] text-sm font-semibold">A4</span>
+            <Image src="/imagers/fav%20icon.png" alt="Asia AI4D Observatory" width={36} height={36} className="h-9 w-9 rounded object-cover" priority />
             <div>
               <p className="text-sm font-semibold tracking-[-0.01em]">Asia AI4D</p>
               <p className="text-[0.6875rem] uppercase tracking-[0.16em] text-white/55">Observatory CMS</p>
@@ -112,7 +117,7 @@ function Sidebar({ activeView, onNavigate, mobileOpen, onClose }: { activeView: 
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-3 py-5" aria-label="Admin navigation">
+        <nav className="min-h-0 flex-1 px-3 py-5" aria-label="Admin navigation">
           {navGroups.map((group) => (
             <div key={group.label} className="mb-6">
               <p className="px-3 pb-2 text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-white/42">{group.label}</p>
@@ -141,15 +146,19 @@ function Sidebar({ activeView, onNavigate, mobileOpen, onClose }: { activeView: 
           </div>
         </nav>
 
-        <div className="border-t border-white/10 p-4">
-          <div className="flex items-center gap-3 rounded bg-white/7 p-3">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#d8c5ad] text-xs font-semibold text-[#4f3d2a]">RS</span>
+        <div className="relative shrink-0 border-t border-white/10 p-4">
+          {profileOpen && <div className="absolute bottom-[calc(100%-8px)] left-4 right-4 rounded-lg border border-white/10 bg-[#204650] p-2 shadow-lg">
+            <button type="button" onClick={() => window.alert('Profile editing will be available when the CMS account API is connected.')} className="flex min-h-[40px] w-full items-center gap-3 rounded px-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white"><UserRound className="h-4 w-4" />Edit profile</button>
+            <button type="button" onClick={() => { window.location.href = '/'; }} className="flex min-h-[40px] w-full items-center gap-3 rounded px-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white"><LogOut className="h-4 w-4" />Log out</button>
+          </div>}
+          <button type="button" onClick={() => setProfileOpen((open) => !open)} aria-expanded={profileOpen} className="flex w-full items-center gap-3 rounded bg-white/7 p-3 text-left hover:bg-white/10">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#d8c5ad] text-xs font-semibold text-[#4f3d2a]">KA</span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-medium text-white">Ruwani Senanayake</p>
+              <p className="truncate text-xs font-medium text-white">Kamal Amara</p>
               <p className="text-[0.6875rem] text-white/50">Administrator</p>
             </div>
-            <ChevronDown className="h-4 w-4 text-white/45" />
-          </div>
+            <ChevronDown className={cn('h-4 w-4 text-white/45 transition-transform', profileOpen && 'rotate-180')} />
+          </button>
         </div>
       </aside>
     </>
@@ -179,8 +188,8 @@ function Topbar({ title, onOpenMenu, search, onSearch }: { title: string; onOpen
           <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#b97839]" aria-hidden="true" />
         </button>
         <span className="hidden h-8 w-px bg-line sm:block" aria-hidden="true" />
-        <span className="hidden text-right sm:block"><span className="block text-xs font-medium text-ink">Ruwani Senanayake</span><span className="block text-[0.6875rem] text-ink-muted">Administrator</span></span>
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#d8c5ad] text-xs font-semibold text-[#4f3d2a] sm:hidden" aria-hidden="true">RS</span>
+        <span className="hidden text-right sm:block"><span className="block text-xs font-medium text-ink">Kamal Amara</span><span className="block text-[0.6875rem] text-ink-muted">Administrator</span></span>
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#d8c5ad] text-xs font-semibold text-[#4f3d2a] sm:hidden" aria-hidden="true">KA</span>
       </div>
     </header>
   );
