@@ -14,7 +14,7 @@ export function TopicsGrid() {
           id="topics-heading"
           eyebrow="Explore topics"
           title="Seven lines of enquiry across the region"
-          description="Topics are a managed taxonomy. New topics can be added and existing ones merged without touching the rest of the platform."
+          description="Browse the questions shaping responsible AI across the region."
           action={
           <LinkButton to="/topics" variant="secondary">
               View all topics

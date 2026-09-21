@@ -40,7 +40,7 @@ export function NewsletterSignup() {
             
               <CheckCircle2Icon className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
               <div>
-                <p className="font-medium">You’re subscribed.</p>
+                <p className="font-medium">Preview signup submitted.</p>
                 <p className="mt-1 text-[0.9375rem] text-accent-soft">
                   This preview form does not send or store email addresses. The production newsletter will confirm subscriptions here.
                 </p>
@@ -88,11 +88,10 @@ export function NewsletterSignup() {
               type="submit"
               className="mt-4 inline-flex min-h-[48px] w-full items-center justify-center rounded-md bg-accent px-5 text-[0.9375rem] font-medium text-white transition-colors duration-150 ease-out hover:bg-accent-dark sm:w-auto">
               
-                Subscribe
+                Preview signup
               </button>
               <p className="mt-3 text-meta leading-relaxed text-ink-muted">
-                We use your address only to send the Observatory newsletter. You can unsubscribe at any time. See the
-                privacy notice for details.
+                Prototype only: this form does not send or store your details.
               </p>
             </form>
           }

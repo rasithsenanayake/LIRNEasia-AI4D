@@ -9,17 +9,26 @@ import { cn } from '../../utils/cn';
 export function MobileNav({
   open,
   onClose,
-  onOpenSearch
+  onOpenSearch,
+  returnFocusRef
 
 
 
 
-}: {open: boolean;onClose: () => void;onOpenSearch: () => void;}) {
+}: {open: boolean;onClose: () => void;onOpenSearch: () => void;returnFocusRef?: React.RefObject<HTMLButtonElement>;}) {
   const [expanded, setExpanded] = useState<string | null>('Explore');
   const panelRef = useRef<HTMLElement>(null);
+  const wasOpenRef = useRef(false);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      if (wasOpenRef.current) {
+        returnFocusRef?.current?.focus();
+        wasOpenRef.current = false;
+      }
+      return;
+    }
+    wasOpenRef.current = true;
     const firstFocusable = panelRef.current?.querySelector<HTMLElement>('button, a, input');
     firstFocusable?.focus();
     function onKey(e: KeyboardEvent) {
@@ -47,7 +56,7 @@ export function MobileNav({
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
     };
-  }, [open, onClose]);
+  }, [open, onClose, returnFocusRef]);
 
   if (!open) return null;
 

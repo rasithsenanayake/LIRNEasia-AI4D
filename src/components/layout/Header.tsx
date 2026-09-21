@@ -20,6 +20,7 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
+  const mobileButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -180,6 +181,7 @@ export function Header() {
             </Link>
 
             <button
+              ref={mobileButtonRef}
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-expanded={mobileOpen}
@@ -196,6 +198,7 @@ export function Header() {
       <MobileNav
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
+        returnFocusRef={mobileButtonRef}
         onOpenSearch={() => {
           setMobileOpen(false);
           setSearchOpen(true);

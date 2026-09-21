@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from '../components/ui/Link';
 import { DownloadIcon, FileTextIcon, LinkIcon } from 'lucide-react';
 import { Breadcrumbs, Container, DemoDataNote } from '../components/ui/Primitives';
@@ -8,7 +8,6 @@ import { RegionMap } from '../components/maps/RegionMap';
 import { ChartFigure } from '../components/charts/ChartFigure';
 import { Button, LinkButton } from '../components/ui/Button';
 import { countries } from '../data/countries';
-import { topics } from '../data/taxonomy';
 import type { Country } from '../types';
 
 const INDICATORS = [
@@ -16,17 +15,16 @@ const INDICATORS = [
 { id: 'capacity', label: 'Research & training capacity' },
 { id: 'connectivity', label: 'Meaningful connectivity' },
 { id: 'publicsector', label: 'Public-sector AI deployments' }];
+const REFERENCE_YEAR = '2025';
 
 
 export function DataMaps() {
   const [indicatorId, setIndicatorId] = useState('policy');
-  const [year, setYear] = useState('2025');
-  const [topic, setTopic] = useState('All topics');
   const [selected, setSelected] = useState<Country>(countries.find((c) => c.slug === 'sri-lanka')!);
-  const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'unavailable'>('idle');
 
   const valueFor = (c: Country) => c.indicators.find((i) => i.id === indicatorId)?.value ?? 0;
-  const max = useMemo(() => Math.max(...countries.map(valueFor)), [indicatorId]);
+  const max = Math.max(...countries.map(valueFor));
   const indicatorLabel = INDICATORS.find((i) => i.id === indicatorId)!.label;
   const selectedIndicator = selected.indicators.find((i) => i.id === indicatorId)!;
 
@@ -42,26 +40,29 @@ export function DataMaps() {
         country.name,
         String(valueFor(country)),
         selectedIndicator.unit,
-        year
+        REFERENCE_YEAR
       ])
     ];
     const csv = rows.map((row) => row.map((value) => `"${value.replace(/"/g, '""')}"`).join(',')).join('\n');
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = `asia-ai4d-${indicatorId}-${year}.csv`;
+    anchor.download = `asia-ai4d-${indicatorId}-${REFERENCE_YEAR}.csv`;
     anchor.click();
     URL.revokeObjectURL(url);
   }
 
   async function copyLink() {
-    if (!navigator.clipboard) return;
+    if (!navigator.clipboard) {
+      setCopyStatus('unavailable');
+      return;
+    }
     try {
       await navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
+      setCopyStatus('copied');
+      window.setTimeout(() => setCopyStatus('idle'), 2000);
     } catch {
-      setCopied(false);
+      setCopyStatus('unavailable');
     }
   }
 
@@ -72,8 +73,8 @@ export function DataMaps() {
           <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Data & Maps' }]} />
           <h1 className="mt-5 font-serif text-[2rem] leading-tight text-ink sm:text-[2.5rem]">Data &amp; Maps</h1>
           <p className="mt-3 max-w-3xl text-[1.0625rem] leading-relaxed text-ink-soft">
-            Explore regional AI ecosystem information by indicator, country and year. Every visualisation on this page
-            can be read as a table, cited with its source, and downloaded in full.
+            Explore regional AI ecosystem information by indicator and country. Every visualisation on this page can be
+            read as a table, cited with its source, and downloaded in full.
           </p>
         </Container>
       </div>
@@ -82,7 +83,7 @@ export function DataMaps() {
         {/* Controls */}
         <form
           aria-label="Data controls"
-          className="grid gap-4 rounded-lg border border-line bg-surface p-5 sm:grid-cols-2 lg:grid-cols-4"
+          className="grid gap-4 rounded-lg border border-line bg-surface p-5 sm:grid-cols-2"
           onSubmit={(e) => e.preventDefault()}>
           
           <div>
@@ -99,36 +100,6 @@ export function DataMaps() {
               <option key={i.id} value={i.id}>
                   {i.label}
                 </option>
-              )}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="year" className="block text-meta font-semibold text-ink">
-              Year
-            </label>
-            <select
-              id="year"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-              className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] text-ink focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30">
-              
-              {['2025', '2024', '2023'].map((y) =>
-              <option key={y}>{y}</option>
-              )}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="topic-filter" className="block text-meta font-semibold text-ink">
-              Topic
-            </label>
-            <select
-              id="topic-filter"
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
-              className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] text-ink focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30">
-              
-              {['All topics', ...topics.map((t) => t.name)].map((t) =>
-              <option key={t}>{t}</option>
               )}
             </select>
           </div>
@@ -155,7 +126,7 @@ export function DataMaps() {
         <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_minmax(0,360px)] lg:gap-12">
           <section aria-labelledby="map-heading" className="rounded-lg border border-line bg-surface p-5 sm:p-6">
             <h2 id="map-heading" className="font-serif text-xl text-ink">
-              {indicatorLabel}, {year}
+              {indicatorLabel}, {REFERENCE_YEAR}
             </h2>
             <p className="mt-1.5 max-w-2xl text-meta leading-relaxed text-ink-soft">
               Tile cartogram of South and Southeast Asia. Each tile is a focusable control and prints its own value, so
@@ -213,7 +184,7 @@ export function DataMaps() {
         {/* Ranked chart with table alternative */}
         <div className="mt-10">
           <ChartFigure
-            title={`${indicatorLabel} — ten highest values, ${year}`}
+              title={`${indicatorLabel} — ten highest values`}
             description="The same indicator shown as a ranked comparison. Switch to the table view for the full values and notes."
             data={tableData}
             unit={selectedIndicator.unit}
@@ -240,7 +211,7 @@ export function DataMaps() {
           <div className="mt-5 flex flex-wrap gap-3">
             <Button type="button" onClick={downloadData}>
               <DownloadIcon className="h-4 w-4" aria-hidden="true" />
-              Download data · CSV · 48 KB
+              Download data · CSV
             </Button>
             <LinkButton to="#methodology" variant="secondary">
               <FileTextIcon className="h-4 w-4" aria-hidden="true" />
@@ -248,8 +219,11 @@ export function DataMaps() {
             </LinkButton>
             <Button variant="ghost" type="button" onClick={copyLink}>
               <LinkIcon className="h-4 w-4" aria-hidden="true" />
-              {copied ? 'Link copied' : 'Copy link'}
+              {copyStatus === 'copied' ? 'Link copied' : 'Copy link'}
             </Button>
+            <span role="status" aria-live="polite" className="self-center text-meta text-ink-muted">
+              {copyStatus === 'copied' ? 'Link copied.' : copyStatus === 'unavailable' ? 'Copying is unavailable in this browser.' : ''}
+            </span>
           </div>
         </section>
 

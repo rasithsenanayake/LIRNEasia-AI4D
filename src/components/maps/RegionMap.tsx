@@ -65,12 +65,7 @@ export function RegionMap({
                 backgroundColor: `rgba(14, 82, 101, ${0.08 + intensity * 0.82})`
               }}>
               
-              <img
-                src={`https://flagcdn.com/${country.code.toLowerCase()}.svg`}
-                alt=""
-                aria-hidden="true"
-                className="h-auto w-8 rounded-[2px] shadow-sm sm:w-9" />
-              <span className={cn('mt-1 text-[0.625rem] font-semibold uppercase tracking-wide', dark ? 'text-white/90' : 'text-ink-soft')}>
+              <span className={cn('text-[0.6875rem] font-semibold uppercase tracking-wide', dark ? 'text-white/90' : 'text-ink-soft')}>
                 {country.code}
               </span>
               <span

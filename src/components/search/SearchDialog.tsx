@@ -131,7 +131,7 @@ export function SearchDialog({ open, onClose }: {open: boolean;onClose: () => vo
                 key={s}
                 type="button"
                 onClick={() => submit(s)}
-                className="rounded-full border border-line bg-raised px-3 py-1.5 text-meta text-ink-soft transition-colors duration-150 ease-out hover:border-accent-soft hover:bg-accent-wash hover:text-accent-dark">
+                className="inline-flex min-h-[44px] items-center rounded-full border border-line bg-raised px-3 text-meta text-ink-soft transition-colors duration-150 ease-out hover:border-accent-soft hover:bg-accent-wash hover:text-accent-dark">
                 
                     {s}
                   </button>

@@ -68,7 +68,7 @@ export function UniversalSearch() {
             <Link
               key={chip}
               to={`/explore?q=${encodeURIComponent(chip)}`}
-              className="rounded-full border border-line bg-surface px-3 py-1.5 text-meta text-ink-soft transition-colors duration-150 ease-out hover:border-accent-soft hover:bg-accent-wash hover:text-accent-dark">
+              className="inline-flex min-h-[44px] items-center rounded-full border border-line bg-surface px-3 text-meta text-ink-soft transition-colors duration-150 ease-out hover:border-accent-soft hover:bg-accent-wash hover:text-accent-dark">
               
                 {chip}
               </Link>
