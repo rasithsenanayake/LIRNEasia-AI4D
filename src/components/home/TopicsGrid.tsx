@@ -28,7 +28,7 @@ export function TopicsGrid() {
           <li key={topic.id}>
               <Link
               to={`/explore?topic=${encodeURIComponent(topic.name)}`}
-              className="group flex flex-col gap-3 py-5 transition-colors duration-150 ease-out hover:bg-surface sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+              className="group flex min-w-0 flex-col gap-3 py-5 transition-colors duration-150 ease-out hover:bg-surface sm:flex-row sm:items-center sm:justify-between sm:gap-8">
               
                 <span className="flex items-center gap-2.5">
                   <span
@@ -39,8 +39,8 @@ export function TopicsGrid() {
                     {topic.name}
                   </span>
                 </span>
-                <span className="flex items-center justify-between gap-6 sm:min-w-[24rem]">
-                  <span className="text-[0.9375rem] leading-relaxed text-ink-soft">{topic.description}</span>
+                <span className="flex min-w-0 items-start justify-between gap-4 sm:min-w-[24rem] sm:items-center sm:gap-6">
+                  <span className="min-w-0 text-[0.9375rem] leading-relaxed text-ink-soft">{topic.description}</span>
                   <span className="flex shrink-0 items-center gap-2 text-meta text-ink-muted">
                     {topicResourceCount(topic.name)}
                     <ArrowRightIcon className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5" aria-hidden="true" />

@@ -23,6 +23,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-optical-sizing: auto;
+  overflow-x: clip;
 }
 @layer base {
   h1,

@@ -178,8 +178,8 @@ export function CountryProfile({ slug }: { slug: string }) {
         {/* Organizations & people */}
         <div className="mb-16 grid gap-12 lg:grid-cols-2">
           <section aria-labelledby="org-heading">
-            <div className="mb-5 flex items-end justify-between gap-4">
-              <h2 id="org-heading" className="font-serif text-2xl text-ink">
+            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+              <h2 id="org-heading" className="min-w-0 font-serif text-2xl text-ink">
                 Organizations
               </h2>
               <Link
@@ -209,8 +209,8 @@ export function CountryProfile({ slug }: { slug: string }) {
           </section>
 
           <section aria-labelledby="people-heading">
-            <div className="mb-5 flex items-end justify-between gap-4">
-              <h2 id="people-heading" className="font-serif text-2xl text-ink">
+            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+              <h2 id="people-heading" className="min-w-0 font-serif text-2xl text-ink">
                 People and experts
               </h2>
               <Link
@@ -239,8 +239,8 @@ export function CountryProfile({ slug }: { slug: string }) {
         {/* Datasets & events */}
         <div className="grid gap-12 lg:grid-cols-2">
           <section aria-labelledby="ds-heading">
-            <div className="mb-5 flex items-end justify-between gap-4">
-              <h2 id="ds-heading" className="font-serif text-2xl text-ink">
+            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+              <h2 id="ds-heading" className="min-w-0 font-serif text-2xl text-ink">
                 Datasets
               </h2>
               <Link
@@ -266,8 +266,8 @@ export function CountryProfile({ slug }: { slug: string }) {
           </section>
 
           <section aria-labelledby="ev-heading">
-            <div className="mb-5 flex items-end justify-between gap-4">
-              <h2 id="ev-heading" className="font-serif text-2xl text-ink">
+            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+              <h2 id="ev-heading" className="min-w-0 font-serif text-2xl text-ink">
                 Events
               </h2>
               <Link to="/events" className="text-meta font-semibold text-accent underline-offset-4 hover:underline">
@@ -295,7 +295,7 @@ export function CountryProfile({ slug }: { slug: string }) {
         <p className="mt-14 border-t border-line pt-8">
           <Link
             to={exploreLink}
-            className="inline-flex items-center gap-2 font-serif text-xl text-accent underline-offset-4 hover:underline">
+            className="inline-flex max-w-full items-start gap-2 break-words font-serif text-xl text-accent underline-offset-4 hover:underline">
             
             See everything the Observatory holds on {name}
             <ArrowRightIcon className="h-5 w-5" aria-hidden="true" />

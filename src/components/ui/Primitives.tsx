@@ -4,21 +4,21 @@ import { ChevronRightIcon, InfoIcon, SearchXIcon } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
 export function Container({ children, className }: {children: React.ReactNode;className?: string;}) {
-  return <div className={cn('mx-auto w-full max-w-content px-5 sm:px-8 lg:px-12', className)}>{children}</div>;
+  return <div className={cn('mx-auto w-full max-w-content px-4 sm:px-8 lg:px-12', className)}>{children}</div>;
 }
 
 export function Breadcrumbs({ items }: {items: {label: string;to?: string;}[];}) {
   return (
     <nav aria-label="Breadcrumb" className="text-meta">
-      <ol className="flex flex-wrap items-center gap-1 text-ink-muted">
+      <ol className="flex min-w-0 flex-wrap items-center gap-1 text-ink-muted">
         {items.map((item, i) =>
-        <li key={`${item.label}-${i}`} className="flex items-center gap-1">
+        <li key={`${item.label}-${i}`} className="flex min-w-0 items-center gap-1">
             {item.to ?
-          <Link to={item.to} className="rounded underline-offset-2 hover:text-accent hover:underline">
+          <Link to={item.to} className="min-w-0 break-words rounded underline-offset-2 hover:text-accent hover:underline">
                 {item.label}
               </Link> :
 
-          <span aria-current="page" className="text-ink-soft">
+          <span aria-current="page" className="min-w-0 break-words text-ink-soft">
                 {item.label}
               </span>
           }
@@ -54,7 +54,7 @@ export function SectionHeading({
         </h2>
         {description && <p className="mt-3 text-[1.0625rem] leading-relaxed text-ink-soft">{description}</p>}
       </div>
-      {action && <div className="shrink-0">{action}</div>}
+      {action && <div className="w-full shrink-0 md:w-auto [&>*]:w-full md:[&>*]:w-auto">{action}</div>}
     </div>);
 
 }

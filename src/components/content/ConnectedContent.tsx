@@ -36,9 +36,9 @@ export function ConnectedContent({ groups }: {groups: ConnectedGroup[];}) {
             <li key={item.id}>
                   <Link
                 to={item.to}
-                className="group flex items-start gap-2 rounded text-[0.9375rem] leading-snug text-ink transition-colors duration-150 ease-out hover:text-accent">
+                className="group flex min-w-0 items-start gap-2 rounded text-[0.9375rem] leading-snug text-ink transition-colors duration-150 ease-out hover:text-accent">
                 
-                    <span>
+                    <span className="min-w-0 break-words">
                       {item.label}
                       <span className="mt-0.5 block text-meta text-ink-muted">{item.meta}</span>
                     </span>

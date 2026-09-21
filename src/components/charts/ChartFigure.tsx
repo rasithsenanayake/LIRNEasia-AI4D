@@ -31,8 +31,8 @@ export function ChartFigure({ title, description, data, unit, max, source, updat
 
   return (
     <figure className="rounded-lg border border-line bg-surface p-5 sm:p-6">
-      <figcaption className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div className="max-w-md">
+      <figcaption className="mb-5 flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0 max-w-md">
           <h3 className="font-serif text-lg leading-snug text-ink">{title}</h3>
           <p className="mt-1.5 text-meta leading-relaxed text-ink-soft">{description}</p>
         </div>
@@ -62,7 +62,7 @@ export function ChartFigure({ title, description, data, unit, max, source, updat
       {view === 'chart' ?
       <ul className="space-y-3">
           {data.map((d) =>
-        <li key={d.label} className="grid grid-cols-[minmax(96px,150px)_1fr_auto] items-center gap-3">
+        <li key={d.label} className="grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(3rem,1fr)_4rem] items-center gap-3">
               <span className="truncate text-meta font-medium text-ink-soft">{d.label}</span>
               <span className="h-3 w-full overflow-hidden rounded-sm bg-raised" aria-hidden="true">
                 <span

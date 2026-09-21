@@ -163,13 +163,13 @@ export function DataMaps() {
             </dl>
 
             <dl className="mt-4 space-y-1 text-meta text-ink-muted">
-              <div className="flex gap-2">
+              <div className="flex min-w-0 gap-2">
                 <dt className="font-medium text-ink-soft">Source</dt>
-                <dd>{selectedIndicator.source}</dd>
+                <dd className="min-w-0 break-words">{selectedIndicator.source}</dd>
               </div>
-              <div className="flex gap-2">
+              <div className="flex min-w-0 gap-2">
                 <dt className="font-medium text-ink-soft">Last updated</dt>
-                <dd>30 August 2026</dd>
+                <dd className="min-w-0 break-words">30 August 2026</dd>
               </div>
             </dl>
 
@@ -220,7 +220,7 @@ export function DataMaps() {
               <LinkIcon className="h-4 w-4" aria-hidden="true" />
               {copyStatus === 'copied' ? 'Link copied' : 'Copy link'}
             </Button>
-            <span role="status" aria-live="polite" className="inline-flex min-h-[1.15rem] min-w-[14rem] items-center self-center text-meta text-ink-muted">
+            <span role="status" aria-live="polite" className="inline-flex min-h-[1.15rem] max-w-full items-center self-center text-meta text-ink-muted">
               {copyStatus === 'copied' ? 'Link copied.' : copyStatus === 'unavailable' ? 'Copying is unavailable in this browser.' : ''}
             </span>
           </div>
