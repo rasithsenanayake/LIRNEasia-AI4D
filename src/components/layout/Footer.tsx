@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Link } from '../ui/Link';
 import { footerColumns } from '../../data/navigation';
 import { partners } from '../../data/network';
@@ -11,12 +12,13 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
           <div className="max-w-sm">
             <div className="flex items-center gap-2.5">
-              <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded bg-accent">
+              <Image src="/imagers/fav%20icon.png" alt="Asia AI4D Observatory" width={36} height={36} className="h-9 w-9 rounded object-cover" />
+              {/*
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="white" strokeWidth="1.6">
                   <circle cx="12" cy="12" r="8.5" />
                   <path d="M3.5 12h17M12 3.5c2.4 2.6 2.4 14.4 0 17M12 3.5c-2.4 2.6-2.4 14.4 0 17" />
                 </svg>
-              </span>
+              </span> */}
               <span className="leading-tight">
                 <span className="block font-serif text-[1.0625rem] font-semibold text-ink">Asia AI4D</span>
                 <span className="block text-[0.6875rem] uppercase tracking-[0.14em] text-ink-muted">Observatory</span>
