@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from 'react';
 import { Link } from '../components/ui/Link';
-import { DownloadIcon, FileTextIcon, LinkIcon, ShareIcon } from 'lucide-react';
+import { DownloadIcon, FileTextIcon, LinkIcon } from 'lucide-react';
 import { Breadcrumbs, Container, DemoDataNote } from '../components/ui/Primitives';
 import { RegionMap } from '../components/maps/RegionMap';
 import { ChartFigure } from '../components/charts/ChartFigure';
@@ -23,6 +23,7 @@ export function DataMaps() {
   const [year, setYear] = useState('2025');
   const [topic, setTopic] = useState('All topics');
   const [selected, setSelected] = useState<Country>(countries.find((c) => c.slug === 'sri-lanka')!);
+  const [copied, setCopied] = useState(false);
 
   const valueFor = (c: Country) => c.indicators.find((i) => i.id === indicatorId)?.value ?? 0;
   const max = useMemo(() => Math.max(...countries.map(valueFor)), [indicatorId]);
@@ -33,6 +34,36 @@ export function DataMaps() {
   map((c) => ({ label: c.name, value: valueFor(c), note: 'Illustrative demo value' })).
   sort((a, b) => b.value - a.value).
   slice(0, 10);
+
+  function downloadData() {
+    const rows = [
+      ['Country', indicatorLabel, 'Unit', 'Year'],
+      ...countries.map((country) => [
+        country.name,
+        String(valueFor(country)),
+        selectedIndicator.unit,
+        year
+      ])
+    ];
+    const csv = rows.map((row) => row.map((value) => `"${value.replace(/"/g, '""')}"`).join(',')).join('\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `asia-ai4d-${indicatorId}-${year}.csv`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function copyLink() {
+    if (!navigator.clipboard) return;
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  }
 
   return (
     <>
@@ -207,21 +238,17 @@ export function DataMaps() {
             before download for readers on metered or low-bandwidth connections.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <Button type="button">
+            <Button type="button" onClick={downloadData}>
               <DownloadIcon className="h-4 w-4" aria-hidden="true" />
               Download data · CSV · 48 KB
             </Button>
-            <Button variant="secondary" type="button">
+            <LinkButton to="#methodology" variant="secondary">
               <FileTextIcon className="h-4 w-4" aria-hidden="true" />
               View methodology
-            </Button>
-            <Button variant="secondary" type="button">
-              <ShareIcon className="h-4 w-4" aria-hidden="true" />
-              Share
-            </Button>
-            <Button variant="ghost" type="button">
+            </LinkButton>
+            <Button variant="ghost" type="button" onClick={copyLink}>
               <LinkIcon className="h-4 w-4" aria-hidden="true" />
-              Copy link
+              {copied ? 'Link copied' : 'Copy link'}
             </Button>
           </div>
         </section>

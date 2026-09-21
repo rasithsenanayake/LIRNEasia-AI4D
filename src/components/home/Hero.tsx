@@ -1,5 +1,4 @@
 import React from 'react';
-import { ArrowRightIcon } from 'lucide-react';
 import { Container } from '../ui/Primitives';
 import { LinkButton } from '../ui/Button';
 import { KnowledgeNetworkGraphic } from './KnowledgeNetworkGraphic';
@@ -21,14 +20,10 @@ export function Hero() {
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <LinkButton to="/explore" size="lg">
-              Explore the Observatory
+              Explore the repository
             </LinkButton>
-            <LinkButton to="/explore?type=Report" size="lg" variant="secondary">
-              Search research
-            </LinkButton>
-            <LinkButton to="/about" size="lg" variant="ghost">
-              About the Observatory
-              <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
+            <LinkButton to="/data-maps" size="lg" variant="secondary">
+              Browse regional data
             </LinkButton>
           </div>
         </div>

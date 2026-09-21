@@ -41,7 +41,7 @@ export const navGroups: NavGroup[] = [
   }
 },
 {
-  label: 'Research & Insights',
+  label: 'Research & Data',
   to: '/research',
   columns: [
   {
@@ -68,33 +68,6 @@ export const navGroups: NavGroup[] = [
     title: 'Mapping AI readiness across South Asia',
     description: 'Regional mapping study covering institutions, data and capacity.',
     to: '/publications/ai-readiness-south-asia-mapping-study'
-  }
-},
-{
-  label: 'Data & Maps',
-  to: '/data-maps',
-  columns: [
-  {
-    heading: 'Regional data',
-    links: [
-    { label: 'Interactive regional map', to: '/data-maps' },
-    { label: 'Indicator explorer', to: '/data-maps' },
-    { label: 'Datasets', to: '/explore?type=Dataset' }]
-
-  },
-  {
-    heading: 'Transparency',
-    links: [
-    { label: 'Methodology', to: '/data-maps#methodology' },
-    { label: 'Download data', to: '/data-maps#downloads' }]
-
-  }],
-
-  highlight: {
-    label: 'Accessible by default',
-    title: 'Every visualisation has a data table',
-    description: 'Maps and charts can be read as structured tables and downloaded in full.',
-    to: '/data-maps'
   }
 },
 {

@@ -1,9 +1,9 @@
 import React from 'react';
-import { DownloadIcon, FileTextIcon } from 'lucide-react';
+import { FileTextIcon } from 'lucide-react';
 import { countries } from '../../data/countries';
 import { ChartFigure } from '../charts/ChartFigure';
 import { Container, DemoDataNote } from '../ui/Primitives';
-import { LinkButton, Button } from '../ui/Button';
+import { LinkButton } from '../ui/Button';
 
 const FOCUS = ['Singapore', 'Malaysia', 'India', 'Viet Nam', 'Sri Lanka', 'Indonesia', 'Nepal'];
 
@@ -49,10 +49,9 @@ export function DataSpotlight() {
                 <FileTextIcon className="h-4 w-4" aria-hidden="true" />
                 View methodology
               </LinkButton>
-              <Button variant="ghost" type="button">
-                <DownloadIcon className="h-4 w-4" aria-hidden="true" />
-                CSV · 48 KB
-              </Button>
+              <LinkButton to="/data-maps#downloads" variant="ghost">
+                Open downloads
+              </LinkButton>
             </div>
           </div>
         </div>

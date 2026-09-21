@@ -42,7 +42,7 @@ export function NewsletterSignup() {
               <div>
                 <p className="font-medium">You’re subscribed.</p>
                 <p className="mt-1 text-[0.9375rem] text-accent-soft">
-                  A confirmation has been sent to {email}. Demo form — no data is stored in this prototype.
+                  This preview form does not send or store email addresses. The production newsletter will confirm subscriptions here.
                 </p>
               </div>
             </div> :

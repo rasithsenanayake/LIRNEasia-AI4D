@@ -70,6 +70,9 @@ export function RegionMap({
                 alt=""
                 aria-hidden="true"
                 className="h-auto w-8 rounded-[2px] shadow-sm sm:w-9" />
+              <span className={cn('mt-1 text-[0.625rem] font-semibold uppercase tracking-wide', dark ? 'text-white/90' : 'text-ink-soft')}>
+                {country.code}
+              </span>
               <span
                 className={cn(
                   'font-serif text-sm leading-none sm:text-base',

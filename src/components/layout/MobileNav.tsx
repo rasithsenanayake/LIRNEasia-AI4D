@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from '../ui/Link';
 import { ChevronDownIcon, SearchIcon, XIcon } from 'lucide-react';
 import { navGroups } from '../../data/navigation';
@@ -16,11 +16,30 @@ export function MobileNav({
 
 }: {open: boolean;onClose: () => void;onOpenSearch: () => void;}) {
   const [expanded, setExpanded] = useState<string | null>('Explore');
+  const panelRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!open) return;
+    const firstFocusable = panelRef.current?.querySelector<HTMLElement>('button, a, input');
+    firstFocusable?.focus();
     function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (e.key === 'Tab' && panelRef.current) {
+        const focusables = Array.from(panelRef.current.querySelectorAll<HTMLElement>('button, a, input'));
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     }
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
@@ -35,6 +54,7 @@ export function MobileNav({
   return (
     <div className="fixed inset-0 z-50 bg-ink/35 lg:hidden" onClick={onClose}>
       <aside
+        ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label="Site menu"

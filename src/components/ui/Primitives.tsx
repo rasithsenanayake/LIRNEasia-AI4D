@@ -73,7 +73,7 @@ export function DemoDataNote({ className, children }: {className?: string;childr
   return (
     <p className={cn('flex items-start gap-2 text-meta text-ink-muted', className)}>
       <InfoIcon className="mt-0.5 h-4 w-4 shrink-0 text-ink-muted" aria-hidden="true" />
-      <span>{children ?? 'Figures shown are illustrative placeholders for prototype review, not verified data.'}</span>
+      <span>{children ?? 'Preview data: figures are illustrative until launch.'}</span>
     </p>);
 
 }

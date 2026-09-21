@@ -15,12 +15,20 @@ export function SearchDialog({ open, onClose }: {open: boolean;onClose: () => vo
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     if (open) {
+      previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       setQuery('');
-      window.setTimeout(() => inputRef.current?.focus(), 30);
+      const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 30);
+      document.body.style.overflow = 'hidden';
+      return () => {
+        window.clearTimeout(focusTimer);
+        document.body.style.overflow = '';
+        previousFocusRef.current?.focus();
+      };
     }
   }, [open]);
 

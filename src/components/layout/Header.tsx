@@ -10,6 +10,11 @@ import { MobileNav } from './MobileNav';
 import { cn } from '../../utils/cn';
 import { Link } from '../ui/Link';
 
+function matchesPath(pathname: string, to: string) {
+  const path = to.split('?')[0];
+  return pathname === path || pathname.startsWith(`${path}/`);
+}
+
 export function Header() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -64,16 +69,21 @@ export function Header() {
               <ul className="flex items-center gap-1 whitespace-nowrap">
                 {navGroups.map((group) => {
                   const isOpen = openMenu === group.label;
+                  const isActive = matchesPath(pathname, group.to) || group.columns.some((column) =>
+                    column.links.some((link) => link.to.split('?')[0] !== '/explore' && matchesPath(pathname, link.to))
+                  );
                   return (
                     <li key={group.label} onMouseEnter={() => setOpenMenu(group.label)}>
                       <button
                         type="button"
                         aria-expanded={isOpen}
                         aria-haspopup="true"
+                        aria-current={isActive ? 'page' : undefined}
+                        onFocus={() => setOpenMenu(group.label)}
                         onClick={() => setOpenMenu(isOpen ? null : group.label)}
                         className={cn(
                           'inline-flex items-center gap-1 whitespace-nowrap rounded px-2.5 py-2 text-[0.9375rem] font-medium transition-colors duration-150 ease-out',
-                          isOpen ? 'bg-accent-wash text-accent-dark' : 'text-ink-soft hover:text-accent'
+                          isOpen || isActive ? 'bg-accent-wash text-accent-dark' : 'text-ink-soft hover:text-accent'
                         )}>
                         
                         {group.label}
