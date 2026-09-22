@@ -217,7 +217,7 @@ function Topbar({ title, onOpenMenu, search, onSearch }: { title: string; onOpen
 }
 
 function PageHeading({ title, description, action }: { title: string; description: string; action?: ReactNode }) {
-  return <div className="flex flex-col gap-5 border-b border-line pb-6 sm:flex-row sm:items-end sm:justify-between"><div><h1 className="text-[1.75rem] font-semibold tracking-[-0.04em] text-ink sm:text-[2rem]">{title}</h1><p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft">{description}</p></div>{action}</div>;
+  return <div className="space-y-4 border-b border-line pb-6"><div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"><div><h1 className="text-[1.75rem] font-semibold tracking-[-0.04em] text-ink sm:text-[2rem]">{title}</h1><p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft">{description}</p></div>{action}</div><p role="note" className="rounded border border-[#ead2a5] bg-[#fff8e8] px-3 py-2 text-xs leading-relaxed text-[#7f5b1b]">CMS preview: content, media, users, and analytics are illustrative and are not persisted.</p></div>;
 }
 
 function Metric({ value, label, note }: { value: string; label: string; note: string }) {
