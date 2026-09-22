@@ -1,39 +1,39 @@
 # Asia AI4D Observatory
 
-Next.js App Router prototype for the Asia AI4D Observatory. It preserves the existing proposal visual language while demonstrating the proposed home, repository, research, use-case, country, dataset and data-map journeys.
+The Asia AI4D Observatory is a regional knowledge platform for discovering and connecting research, data, people, organisations and responsible AI work across Asia.
 
-## Stack
+## Public website
 
-Next.js, React, TypeScript and Tailwind CSS. Content is currently local typed demo data; no CMS or database is included.
+The website includes:
 
-## Commands
+- A homepage introducing the Observatory and highlighting important research and data.
+- An explore area for searching and filtering the knowledge repository.
+- Research and publication pages for reports, policy briefs, mapping studies, research briefs and commentary.
+- Responsible AI use-case pages showing initiatives across different countries and sectors.
+- Country profiles that connect local research, organisations, people, datasets and use cases.
+- Dataset pages and data maps for presenting regional evidence and insights.
+- Directories for people, organisations, experts and partners.
+- Events, opportunities, learning resources and newsletter content.
+- About, contact, accessibility and privacy pages.
 
-```bash
-npm install
-npm run dev
-npm run build
-npm run typecheck
-npm start
-```
+The content is connected so visitors can follow relationships between countries, topics, publications, datasets, organisations and people.
 
-Set `NEXT_PUBLIC_SITE_URL` to the production origin when deploying so the generated sitemap, robots file and canonical metadata use absolute URLs.
+## Admin panel
 
-## Structure
+The project also includes an Observatory admin panel for managing the platform’s content and operations. It contains:
 
-- `src/app`: App Router routes and metadata entry points
-- `src/components`: reusable layout, cards, filters, maps and content UI
-- `src/data`: typed illustrative records
-- `src/views`: page-level compositions reused by routes
-- `src/utils`: search and repository helpers
+- Dashboard with content summaries, recent updates, upcoming events and items requiring attention.
+- Publications management with publication records, statuses and an editor for creating drafts or publishing content.
+- Responsible AI use-case management.
+- Dataset management.
+- Event management.
+- Media library.
+- Analytics overview with illustrative engagement and content statistics.
+- Users and roles section for administrators and editors.
+- Website settings.
 
-## Prototype disclaimer
+The admin panel is designed as a CMS preview. Its content, media, users and analytics are illustrative, and changes are not persisted because the CMS, authentication and database are not connected yet.
 
-The visual design represents the proposed direction. Content, statistics, profiles, publications, events and datasets are illustrative unless explicitly identified as verified. Final substantive content will be supplied and approved by the Client. Search, filtering, relationships and navigation demonstrate proposed functional behavior.
+## Project status
 
-## Routes
-
-`/`, `/explore`, `/research`, `/publications/[slug]`, `/use-cases/[slug]`, `/datasets/[slug]`, `/countries`, `/countries/[slug]`, `/data-maps`, `/news`, `/about`, `/opportunities`, `/events`, `/people`, `/organizations`, `/learning-resources`, `/newsletter`, `/partners`, `/contact`, `/accessibility`, `/privacy`.
-
-## Future production architecture
-
-The intended production boundary is Next.js + Payload CMS or equivalent + PostgreSQL + client-controlled file storage + client-controlled hosting + analytics. This prototype does not represent the final CMS, database or provider integration. Local data access can be replaced with CMS/database-backed functions without changing the page contract.
+This is a functional visual prototype of the proposed Asia AI4D Observatory experience. The pages, navigation, search, filters, relationships and admin interactions demonstrate the intended product structure. Final research content, production CMS integration, database, authentication, file storage and analytics will be added in the production version.
