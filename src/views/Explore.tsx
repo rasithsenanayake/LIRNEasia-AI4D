@@ -37,6 +37,7 @@ import { emptyFilters, filterRecords, sortRecords, type SortKey } from '../utils
 import { cn } from '../utils/cn';
 import { Link } from '../components/ui/Link';
 import { copyToClipboard } from '../utils/browser';
+import { PUBLICATION_TYPES } from '../data/publications';
 
 const CONTENT_TYPES = [
 'Use Case',
@@ -65,13 +66,13 @@ const FILTER_GROUPS: FilterGroupDef[] = [
 
 
 const QUICK_BROWSE = [
-{ label: 'Use Cases', type: 'Use Case', icon: LightbulbIcon },
-{ label: 'Publications', type: 'Report', icon: BookOpenIcon },
-{ label: 'Datasets', type: 'Dataset', icon: DatabaseIcon },
-{ label: 'People', type: 'Person', icon: UsersIcon },
-{ label: 'Organizations', type: 'Organization', icon: Building2Icon },
-{ label: 'Learning Resources', type: 'Learning Resource', icon: GraduationCapIcon },
-{ label: 'Events', type: 'Event', icon: CalendarIcon }];
+{ label: 'Use Cases', types: ['Use Case'], icon: LightbulbIcon },
+{ label: 'Publications', types: [...PUBLICATION_TYPES], icon: BookOpenIcon },
+{ label: 'Datasets', types: ['Dataset'], icon: DatabaseIcon },
+{ label: 'People', types: ['Person'], icon: UsersIcon },
+{ label: 'Organizations', types: ['Organization'], icon: Building2Icon },
+{ label: 'Learning Resources', types: ['Learning Resource'], icon: GraduationCapIcon },
+{ label: 'Events', types: ['Event'], icon: CalendarIcon }];
 
 
 export function Explore() {
@@ -136,6 +137,16 @@ export function Explore() {
       p.delete(key);
       const nextValues = current.includes(value) ? current.filter((v) => v !== value) : [...current, value];
       nextValues.forEach((v) => p.append(key, v));
+    });
+  }
+
+  function toggleQuickBrowse(types: string[]) {
+    updateParams((p) => {
+      const current = new Set(p.getAll('type'));
+      const shouldEnable = types.some((type) => !current.has(type));
+      p.delete('type');
+      const next = shouldEnable ? [...new Set([...current, ...types])] : [...current].filter((type) => !types.includes(type));
+      next.forEach((type) => p.append('type', type));
     });
   }
 
@@ -249,12 +260,12 @@ export function Explore() {
           <nav aria-label="Quick browse" className="mt-6">
             <ul className="flex flex-wrap gap-2">
               {QUICK_BROWSE.map((q) => {
-                const isActive = (selected.type ?? []).includes(q.type);
+                const isActive = q.types.every((type) => (selected.type ?? []).includes(type));
                 return (
                   <li key={q.label}>
                     <button
                       type="button"
-                      onClick={() => toggle('type', q.type)}
+                      onClick={() => toggleQuickBrowse(q.types)}
                       aria-pressed={isActive}
                       className={cn(
                         'inline-flex min-h-[40px] items-center gap-2 rounded-md border px-3 text-meta font-medium transition-colors duration-150 ease-out',
