@@ -3,6 +3,9 @@ import { SectionPlaceholder } from '../../views/SectionPlaceholder';
 import { ResearchLanding } from '../../views/ResearchLanding';
 import { AboutPage } from '../../views/AboutPage';
 import { NewsPage } from '../../views/NewsPage';
+import { EventsPage } from '../../views/EventsPage';
+import { EventDetailPage } from '../../views/EventDetailPage';
+import { events } from '../../data/happenings';
 
 const ROOT_SECTIONS = new Set([
   'topics',
@@ -35,5 +38,11 @@ export default async function PlaceholderRoute({ params }: { params: Promise<{ s
   if (slug?.length === 1 && slug[0] === 'research') return <ResearchLanding />;
   if (slug?.length === 1 && slug[0] === 'about') return <AboutPage />;
   if (slug?.length === 1 && slug[0] === 'news') return <NewsPage />;
+  if (slug?.length === 1 && slug[0] === 'events') return <EventsPage />;
+  if (slug?.length === 2 && slug[0] === 'events') {
+    const event = events.find((item) => item.slug === slug[1]);
+    if (!event) notFound();
+    return <EventDetailPage event={event} />;
+  }
   return <SectionPlaceholder />;
 }
