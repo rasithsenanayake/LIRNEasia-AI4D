@@ -1,4 +1,0 @@
-interface:
-  display_name: "Implement Change"
-  short_description: "Implement and verify a requested code change"
-  default_prompt: "Use $implement to make and verify this requested change."
