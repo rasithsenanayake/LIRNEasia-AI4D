@@ -7,6 +7,7 @@ import { EventsPage } from '../../views/EventsPage';
 import { EventDetailPage } from '../../views/EventDetailPage';
 import { OrganizationDetailPage, OrganizationsPage, PeoplePage, PersonDetailPage } from '../../views/NetworkDirectoryPages';
 import { LearningResourcesPage, OpportunitiesPage } from '../../views/ResourcePages';
+import { ContactPage, NewsletterPage, PartnersPage } from '../../views/PublicInfoPages';
 import { events } from '../../data/happenings';
 import { organizations, people } from '../../data/network';
 
@@ -46,6 +47,9 @@ export default async function PlaceholderRoute({ params }: { params: Promise<{ s
   if (slug?.length === 1 && slug[0] === 'organizations') return <OrganizationsPage />;
   if (slug?.length === 1 && slug[0] === 'opportunities') return <OpportunitiesPage />;
   if (slug?.length === 1 && slug[0] === 'learning-resources') return <LearningResourcesPage />;
+  if (slug?.length === 1 && slug[0] === 'partners') return <PartnersPage />;
+  if (slug?.length === 1 && slug[0] === 'newsletter') return <NewsletterPage />;
+  if (slug?.length === 1 && slug[0] === 'contact') return <ContactPage />;
   if (slug?.length === 2 && slug[0] === 'events') {
     const event = events.find((item) => item.slug === slug[1]);
     if (!event) notFound();
