@@ -5,7 +5,9 @@ import { AboutPage } from '../../views/AboutPage';
 import { NewsPage } from '../../views/NewsPage';
 import { EventsPage } from '../../views/EventsPage';
 import { EventDetailPage } from '../../views/EventDetailPage';
+import { OrganizationDetailPage, OrganizationsPage, PeoplePage, PersonDetailPage } from '../../views/NetworkDirectoryPages';
 import { events } from '../../data/happenings';
+import { organizations, people } from '../../data/network';
 
 const ROOT_SECTIONS = new Set([
   'topics',
@@ -39,10 +41,22 @@ export default async function PlaceholderRoute({ params }: { params: Promise<{ s
   if (slug?.length === 1 && slug[0] === 'about') return <AboutPage />;
   if (slug?.length === 1 && slug[0] === 'news') return <NewsPage />;
   if (slug?.length === 1 && slug[0] === 'events') return <EventsPage />;
+  if (slug?.length === 1 && slug[0] === 'people') return <PeoplePage />;
+  if (slug?.length === 1 && slug[0] === 'organizations') return <OrganizationsPage />;
   if (slug?.length === 2 && slug[0] === 'events') {
     const event = events.find((item) => item.slug === slug[1]);
     if (!event) notFound();
     return <EventDetailPage event={event} />;
+  }
+  if (slug?.length === 2 && slug[0] === 'people') {
+    const person = people.find((item) => item.slug === slug[1]);
+    if (!person) notFound();
+    return <PersonDetailPage person={person} />;
+  }
+  if (slug?.length === 2 && slug[0] === 'organizations') {
+    const organization = organizations.find((item) => item.slug === slug[1]);
+    if (!organization) notFound();
+    return <OrganizationDetailPage organization={organization} />;
   }
   return <SectionPlaceholder />;
 }
