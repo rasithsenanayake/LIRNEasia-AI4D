@@ -15,6 +15,8 @@ npm run build
 npm start
 ```
 
+Set `NEXT_PUBLIC_SITE_URL` to the production origin when deploying so the generated sitemap, robots file and canonical metadata use absolute URLs.
+
 ## Structure
 
 - `src/app`: App Router routes and metadata entry points

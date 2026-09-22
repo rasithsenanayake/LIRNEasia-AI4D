@@ -3,7 +3,11 @@ import { App } from '../App';
 import '../index.css';
 
 export const metadata: Metadata = {
-  title: 'Asia AI4D Observatory',
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
+  title: {
+    default: 'Asia AI4D Observatory',
+    template: '%s | Asia AI4D Observatory'
+  },
   description: 'A policy and innovation network on responsible AI across Asia.',
   icons: {
     icon: '/imagers/fav%20icon.png',
