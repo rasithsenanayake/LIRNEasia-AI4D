@@ -12,6 +12,7 @@ Next.js, React, TypeScript and Tailwind CSS. Content is currently local typed de
 npm install
 npm run dev
 npm run build
+npm run typecheck
 npm start
 ```
 
