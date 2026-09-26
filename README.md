@@ -1,25 +1,29 @@
 # Asia AI4D Observatory
 
-The Asia AI4D Observatory is a regional knowledge platform for discovering and connecting research, data, people, organisations and responsible AI work across South and Southeast Asia.
+A proposal-stage prototype for discovering responsible AI research, data, people, organisations and initiatives across South and Southeast Asia. It demonstrates information architecture and editorial workflows; it is not a production CMS or live data service.
 
-## Prototype Coverage
+## Included
 
-- Searchable research repository with metadata filters and an illustrative PDF text-match state.
-- Five Data & Maps experiences: Research & Knowledge, AI Indices, Innovations, Policy Mapping and Experts & Organisations.
-- Country-focused map tiles, table alternatives, sources, update context and clear prototype labels.
-- Connected publication, use-case, dataset, country, organisation and people records.
-- CMS preview for publications, use cases, datasets, events, media, analytics and users/roles.
-- Dataset import steps, download engagement records, gated-download interaction, and publication revision-history preview.
-- Public newsletter archive, accessibility and privacy information, events, learning resources and opportunities.
+Research discovery and search, five Data & Maps experiences, country and organisation profiles, events, opportunities, learning resources, news, and an illustrative CMS/admin workflow.
 
-## RFP Clarification Alignment
+## Run locally
 
-The visible prototype covers all five data experiences, the structured repository and filters, a clearly illustrative document-search result, expanded Responsible AI use-case fields, a dataset upload/mapping/validation/preview workflow, optional email-gated downloads, CSV engagement export, draft/preview/publish and revision-history concepts, Administrator and Editor roles, accessibility and privacy information, newsletter archive structure, external registration and resource links, and regional research metadata.
+```bash
+npm install
+npm run dev
+npm run typecheck
+npm run lint
+npm run build
+```
 
-## Prototype vs Production
+## Prototype limits
 
-Prototype values, sample records, analytics, role accounts, import validation, engagement counts and document snippets are illustrative. Admin actions and download form details are not persisted or transmitted. Policy mapping is a schema preview and makes no factual country policy claims. Existing public data itself is marked illustrative where applicable.
+Content, index values, analytics and admin records are illustrative. Admin changes do not persist; policy mapping has no verified records. Authentication, file storage, analytics, newsletter delivery and PDF extraction are not connected.
 
-## Proposed Production Architecture
+## Production direction
 
-See [docs/PRODUCTION_ARCHITECTURE.md](docs/PRODUCTION_ARCHITECTURE.md) for a proposed client-owned, maintainable production approach. Database, CMS, authentication, permanent file storage, PDF extraction, analytics and email integrations are deferred to production.
+See [the proposed architecture](docs/PRODUCTION_ARCHITECTURE.md), [service register](docs/THIRD_PARTY_SERVICES.md), [support and maintenance model](docs/SUPPORT_AND_MAINTENANCE.md), and [training plan](docs/TRAINING_PLAN.md). These are recommendations for discussion, not deployed services or agreed SLAs.
+
+## RFP alignment
+
+The prototype demonstrates the requested regional discovery model, metadata relationships, filters, accessible chart tables, import/download concepts, content structure and editorial roles. Data, services and operational plans require Client review before production.

@@ -1,6 +1,6 @@
 import type { Publication } from '../types';
 
-export const PUBLICATION_TYPES = ['Report', 'Policy Brief', 'Research Brief', 'Innovation Brief', 'Mapping Study', 'Commentary'] as const;
+export const PUBLICATION_TYPES = ['Report', 'Policy Brief', 'Research Brief', 'Innovation Brief', 'Mapping Study', 'Commentary', 'Blog', 'Op-ed / External Publication'] as const;
 
 /** Illustrative publication records for prototype evaluation. No real findings are represented. */
 export const publications: Publication[] = [
@@ -38,7 +38,12 @@ export const publications: Publication[] = [
   'Placeholder methodology note. Mixed-methods design combining document review, key-informant interviews and secondary indicator analysis. Full methodology and instruments will be published alongside the final report.',
   relatedDatasets: ['ds-1', 'ds-3'],
   relatedUseCases: ['uc-1', 'uc-4'],
-  relatedPeople: ['p-1', 'p-6', 'p-4']
+  relatedPeople: ['p-1', 'p-6', 'p-4'],
+  languageVariants: [
+    { language: 'English', label: 'Current version', isCurrent: true },
+    { language: 'සිංහල', label: 'Planned language version · content not supplied' },
+    { language: 'தமிழ்', label: 'Planned language version · content not supplied' }
+  ]
 },
 {
   id: 'pub-2',
@@ -67,8 +72,8 @@ export const publications: Publication[] = [
   methodology: 'Placeholder note — brief draws on the regional mapping study and two government consultations.',
   relatedDatasets: ['ds-1'],
   relatedUseCases: ['uc-1'],
-  relatedPeople: ['p-4', 'p-1']
-  ,gatedDownload: true
+  relatedPeople: ['p-4', 'p-1'],
+  gatedDownload: true
 },
 {
   id: 'pub-3',

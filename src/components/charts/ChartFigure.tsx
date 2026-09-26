@@ -14,6 +14,7 @@ interface Props {
   title: string;
   description: string;
   data: ChartDatum[];
+  tableData?: ChartDatum[];
   unit: string;
   max?: number;
   source: string;
@@ -25,7 +26,7 @@ interface Props {
  * Horizontal bar chart with a built-in accessible table alternative.
  * Rendered as plain DOM so it stays light on low-bandwidth connections.
  */
-export function ChartFigure({ title, description, data, unit, max, source, updated, methodologyHref }: Props) {
+export function ChartFigure({ title, description, data, tableData, unit, max, source, updated, methodologyHref }: Props) {
   const [view, setView] = useState<'chart' | 'table'>('chart');
   const ceiling = max ?? Math.max(...data.map((d) => d.value));
 
@@ -92,7 +93,7 @@ export function ChartFigure({ title, description, data, unit, max, source, updat
               </tr>
             </thead>
             <tbody>
-              {data.map((d) =>
+              {(tableData ?? data).map((d) =>
             <tr key={d.label} className="border-b border-line last:border-b-0">
                   <th scope="row" className="py-2.5 pr-4 font-medium text-ink">
                     {d.label}

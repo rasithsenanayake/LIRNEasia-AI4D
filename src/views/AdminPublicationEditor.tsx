@@ -2,10 +2,14 @@
 
 import { useState } from 'react';
 import { ChevronLeft, FileText, ShieldCheck } from 'lucide-react';
+import { PUBLICATION_TYPES } from '../data/publications';
 
 export function AdminPublicationEditor({ onBack }: { onBack: () => void }) {
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
+  const [externalPublisher, setExternalPublisher] = useState('');
+  const [externalUrl, setExternalUrl] = useState('');
+  const [externalPublicationDate, setExternalPublicationDate] = useState('');
   const [summary, setSummary] = useState('');
   const [fileName, setFileName] = useState('');
   const [message, setMessage] = useState('');
@@ -58,7 +62,7 @@ export function AdminPublicationEditor({ onBack }: { onBack: () => void }) {
                   <span className="block text-sm font-medium text-ink">Publication type <span className="text-[#a04c43]">*</span></span>
                   <select required value={type} onChange={(event) => setType(event.target.value)} className="mt-2 block min-h-[44px] w-full rounded border border-line-strong bg-canvas px-3 text-sm text-ink outline-none focus:border-accent">
                     <option value="" disabled>Select type</option>
-                    <option>Report</option><option>Policy brief</option><option>Research brief</option><option>Innovation brief</option><option>Mapping study</option><option>Commentary</option>
+                    {PUBLICATION_TYPES.map((publicationType) => <option key={publicationType}>{publicationType}</option>)}
                   </select>
                 </label>
                 <label className="block">
@@ -66,6 +70,7 @@ export function AdminPublicationEditor({ onBack }: { onBack: () => void }) {
                   <input type="date" className="mt-2 block min-h-[44px] w-full rounded border border-line-strong bg-canvas px-3 text-sm text-ink outline-none focus:border-accent" />
                 </label>
               </div>
+              {type === 'Op-ed / External Publication' && <fieldset className="grid gap-5 rounded border border-line p-4 sm:grid-cols-2"><legend className="px-1 text-sm font-semibold text-ink">External publication details</legend><label className="block"><span className="block text-sm font-medium text-ink">External publisher</span><input value={externalPublisher} onChange={(event) => setExternalPublisher(event.target.value)} className="mt-2 block min-h-[44px] w-full rounded border border-line-strong bg-canvas px-3 text-sm text-ink" /></label><label className="block"><span className="block text-sm font-medium text-ink">Original publication date</span><input type="date" value={externalPublicationDate} onChange={(event) => setExternalPublicationDate(event.target.value)} className="mt-2 block min-h-[44px] w-full rounded border border-line-strong bg-canvas px-3 text-sm text-ink" /></label><label className="block sm:col-span-2"><span className="block text-sm font-medium text-ink">External URL</span><input type="url" value={externalUrl} onChange={(event) => setExternalUrl(event.target.value)} placeholder="https://" className="mt-2 block min-h-[44px] w-full rounded border border-line-strong bg-canvas px-3 text-sm text-ink" /></label></fieldset>}
               <label className="block">
                 <span className="block text-sm font-medium text-ink">Short summary <span className="text-[#a04c43]">*</span></span>
                 <textarea required value={summary} onChange={(event) => setSummary(event.target.value)} rows={3} className="mt-2 block w-full resize-y rounded border border-line-strong bg-canvas px-3 py-3 text-sm text-ink outline-none focus:border-accent" placeholder="Summarise the publication in two or three sentences." />

@@ -11,6 +11,8 @@ export const useCases: UseCase[] = [
   country: 'Sri Lanka',
   sector: 'Public Sector',
   organization: 'National Digital Policy Secretariat',
+  broadCategory: 'Public-sector AI service',
+  team: ['A. Perera', 'M. de Silva'],
   organizationType: 'Government',
   status: 'Pilot',
   dimensions: ['Human Oversight', 'Transparency', 'Accountability'],

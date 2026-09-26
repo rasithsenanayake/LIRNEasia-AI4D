@@ -99,11 +99,13 @@ export function UseCaseDetail({ slug }: { slug: string }) {
     useCase.country
 
   },
+  ...(useCase.broadCategory ? [{ label: 'Broad category', value: useCase.broadCategory }] : []),
   { label: 'Sector', value: useCase.sector },
-  { label: 'Organization', value: useCase.organization },
+  { label: 'Organisation', value: useCase.organization },
   { label: 'Organization type', value: useCase.organizationType },
   { label: 'Responsible AI dimensions', value: useCase.dimensions.join(', ') },
   { label: 'Ecosystem category', value: useCase.ecosystemCategory },
+  ...(useCase.team?.length ? [{ label: 'Team / individuals', value: useCase.team.join(', ') }] : []),
   { label: 'Project status', value: useCase.status },
   { label: 'Source', value: useCase.source },
   { label: 'Last updated', value: formatDate(useCase.lastUpdated) }];
@@ -131,7 +133,7 @@ export function UseCaseDetail({ slug }: { slug: string }) {
               </h1>
               <p className="mt-4 max-w-2xl text-[1.125rem] leading-relaxed text-ink-soft">{useCase.summary}</p>
 
-              <div className="mt-6 flex flex-wrap gap-1.5">
+            <div className="mt-6 flex flex-wrap gap-1.5">
                 <Tag kind="country">{useCase.country}</Tag>
                 <Tag kind="sector">{useCase.sector}</Tag>
                 <Tag kind="orgType">{useCase.organizationType}</Tag>
@@ -141,9 +143,11 @@ export function UseCaseDetail({ slug }: { slug: string }) {
                   </Tag>
                 )}
               </div>
+              <p className="mt-3 text-meta text-ink-muted">Illustrative prototype profile; it does not represent a verified deployment.</p>
 
               <div className="mt-7 flex flex-wrap gap-3">
-                <Button type="button" variant="secondary" disabled title="No verified external project URL is available in the prototype">Project link unavailable in preview</Button>
+                {useCase.projectUrl && <a href={useCase.projectUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center rounded-md border border-line-strong bg-surface px-4 py-2.5 text-sm font-medium text-ink hover:bg-raised">Visit project ↗ <span className="sr-only">(opens in a new tab)</span></a>}
+                {useCase.organizationUrl && <a href={useCase.organizationUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center rounded-md border border-line-strong bg-surface px-4 py-2.5 text-sm font-medium text-ink hover:bg-raised">Organisation website ↗ <span className="sr-only">(opens in a new tab)</span></a>}
                 <LinkButton to="#connected-heading" variant="secondary">
                   View related research
                 </LinkButton>

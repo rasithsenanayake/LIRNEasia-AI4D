@@ -6,7 +6,7 @@ import { useCases } from '../data/useCases';
 import { events } from '../data/happenings';
 import { organizations, people } from '../data/network';
 
-const paths = ['/', '/about', '/explore', '/research', '/use-cases', '/countries', '/data-maps', '/datasets', '/people', '/organizations', '/events', '/news', '/opportunities', '/learning-resources', '/newsletter', '/partners', '/contact', '/accessibility', '/privacy'];
+const paths = ['/', '/about', '/topics', '/explore', '/research', '/use-cases', '/countries', '/data-maps', '/datasets', '/people', '/organizations', '/events', '/news', '/opportunities', '/learning-resources', '/newsletter', '/partners', '/contact', '/accessibility', '/privacy'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, '');

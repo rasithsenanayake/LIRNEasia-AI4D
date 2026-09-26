@@ -8,9 +8,10 @@ import { RegionMap } from '../components/maps/RegionMap';
 import { ChartFigure } from '../components/charts/ChartFigure';
 import { Button, LinkButton } from '../components/ui/Button';
 import { countries } from '../data/countries';
-import { publications } from '../data/publications';
+import { publications, PUBLICATION_TYPES } from '../data/publications';
 import { useCases } from '../data/useCases';
 import { organizations, people } from '../data/network';
+import { ecosystemCategories, organizationTypes, responsibleAiDimensions, sectors, topicNames, years } from '../data/taxonomy';
 import type { Country, Organization, Person, Publication, UseCase } from '../types';
 import { copyToClipboard } from '../utils/browser';
 
@@ -30,27 +31,38 @@ export function DataMaps() {
   const [selected, setSelected] = useState<Country>(countries.find((c) => c.slug === 'sri-lanka') ?? countries[0]);
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'unavailable'>('idle');
   const [experience, setExperience] = useState<Experience>('AI Indices');
+  const [researchTopic, setResearchTopic] = useState('');
+  const [researchType, setResearchType] = useState('');
+  const [researchYear, setResearchYear] = useState('');
+  const [innovationSector, setInnovationSector] = useState('');
+  const [innovationDimension, setInnovationDimension] = useState('');
+  const [innovationEnabler, setInnovationEnabler] = useState('');
+  const [innovationStatus, setInnovationStatus] = useState('');
+  const [policyCategory, setPolicyCategory] = useState('');
+  const [policyStatus, setPolicyStatus] = useState('');
+  const [directoryType, setDirectoryType] = useState('all');
+  const [directoryOrganizationType, setDirectoryOrganizationType] = useState('');
+  const [directoryFocus, setDirectoryFocus] = useState('');
+  const directoryFocusOptions = [...new Set([...people.flatMap((item) => item.expertise), ...organizations.flatMap((item) => item.topics)])].sort();
 
-  const experienceRecords: MapRecord[] = experience === 'Research & Knowledge' ? publications.filter((item) => item.countries.includes(selected.name)) :
-    experience === 'Innovations' ? useCases.filter((item) => item.country === selected.name) :
-    experience === 'Experts & Organisations' ? [...organizations.filter((item) => item.country === selected.name), ...people.filter((item) => item.country === selected.name)] : [];
-  const experienceCount = experience === 'Research & Knowledge' ? publications.filter((item) => item.countries.includes(selected.name)).length :
-    experience === 'Innovations' ? useCases.filter((item) => item.country === selected.name).length :
-    experience === 'Experts & Organisations' ? organizations.filter((item) => item.country === selected.name).length + people.filter((item) => item.country === selected.name).length : 1;
-  const experienceLabel = experience === 'Research & Knowledge' ? 'Research outputs' : experience === 'Innovations' ? 'Responsible AI use cases' : experience === 'Policy Mapping' ? 'Illustrative policy record' : 'Organisations and experts';
-  const experienceValueFor = (country: Country) => experience === 'Research & Knowledge' ? publications.filter((item) => item.countries.includes(country.name)).length :
-    experience === 'Innovations' ? useCases.filter((item) => item.country === country.name).length :
-    experience === 'Experts & Organisations' ? organizations.filter((item) => item.country === country.name).length + people.filter((item) => item.country === country.name).length : 1;
+  const experienceRecords: MapRecord[] = experience === 'Research & Knowledge' ? publications.filter((item) => item.countries.includes(selected.name) && (!researchTopic || item.topics.includes(researchTopic)) && (!researchType || item.type === researchType) && (!researchYear || item.date.startsWith(researchYear))) :
+    experience === 'Innovations' ? useCases.filter((item) => item.country === selected.name && (!innovationSector || item.sector === innovationSector) && (!innovationDimension || item.dimensions.includes(innovationDimension)) && (!innovationEnabler || item.ecosystemCategory === innovationEnabler) && (!innovationStatus || item.status === innovationStatus)) :
+    experience === 'Experts & Organisations' ? [...organizations.filter((item) => item.country === selected.name && (directoryType !== 'experts') && (!directoryOrganizationType || item.type === directoryOrganizationType) && (!directoryFocus || item.topics.includes(directoryFocus))), ...people.filter((item) => item.country === selected.name && directoryType !== 'organisations' && (!directoryFocus || item.expertise.includes(directoryFocus)))] : [];
+  const experienceCount = experienceRecords.length;
+  const experienceLabel = experience === 'Research & Knowledge' ? 'Research outputs' : experience === 'Innovations' ? 'Responsible AI use cases' : experience === 'Policy Mapping' ? 'Verified policy records' : 'Organisations and experts';
+  const experienceValueFor = (country: Country) => experience === 'Research & Knowledge' ? publications.filter((item) => item.countries.includes(country.name) && (!researchTopic || item.topics.includes(researchTopic)) && (!researchType || item.type === researchType) && (!researchYear || item.date.startsWith(researchYear))).length :
+    experience === 'Innovations' ? useCases.filter((item) => item.country === country.name && (!innovationSector || item.sector === innovationSector) && (!innovationDimension || item.dimensions.includes(innovationDimension)) && (!innovationEnabler || item.ecosystemCategory === innovationEnabler) && (!innovationStatus || item.status === innovationStatus)).length :
+    experience === 'Experts & Organisations' ? organizations.filter((item) => item.country === country.name && directoryType !== 'experts' && (!directoryOrganizationType || item.type === directoryOrganizationType) && (!directoryFocus || item.topics.includes(directoryFocus))).length + people.filter((item) => item.country === country.name && directoryType !== 'organisations' && (!directoryFocus || item.expertise.includes(directoryFocus))).length : 0;
 
   const valueFor = (c: Country) => c.indicators.find((i) => i.id === indicatorId)?.value ?? 0;
   const max = Math.max(...countries.map(valueFor));
   const indicatorLabel = INDICATORS.find((i) => i.id === indicatorId)?.label ?? INDICATORS[0].label;
   const selectedIndicator = selected.indicators.find((i) => i.id === indicatorId) ?? selected.indicators[0];
 
-  const tableData = countries.
+  const fullTableData = countries.
   map((c) => ({ label: c.name, value: valueFor(c), note: 'Illustrative demo value' })).
-  sort((a, b) => b.value - a.value).
-  slice(0, 10);
+  sort((a, b) => b.value - a.value);
+  const chartData = fullTableData.slice(0, 10);
 
   function downloadData() {
     const rows = [
@@ -83,8 +95,7 @@ export function DataMaps() {
           <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Data & Maps' }]} />
           <h1 className="mt-5 font-serif text-[2rem] leading-tight text-ink sm:text-[2.5rem]">Data &amp; Maps</h1>
           <p className="mt-3 max-w-3xl text-[1.0625rem] leading-relaxed text-ink-soft">
-            Explore regional AI ecosystem information by indicator and country. Every visualisation on this page can be
-            read as a table, cited with its source, and downloaded in full.
+            Explore regional AI ecosystem information by indicator and country. Maps and charts include accessible data tables and source context; AI index values can be downloaded as CSV.
           </p>
         </Container>
       </div>
@@ -94,16 +105,29 @@ export function DataMaps() {
           {EXPERIENCES.map((item) => <button key={item} type="button" aria-pressed={experience === item} onClick={() => setExperience(item)} className={`min-h-[44px] shrink-0 rounded-t px-3 text-sm font-medium ${experience === item ? 'border-b-2 border-accent text-accent' : 'text-ink-soft hover:bg-raised'}`}>{item}</button>)}
         </nav>
         {experience !== 'AI Indices' ? <>
-          <form aria-label={`${experience} filters`} className="grid gap-4 rounded-lg border border-line bg-surface p-5 sm:grid-cols-2">
+          <form aria-label={`${experience} filters`} onSubmit={(event) => event.preventDefault()} className="grid gap-4 rounded-lg border border-line bg-surface p-5 sm:grid-cols-2 lg:grid-cols-4">
             <label className="block text-meta font-semibold text-ink" htmlFor="experience-country">Country<select id="experience-country" value={selected.slug} onChange={(event) => setSelected(countries.find((country) => country.slug === event.target.value) ?? selected)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal">{countries.map((country) => <option key={country.slug} value={country.slug}>{country.name}</option>)}</select></label>
-            <div className="self-end text-sm text-ink-soft">{experience === 'Research & Knowledge' ? 'Browse by country and follow links to full research records.' : experience === 'Innovations' ? 'Use cases are illustrative and can be explored by country.' : experience === 'Policy Mapping' ? 'Policy record structure preview; no country policy claims are represented.' : 'Explore illustrative directory records by country.'}</div>
+            {experience === 'Research & Knowledge' && <>
+              <label className="block text-meta font-semibold text-ink">Topic<select value={researchTopic} onChange={(event) => setResearchTopic(event.target.value)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal"><option value="">All topics</option>{topicNames.map((topic) => <option key={topic}>{topic}</option>)}</select></label>
+              <label className="block text-meta font-semibold text-ink">Output type<select value={researchType} onChange={(event) => setResearchType(event.target.value)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal"><option value="">All types</option>{PUBLICATION_TYPES.map((type) => <option key={type}>{type}</option>)}</select></label>
+              <label className="block text-meta font-semibold text-ink">Year<select value={researchYear} onChange={(event) => setResearchYear(event.target.value)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal"><option value="">All years</option>{years.map((year) => <option key={year}>{year}</option>)}</select></label>
+            </>}
+            {experience === 'Innovations' && <>
+              <label className="block text-meta font-semibold text-ink">Sector<select value={innovationSector} onChange={(event) => setInnovationSector(event.target.value)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal"><option value="">All sectors</option>{sectors.map((item) => <option key={item}>{item}</option>)}</select></label>
+              <label className="block text-meta font-semibold text-ink">Responsible AI dimension<select value={innovationDimension} onChange={(event) => setInnovationDimension(event.target.value)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal"><option value="">All dimensions</option>{responsibleAiDimensions.map((item) => <option key={item}>{item}</option>)}</select></label>
+              <label className="block text-meta font-semibold text-ink">Ecosystem enabler<select value={innovationEnabler} onChange={(event) => setInnovationEnabler(event.target.value)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal"><option value="">All enablers</option>{ecosystemCategories.map((item) => <option key={item}>{item}</option>)}</select></label>
+              <label className="block text-meta font-semibold text-ink">Status<select value={innovationStatus} onChange={(event) => setInnovationStatus(event.target.value)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal"><option value="">All statuses</option>{Array.from(new Set(useCases.map((item) => item.status))).map((item) => <option key={item}>{item}</option>)}</select></label>
+            </>}
+            {experience === 'Policy Mapping' && <><label className="block text-meta font-semibold text-ink">Policy category<select value={policyCategory} onChange={(event) => setPolicyCategory(event.target.value)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal"><option value="">All categories</option>{['National AI strategy', 'Data protection', 'Public sector', 'Research and innovation'].map((item) => <option key={item}>{item}</option>)}</select></label><label className="block text-meta font-semibold text-ink">Status<select value={policyStatus} onChange={(event) => setPolicyStatus(event.target.value)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal"><option value="">All statuses</option>{['Verified', 'Under review', 'Archived'].map((item) => <option key={item}>{item}</option>)}</select></label></>}
+            {experience === 'Experts & Organisations' && <><label className="block text-meta font-semibold text-ink">Directory type<select value={directoryType} onChange={(event) => setDirectoryType(event.target.value)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal"><option value="all">People and organisations</option><option value="experts">Experts</option><option value="organisations">Organisations</option></select></label><label className="block text-meta font-semibold text-ink">Organisation type<select value={directoryOrganizationType} onChange={(event) => setDirectoryOrganizationType(event.target.value)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal"><option value="">All organisation types</option>{organizationTypes.map((item) => <option key={item}>{item}</option>)}</select></label><label className="block text-meta font-semibold text-ink">Area of focus<select value={directoryFocus} onChange={(event) => setDirectoryFocus(event.target.value)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal"><option value="">All areas</option>{directoryFocusOptions.map((item) => <option key={item}>{item}</option>)}</select></label></>}
+            <div className="self-end text-sm text-ink-soft">{experience === 'Research & Knowledge' ? 'Filter Observatory publication records by metadata.' : experience === 'Innovations' ? 'Use cases are illustrative and can be explored by their structured metadata.' : experience === 'Policy Mapping' ? `Filters demonstrate the future policy schema; ${policyCategory || policyStatus ? 'no verified records match because none are loaded.' : 'no verified country policy claims are represented.'}` : 'Explore illustrative directory records by country, type and area of focus.'}</div>
           </form>
           <p className="mt-4 font-serif text-xl text-ink">{selected.name}: {experienceCount} {experienceLabel.toLowerCase()}</p>
           <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_minmax(0,360px)]">
             <section aria-label={`${experience} country map`} className="rounded-lg border border-line bg-surface p-5"><h2 className="font-serif text-xl text-ink">{experience}</h2><p className="mt-1 text-meta text-ink-muted">Country tiles show record counts. Select a tile to inspect records.</p><div className="mt-5"><RegionMap countries={countries} valueFor={experienceValueFor} maxValue={Math.max(1, ...countries.map(experienceValueFor))} selectedCode={selected.code} onSelect={setSelected} legendLabel={experienceLabel} unit="records" /></div></section>
-            <section className="rounded-lg border border-line bg-surface p-5"><h2 className="font-serif text-xl text-ink">{selected.name}</h2>{experience === 'Policy Mapping' ? <p className="mt-3 text-sm leading-relaxed text-ink-soft">Illustrative policy record preview. Status, category, update date and connected publications will be maintained as structured records. No factual policy assessment is made here.</p> : <ul className="mt-4 divide-y divide-line">{experienceRecords.length ? experienceRecords.slice(0, 8).map((record) => { const title = 'name' in record ? record.name : record.title; const meta = 'authors' in record ? `${record.type} · ${record.date}` : 'status' in record ? `${record.sector} · ${record.status}` : 'role' in record ? `${record.role} · ${record.organization}` : `${record.type} · ${record.country}`; const href = 'authors' in record ? `/publications/${record.slug}` : 'status' in record ? `/use-cases/${record.slug}` : 'role' in record ? `/people/${record.slug}` : `/organizations/${record.slug}`; return <li key={record.id} className="py-3"><p className="font-medium text-ink">{title}</p><p className="mt-1 text-meta text-ink-muted">{meta}</p><Link to={href} className="mt-1 inline-block text-meta font-medium text-accent hover:underline">View record</Link></li>; }) : <li className="py-3 text-sm text-ink-muted">No records in this illustrative sample.</li>}</ul>}
+            <section className="rounded-lg border border-line bg-surface p-5"><h2 className="font-serif text-xl text-ink">{selected.name}</h2>{experience === 'Policy Mapping' ? <div className="mt-4"><p className="font-semibold text-ink">0 verified policy records loaded</p><p className="mt-2 text-sm leading-relaxed text-ink-soft">No verified policy-mapping dataset is included in this prototype. Production records can include country, category, status, responsible institution, source, update date and related research.</p></div> : <ul className="mt-4 divide-y divide-line">{experienceRecords.length ? experienceRecords.slice(0, 8).map((record) => { const title = 'name' in record ? record.name : record.title; const meta = 'authors' in record ? `${record.type} · ${record.date}` : 'status' in record ? `${record.sector} · ${record.status}` : 'role' in record ? `${record.role} · ${record.organization}` : `${record.type} · ${record.country}`; const href = 'authors' in record ? `/publications/${record.slug}` : 'status' in record ? `/use-cases/${record.slug}` : 'role' in record ? `/people/${record.slug}` : `/organizations/${record.slug}`; return <li key={record.id} className="py-3"><p className="font-medium text-ink">{title}</p><p className="mt-1 text-meta text-ink-muted">{meta}</p><Link to={href} className="mt-1 inline-block text-meta font-medium text-accent hover:underline">View record</Link></li>; }) : <li className="py-3 text-sm text-ink-muted">No records match these filters in the illustrative sample.</li>}</ul>}
               {experience === 'Innovations' && <p className="mt-3 text-meta text-ink-muted">Records include organisation, sector, project status, responsible AI dimensions and related content.</p>}
-              {experience === 'Experts & Organisations' && <p className="mt-3 text-meta text-ink-muted">Directory totals: {organizations.filter((item) => item.country === selected.name).length} organisations · {people.filter((item) => item.country === selected.name).length} experts.</p>}
+              {experience === 'Experts & Organisations' && <p className="mt-3 text-meta text-ink-muted">Matching people and organisation records: {experienceCount}.</p>}
             </section>
           </div>
           <section className="mt-8 overflow-x-auto rounded-lg border border-line bg-surface p-5"><h2 className="font-serif text-xl text-ink">Accessible data table</h2><p className="mt-1 text-meta text-ink-muted">Low-bandwidth alternative to the country map. All displayed values are illustrative prototype records.</p><table className="mt-4 w-full min-w-[480px] text-left text-sm"><thead><tr className="border-b border-line text-ink-muted"><th className="py-2 pr-4">Country</th><th className="py-2 pr-4">Subregion</th><th className="py-2">{experienceLabel}</th></tr></thead><tbody className="divide-y divide-line">{countries.map((country) => <tr key={country.code}><th scope="row" className="py-2 pr-4 font-medium text-ink">{country.name}</th><td className="py-2 pr-4 text-ink-soft">{country.subregion}</td><td className="py-2 text-ink-soft">{experienceValueFor(country)}</td></tr>)}</tbody></table><p className="mt-4 text-meta text-ink-muted">Source: Observatory prototype dataset · Updated: 26 September 2026 · Methodology: count of prototype records by country.</p></section>
@@ -215,7 +239,8 @@ export function DataMaps() {
           <ChartFigure
               title={`${indicatorLabel} — ten highest values`}
             description="The same indicator shown as a ranked comparison. Switch to the table view for the full values and notes."
-            data={tableData}
+            data={chartData}
+            tableData={fullTableData}
             unit={selectedIndicator.unit}
             max={selectedIndicator.unit.includes('0–100') ? 100 : undefined}
             source={selectedIndicator.source}

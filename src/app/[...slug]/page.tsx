@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { SectionPlaceholder } from '../../views/SectionPlaceholder';
+import { TopicsPage } from '../../views/TopicsPage';
 import { ResearchLanding } from '../../views/ResearchLanding';
 import { AboutPage } from '../../views/AboutPage';
 import { NewsPage } from '../../views/NewsPage';
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug?: st
     const event = events.find((item) => item.slug === slug[1]);
     if (event) return { title: event.title, description: event.description };
   }
-  const titles: Record<string, string> = { newsletter: 'Newsletter archive', accessibility: 'Accessibility', privacy: 'Privacy information', people: 'People and experts', organizations: 'Organisations', events: 'Events and convenings', 'learning-resources': 'Learning resources', opportunities: 'Opportunities' };
+  const titles: Record<string, string> = { topics: 'Topics', newsletter: 'Newsletter archive', accessibility: 'Accessibility', privacy: 'Privacy information', people: 'People and experts', organizations: 'Organisations', events: 'Events and convenings', 'learning-resources': 'Learning resources', opportunities: 'Opportunities' };
   return titles[slug[0]] ? { title: titles[slug[0]] } : {};
 }
 
@@ -51,6 +52,7 @@ export default async function PlaceholderRoute({ params }: { params: Promise<{ s
   const { slug } = await params;
   if (!isPlaceholderRoute(slug)) notFound();
   if (slug?.length === 1 && slug[0] === 'research') return <ResearchLanding />;
+  if (slug?.length === 1 && slug[0] === 'topics') return <TopicsPage />;
   if (slug?.length === 1 && slug[0] === 'about') return <AboutPage />;
   if (slug?.length === 1 && slug[0] === 'news') return <NewsPage />;
   if (slug?.length === 1 && slug[0] === 'events') return <EventsPage />;

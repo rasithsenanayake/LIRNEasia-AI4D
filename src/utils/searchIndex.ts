@@ -149,6 +149,19 @@ const newsRecords: SearchRecord[] = news.map((item) => ({
   keywords: [item.title, item.description, item.category].join(' ').toLowerCase()
 }));
 
+const countryRecords: SearchRecord[] = countries.map((country) => ({
+  id: `country-${country.code}`,
+  type: 'Country',
+  title: country.name,
+  description: `${country.subregion} · country profile`,
+  href: `/countries/${country.slug}`,
+  country: country.name,
+  countries: [country.name],
+  topics: [],
+  year: 2026,
+  keywords: `${country.name} ${country.code} ${country.subregion} country profile ${country.overview}`.toLowerCase()
+}));
+
 export const searchIndex: SearchRecord[] = [
 ...publicationRecords,
 ...useCaseRecords,
@@ -158,7 +171,8 @@ export const searchIndex: SearchRecord[] = [
 ...eventRecords,
 ...learningRecords,
 ...opportunityRecords,
-...newsRecords];
+...newsRecords,
+...countryRecords];
 
 
 export interface RepositoryFilters {
@@ -223,14 +237,16 @@ export function groupQuickResults(query: string): {label: string;records: Search
   if (!q) return [];
   const hits = searchIndex.filter((r) => r.keywords.includes(q));
   const groups: {label: string;match: (r: SearchRecord) => boolean;}[] = [
-  { label: 'Publications', match: (r) => ['Report', 'Policy Brief', 'Research Brief', 'Innovation Brief', 'Mapping Study', 'Commentary'].includes(r.type) },
+  { label: 'Publications', match: (r) => ['Report', 'Policy Brief', 'Research Brief', 'Innovation Brief', 'Mapping Study', 'Commentary', 'Blog', 'Op-ed / External Publication'].includes(r.type) },
   { label: 'Use Cases', match: (r) => r.type === 'Use Case' },
   { label: 'Datasets', match: (r) => r.type === 'Dataset' },
   { label: 'People', match: (r) => r.type === 'Person' },
   { label: 'Organizations', match: (r) => r.type === 'Organization' },
   { label: 'Events', match: (r) => r.type === 'Event' },
+  { label: 'Learning Resources', match: (r) => r.type === 'Learning Resource' },
   { label: 'Opportunities', match: (r) => r.type === 'Opportunity' },
-  { label: 'News', match: (r) => r.type === 'News' }];
+  { label: 'News', match: (r) => r.type === 'News' },
+  { label: 'Countries', match: (r) => r.type === 'Country' }];
 
   return groups.
   map((g) => ({ label: g.label, records: hits.filter(g.match).slice(0, 3) })).

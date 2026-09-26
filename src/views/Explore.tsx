@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   BookOpenIcon,
+  BriefcaseBusinessIcon,
   Building2Icon,
   CalendarIcon,
   CheckIcon,
@@ -13,6 +14,8 @@ import {
   LightbulbIcon,
   LinkIcon,
   ListIcon,
+  MapPinIcon,
+  NewspaperIcon,
   SearchIcon,
   SlidersHorizontalIcon,
   UsersIcon,
@@ -39,19 +42,7 @@ import { Link } from '../components/ui/Link';
 import { copyToClipboard } from '../utils/browser';
 import { PUBLICATION_TYPES } from '../data/publications';
 
-const CONTENT_TYPES = [
-'Use Case',
-'Report',
-'Policy Brief',
-'Research Brief',
-'Innovation Brief',
-'Mapping Study',
-'Commentary',
-'Dataset',
-'Person',
-'Organization',
-'Event',
-'Learning Resource'];
+const CONTENT_TYPES = ['Use Case', ...PUBLICATION_TYPES, 'Dataset', 'Person', 'Organization', 'Event', 'Learning Resource', 'Opportunity', 'News', 'Country'];
 
 
 const FILTER_GROUPS: FilterGroupDef[] = [
@@ -72,7 +63,10 @@ const QUICK_BROWSE = [
 { label: 'People', types: ['Person'], icon: UsersIcon },
 { label: 'Organizations', types: ['Organization'], icon: Building2Icon },
 { label: 'Learning Resources', types: ['Learning Resource'], icon: GraduationCapIcon },
-{ label: 'Events', types: ['Event'], icon: CalendarIcon }];
+{ label: 'Events', types: ['Event'], icon: CalendarIcon },
+{ label: 'Opportunities', types: ['Opportunity'], icon: BriefcaseBusinessIcon },
+{ label: 'News', types: ['News'], icon: NewspaperIcon },
+{ label: 'Countries', types: ['Country'], icon: MapPinIcon }];
 
 
 export function Explore() {
@@ -95,6 +89,8 @@ export function Explore() {
     FILTER_GROUPS.forEach((g) => {
       map[g.key] = params.getAll(g.key);
     });
+    const topic = params.get('topic');
+    if (topic && !map.topic.includes(topic)) map.topic.push(topic);
     return map;
   }, [params]);
 

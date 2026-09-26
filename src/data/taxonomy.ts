@@ -115,7 +115,7 @@ export const contentTypeGroups = [
 { label: 'Use Cases', types: ['Use Case'] },
 {
   label: 'Publications',
-  types: ['Report', 'Policy Brief', 'Research Brief', 'Innovation Brief', 'Mapping Study', 'Commentary']
+  types: ['Report', 'Policy Brief', 'Research Brief', 'Innovation Brief', 'Mapping Study', 'Commentary', 'Blog', 'Op-ed / External Publication']
 },
 { label: 'Datasets', types: ['Dataset'] },
 { label: 'People', types: ['Person'] },

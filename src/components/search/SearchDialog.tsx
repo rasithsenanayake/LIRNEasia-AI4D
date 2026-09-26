@@ -7,6 +7,7 @@ import { groupQuickResults } from '../../utils/searchIndex';
 import { TypeLabel } from '../ui/Tag';
 import { Skeleton } from '../ui/Primitives';
 import { Link } from '../ui/Link';
+import { AccessibleDialog } from '../ui/AccessibleDialog';
 
 const SUGGESTIONS = ['AI Governance', 'Healthcare', 'Inclusive AI', 'Sri Lanka', 'Public Sector'];
 
@@ -18,24 +19,7 @@ export function SearchDialog({
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const previousFocusRef = useRef<HTMLElement | null>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    if (open) {
-      previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-      const focusTarget = returnFocusRef?.current ?? previousFocusRef.current;
-      setQuery('');
-      const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 30);
-      document.body.style.overflow = 'hidden';
-      return () => {
-        window.clearTimeout(focusTimer);
-        document.body.style.overflow = '';
-        focusTarget?.focus();
-      };
-    }
-  }, [open, returnFocusRef]);
 
   useEffect(() => {
     if (!query) {
@@ -47,29 +31,7 @@ export function SearchDialog({
     return () => window.clearTimeout(t);
   }, [query]);
 
-  useEffect(() => {
-    if (!open) return;
-    function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'Tab' && panelRef.current) {
-        const focusables = panelRef.current.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), input'
-        );
-        if (focusables.length === 0) return;
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    }
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [open, onClose]);
+  useEffect(() => { if (open) setQuery(''); }, [open]);
 
   const groups = useMemo(() => groupQuickResults(query), [query]);
   const total = groups.reduce((n, g) => n + g.records.length, 0);
@@ -82,18 +44,7 @@ export function SearchDialog({
   }
 
   return (
-    <div className="fixed inset-0 z-50">
-      <div
-        className="absolute inset-0 bg-ink/40 motion-safe:animate-[fadeIn_150ms_ease-out]"
-        onClick={onClose}
-        aria-hidden="true" />
-      
-      <div
-        ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Search the Observatory"
-        className="relative mx-auto mt-[8vh] w-[calc(100%-2rem)] max-w-2xl overflow-hidden rounded-xl border border-line bg-surface shadow-panel">
+    <AccessibleDialog open={open} onClose={onClose} returnFocusRef={returnFocusRef} initialFocusRef={inputRef} ariaLabel="Search the Observatory" className="relative mx-auto mt-[8vh] max-h-[84vh] w-[calc(100%-2rem)] max-w-2xl overflow-hidden rounded-xl border border-line bg-surface shadow-panel">
         
         <form
           onSubmit={(e) => {
@@ -223,7 +174,6 @@ export function SearchDialog({
             </div>
           }
         </div>
-      </div>
-    </div>);
+    </AccessibleDialog>);
 
 }

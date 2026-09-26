@@ -7,6 +7,8 @@ export type ContentType =
 'Innovation Brief' |
 'Mapping Study' |
 'Commentary' |
+'Blog' |
+'Op-ed / External Publication' |
 'Dataset' |
 'Use Case' |
 'Event' |
@@ -14,7 +16,8 @@ export type ContentType =
 'Organization' |
 'Learning Resource' |
 'Opportunity' |
-'News';
+'News' |
+'Country';
 
 export type OrganizationType =
 'Government' |
@@ -76,7 +79,7 @@ export interface Publication {
   slug: string;
   type: Extract<
     ContentType,
-    'Report' | 'Policy Brief' | 'Research Brief' | 'Innovation Brief' | 'Mapping Study' | 'Commentary'>;
+    'Report' | 'Policy Brief' | 'Research Brief' | 'Innovation Brief' | 'Mapping Study' | 'Commentary' | 'Blog' | 'Op-ed / External Publication'>;
 
   title: string;
   summary: string;
@@ -98,6 +101,10 @@ export interface Publication {
   relatedUseCases: string[];
   relatedPeople: string[];
   gatedDownload?: boolean;
+  externalUrl?: string;
+  externalPublisher?: string;
+  externalPublicationDate?: string;
+  languageVariants?: {language: string;label?: string;href?: string;isCurrent?: boolean;}[];
 }
 
 export interface UseCase {
