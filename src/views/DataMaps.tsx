@@ -8,7 +8,10 @@ import { RegionMap } from '../components/maps/RegionMap';
 import { ChartFigure } from '../components/charts/ChartFigure';
 import { Button, LinkButton } from '../components/ui/Button';
 import { countries } from '../data/countries';
-import type { Country } from '../types';
+import { publications } from '../data/publications';
+import { useCases } from '../data/useCases';
+import { organizations, people } from '../data/network';
+import type { Country, Organization, Person, Publication, UseCase } from '../types';
 import { copyToClipboard } from '../utils/browser';
 
 const INDICATORS = [
@@ -17,12 +20,27 @@ const INDICATORS = [
 { id: 'connectivity', label: 'Meaningful connectivity' },
 { id: 'publicsector', label: 'Public-sector AI deployments' }];
 const REFERENCE_YEAR = '2025';
+const EXPERIENCES = ['Research & Knowledge', 'AI Indices', 'Innovations', 'Policy Mapping', 'Experts & Organisations'] as const;
+type Experience = typeof EXPERIENCES[number];
+type MapRecord = Publication | UseCase | Organization | Person;
 
 
 export function DataMaps() {
   const [indicatorId, setIndicatorId] = useState('policy');
   const [selected, setSelected] = useState<Country>(countries.find((c) => c.slug === 'sri-lanka') ?? countries[0]);
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'unavailable'>('idle');
+  const [experience, setExperience] = useState<Experience>('AI Indices');
+
+  const experienceRecords: MapRecord[] = experience === 'Research & Knowledge' ? publications.filter((item) => item.countries.includes(selected.name)) :
+    experience === 'Innovations' ? useCases.filter((item) => item.country === selected.name) :
+    experience === 'Experts & Organisations' ? [...organizations.filter((item) => item.country === selected.name), ...people.filter((item) => item.country === selected.name)] : [];
+  const experienceCount = experience === 'Research & Knowledge' ? publications.filter((item) => item.countries.includes(selected.name)).length :
+    experience === 'Innovations' ? useCases.filter((item) => item.country === selected.name).length :
+    experience === 'Experts & Organisations' ? organizations.filter((item) => item.country === selected.name).length + people.filter((item) => item.country === selected.name).length : 1;
+  const experienceLabel = experience === 'Research & Knowledge' ? 'Research outputs' : experience === 'Innovations' ? 'Responsible AI use cases' : experience === 'Policy Mapping' ? 'Illustrative policy record' : 'Organisations and experts';
+  const experienceValueFor = (country: Country) => experience === 'Research & Knowledge' ? publications.filter((item) => item.countries.includes(country.name)).length :
+    experience === 'Innovations' ? useCases.filter((item) => item.country === country.name).length :
+    experience === 'Experts & Organisations' ? organizations.filter((item) => item.country === country.name).length + people.filter((item) => item.country === country.name).length : 1;
 
   const valueFor = (c: Country) => c.indicators.find((i) => i.id === indicatorId)?.value ?? 0;
   const max = Math.max(...countries.map(valueFor));
@@ -72,6 +90,25 @@ export function DataMaps() {
       </div>
 
       <Container className="py-10">
+        <nav aria-label="Data experiences" className="mb-8 flex gap-2 overflow-x-auto border-b border-line pb-2">
+          {EXPERIENCES.map((item) => <button key={item} type="button" aria-pressed={experience === item} onClick={() => setExperience(item)} className={`min-h-[44px] shrink-0 rounded-t px-3 text-sm font-medium ${experience === item ? 'border-b-2 border-accent text-accent' : 'text-ink-soft hover:bg-raised'}`}>{item}</button>)}
+        </nav>
+        {experience !== 'AI Indices' ? <>
+          <form aria-label={`${experience} filters`} className="grid gap-4 rounded-lg border border-line bg-surface p-5 sm:grid-cols-2">
+            <label className="block text-meta font-semibold text-ink" htmlFor="experience-country">Country<select id="experience-country" value={selected.slug} onChange={(event) => setSelected(countries.find((country) => country.slug === event.target.value) ?? selected)} className="mt-1.5 min-h-[44px] w-full rounded-md border border-line-strong bg-canvas px-3 text-[0.9375rem] font-normal">{countries.map((country) => <option key={country.slug} value={country.slug}>{country.name}</option>)}</select></label>
+            <div className="self-end text-sm text-ink-soft">{experience === 'Research & Knowledge' ? 'Browse by country and follow links to full research records.' : experience === 'Innovations' ? 'Use cases are illustrative and can be explored by country.' : experience === 'Policy Mapping' ? 'Policy record structure preview; no country policy claims are represented.' : 'Explore illustrative directory records by country.'}</div>
+          </form>
+          <p className="mt-4 font-serif text-xl text-ink">{selected.name}: {experienceCount} {experienceLabel.toLowerCase()}</p>
+          <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_minmax(0,360px)]">
+            <section aria-label={`${experience} country map`} className="rounded-lg border border-line bg-surface p-5"><h2 className="font-serif text-xl text-ink">{experience}</h2><p className="mt-1 text-meta text-ink-muted">Country tiles show record counts. Select a tile to inspect records.</p><div className="mt-5"><RegionMap countries={countries} valueFor={experienceValueFor} maxValue={Math.max(1, ...countries.map(experienceValueFor))} selectedCode={selected.code} onSelect={setSelected} legendLabel={experienceLabel} unit="records" /></div></section>
+            <section className="rounded-lg border border-line bg-surface p-5"><h2 className="font-serif text-xl text-ink">{selected.name}</h2>{experience === 'Policy Mapping' ? <p className="mt-3 text-sm leading-relaxed text-ink-soft">Illustrative policy record preview. Status, category, update date and connected publications will be maintained as structured records. No factual policy assessment is made here.</p> : <ul className="mt-4 divide-y divide-line">{experienceRecords.length ? experienceRecords.slice(0, 8).map((record) => { const title = 'name' in record ? record.name : record.title; const meta = 'authors' in record ? `${record.type} · ${record.date}` : 'status' in record ? `${record.sector} · ${record.status}` : 'role' in record ? `${record.role} · ${record.organization}` : `${record.type} · ${record.country}`; const href = 'authors' in record ? `/publications/${record.slug}` : 'status' in record ? `/use-cases/${record.slug}` : 'role' in record ? `/people/${record.slug}` : `/organizations/${record.slug}`; return <li key={record.id} className="py-3"><p className="font-medium text-ink">{title}</p><p className="mt-1 text-meta text-ink-muted">{meta}</p><Link to={href} className="mt-1 inline-block text-meta font-medium text-accent hover:underline">View record</Link></li>; }) : <li className="py-3 text-sm text-ink-muted">No records in this illustrative sample.</li>}</ul>}
+              {experience === 'Innovations' && <p className="mt-3 text-meta text-ink-muted">Records include organisation, sector, project status, responsible AI dimensions and related content.</p>}
+              {experience === 'Experts & Organisations' && <p className="mt-3 text-meta text-ink-muted">Directory totals: {organizations.filter((item) => item.country === selected.name).length} organisations · {people.filter((item) => item.country === selected.name).length} experts.</p>}
+            </section>
+          </div>
+          <section className="mt-8 overflow-x-auto rounded-lg border border-line bg-surface p-5"><h2 className="font-serif text-xl text-ink">Accessible data table</h2><p className="mt-1 text-meta text-ink-muted">Low-bandwidth alternative to the country map. All displayed values are illustrative prototype records.</p><table className="mt-4 w-full min-w-[480px] text-left text-sm"><thead><tr className="border-b border-line text-ink-muted"><th className="py-2 pr-4">Country</th><th className="py-2 pr-4">Subregion</th><th className="py-2">{experienceLabel}</th></tr></thead><tbody className="divide-y divide-line">{countries.map((country) => <tr key={country.code}><th scope="row" className="py-2 pr-4 font-medium text-ink">{country.name}</th><td className="py-2 pr-4 text-ink-soft">{country.subregion}</td><td className="py-2 text-ink-soft">{experienceValueFor(country)}</td></tr>)}</tbody></table><p className="mt-4 text-meta text-ink-muted">Source: Observatory prototype dataset · Updated: 26 September 2026 · Methodology: count of prototype records by country.</p></section>
+          <DemoDataNote className="mt-6">All non-index records shown here are illustrative prototype data. Policy mapping is a schema demonstration only.</DemoDataNote>
+        </> : <>
         {/* Controls */}
         <form
           aria-label="Data controls"
@@ -238,6 +275,7 @@ export function DataMaps() {
             </Link>
           </p>
         </section>
+        </>}
       </Container>
     </>);
 

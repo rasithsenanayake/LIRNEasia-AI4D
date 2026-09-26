@@ -35,6 +35,7 @@ export function EventCard({ event }: {event: ObservatoryEvent;}) {
           <span className="text-ink-muted">Registration: </span>
           <span className="font-medium text-ink-soft">{event.registration}</span>
         </p>
+        {event.registrationUrl && event.registration === 'Open' && <a href={event.registrationUrl} target="_blank" rel="noopener noreferrer" aria-label={`Register externally for ${event.title} (opens in a new tab)`} className="mt-2 inline-flex min-h-[40px] items-center text-meta font-semibold text-accent hover:underline">Register externally ↗</a>}
       </div>
     </article>);
 

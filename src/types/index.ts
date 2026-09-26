@@ -97,6 +97,7 @@ export interface Publication {
   relatedDatasets: string[];
   relatedUseCases: string[];
   relatedPeople: string[];
+  gatedDownload?: boolean;
 }
 
 export interface UseCase {
@@ -108,10 +109,14 @@ export interface UseCase {
   sector: string;
   organization: string;
   organizationType: OrganizationType;
-  status: 'Pilot' | 'Deployed' | 'Scaling' | 'Research';
+  status: 'Proposed' | 'Ongoing' | 'Pilot' | 'Implemented' | 'Deployed' | 'Scaling' | 'Research';
   dimensions: string[];
   topics: string[];
   ecosystemCategory: string;
+  broadCategory?: string;
+  team?: string[];
+  projectUrl?: string;
+  organizationUrl?: string;
   lastUpdated: string;
   source: string;
   sections: {heading: string;body: string[];}[];
@@ -177,6 +182,7 @@ export interface ObservatoryEvent {
   status: 'upcoming' | 'past';
   registration: 'Open' | 'Closed' | 'Invitation only';
   description: string;
+  registrationUrl?: string;
 }
 
 export interface Opportunity {
@@ -188,6 +194,7 @@ export interface Opportunity {
   description: string;
   region: string;
   expired?: boolean;
+  externalUrl?: string;
 }
 
 export interface LearningResource {
@@ -198,6 +205,8 @@ export interface LearningResource {
   provider: string;
   topics: string[];
   country: string;
+  externalUrl?: string;
+  downloadUrl?: string;
 }
 
 export interface Partner {
@@ -226,4 +235,7 @@ export interface SearchRecord {
   year: number;
   date?: string;
   keywords: string;
+  matchedInDocument?: boolean;
+  matchSnippet?: string;
+  documentName?: string;
 }

@@ -1,6 +1,6 @@
 import { CalendarDays, MapPin, Monitor, Users } from 'lucide-react';
 import { Breadcrumbs, Container, DemoDataNote } from '../components/ui/Primitives';
-import { LinkButton } from '../components/ui/Button';
+import { ExternalButton, LinkButton } from '../components/ui/Button';
 import { type ObservatoryEvent } from '../types';
 import { formatDate } from '../utils/format';
 
@@ -24,6 +24,7 @@ export function EventDetailPage({ event }: { event: ObservatoryEvent }) {
         <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-ink-soft">{event.topics.map((topic) => <li key={topic}>{topic}</li>)}</ul>
       </div>
       <DemoDataNote className="mt-6">Registration links, recordings and event materials are not connected in this preview.</DemoDataNote>
+      {event.registrationUrl && event.registration === 'Open' && <div className="mt-5"><ExternalButton href={event.registrationUrl}>Register externally ↗ <span className="sr-only">(opens in a new tab)</span></ExternalButton></div>}
       <div className="mt-6"><LinkButton to="/events" variant="secondary">Back to all events</LinkButton></div>
     </article>
   </Container>;

@@ -10,6 +10,8 @@ export function AdminPublicationEditor({ onBack }: { onBack: () => void }) {
   const [fileName, setFileName] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [revisionMessage, setRevisionMessage] = useState('');
+  const [confirmRestore, setConfirmRestore] = useState(false);
 
   function save(publish: boolean) {
     if (!title.trim() || !type || !summary.trim()) {
@@ -34,6 +36,7 @@ export function AdminPublicationEditor({ onBack }: { onBack: () => void }) {
         </div>
         <div className="flex gap-2">
           <button type="submit" className="min-h-[42px] rounded border border-line-strong bg-surface px-4 text-sm font-medium text-ink-soft hover:bg-raised">Save draft</button>
+          <button type="button" onClick={() => setMessage('Preview ready for this session. Nothing has been published or persisted.')} className="min-h-[42px] rounded border border-line-strong bg-surface px-4 text-sm font-medium text-ink-soft hover:bg-raised">Preview</button>
           <button type="button" onClick={() => save(true)} className="min-h-[42px] rounded bg-accent px-4 text-sm font-medium text-white hover:bg-accent-dark">Publish</button>
         </div>
       </div>
@@ -100,8 +103,9 @@ export function AdminPublicationEditor({ onBack }: { onBack: () => void }) {
         <aside className="h-fit border border-line bg-surface p-5 xl:sticky xl:top-[100px]">
           <h2 className="text-base font-semibold text-ink">Publishing</h2>
           <div className="mt-5 space-y-5">
-            <label className="block"><span className="block text-sm font-medium text-ink">Status</span><select className="mt-2 block min-h-[44px] w-full rounded border border-line-strong bg-canvas px-3 text-sm text-ink" defaultValue="Draft"><option>Draft</option><option>Ready for review</option><option>Scheduled</option><option>Published</option></select></label>
-            <div className="border-t border-line pt-5"><p className="text-xs font-semibold uppercase tracking-[0.08em] text-ink-muted">Content check</p><ul className="mt-3 space-y-3 text-sm"><li className="flex gap-2 text-[#28613e]"><ShieldCheck className="h-4 w-4 shrink-0" />Required fields validate locally</li><li className="flex gap-2 text-ink-muted"><span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-line-strong" />Country and topic links are preview-only</li><li className="flex gap-2 text-[#8b641c]"><span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#c3903c]" />CMS persistence is not connected</li></ul></div>
+            <label className="block"><span className="block text-sm font-medium text-ink">Status</span><select className="mt-2 block min-h-[44px] w-full rounded border border-line-strong bg-canvas px-3 text-sm text-ink" defaultValue="Draft"><option>Draft</option><option>Ready for review</option><option>Scheduled</option><option>Published</option><option>Archived</option></select></label>
+          <div className="border-t border-line pt-5"><p className="text-xs font-semibold uppercase tracking-[0.08em] text-ink-muted">Content check</p><ul className="mt-3 space-y-3 text-sm"><li className="flex gap-2 text-[#28613e]"><ShieldCheck className="h-4 w-4 shrink-0" />Required fields validate locally</li><li className="flex gap-2 text-ink-muted"><span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-line-strong" />Country and topic links are preview-only</li><li className="flex gap-2 text-[#8b641c]"><span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#c3903c]" />CMS persistence is not connected</li></ul></div>
+          <div className="mt-5 border-t border-line pt-5"><h2 className="text-sm font-semibold text-ink">Version history · preview</h2><ol className="mt-3 space-y-3 text-xs text-ink-soft"><li><strong>Version 4 · Published</strong><span className="block text-ink-muted">Communications Editor · 25 Sep 2026, 14:10</span></li><li><strong>Version 3 · Draft</strong><span className="block text-ink-muted">Administrator · 24 Sep 2026, 17:42</span></li><li><strong>Version 2 · Published</strong><span className="block text-ink-muted">Communications Editor · 22 Sep 2026, 11:16</span></li></ol><div className="mt-3 flex gap-3"><button type="button" onClick={() => setRevisionMessage('Version preview is illustrative; no revision data is connected.')} className="text-xs font-medium text-accent">Preview</button><button type="button" onClick={() => setConfirmRestore(true)} className="text-xs font-medium text-accent">Restore</button></div>{confirmRestore && <div className="mt-3 rounded border border-line p-3"><p className="text-xs text-ink">Restore Version 3 in this prototype?</p><div className="mt-2 flex gap-2"><button type="button" onClick={() => { setRevisionMessage('Restore preview completed; no content was changed.'); setConfirmRestore(false); }} className="text-xs font-semibold text-accent">Confirm</button><button type="button" onClick={() => setConfirmRestore(false)} className="text-xs text-ink-muted">Cancel</button></div></div>}{revisionMessage && <p role="status" className="mt-2 text-xs text-ink-muted">{revisionMessage}</p>}</div>
           </div>
         </aside>
       </div>

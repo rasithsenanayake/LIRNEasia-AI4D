@@ -204,6 +204,8 @@ export function SearchDialog({
                           <TypeLabel type={r.type} />
                           <p className="mt-0.5 text-[0.9375rem] font-medium leading-snug text-ink">{r.title}</p>
                           <p className="mt-0.5 line-clamp-1 text-meta text-ink-muted">{r.description}</p>
+                          {r.matchedInDocument && <p className="mt-1 text-meta font-medium text-accent">PDF text match · illustrative example</p>}
+                          {r.matchSnippet && <p className="mt-1 line-clamp-2 text-meta text-ink-soft">{r.matchSnippet}</p>}
                         </Link>
                       </li>
                 )}

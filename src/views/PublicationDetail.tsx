@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CheckIcon, DownloadIcon, LinkIcon, QuoteIcon, ShareIcon } from 'lucide-react';
 import { Breadcrumbs, Container } from '../components/ui/Primitives';
 import { Tag, TypeLabel } from '../components/ui/Tag';
@@ -22,11 +22,38 @@ export function PublicationDetail({ slug }: { slug: string }) {
   const [metaOpen, setMetaOpen] = useState(
     typeof window !== 'undefined' ? window.innerWidth >= 1024 : true
   );
+  const [downloadOpen, setDownloadOpen] = useState(false);
+  const [downloadEmail, setDownloadEmail] = useState('');
+  const [downloadReady, setDownloadReady] = useState(false);
+  const [downloadNotice, setDownloadNotice] = useState('');
+  const downloadTrigger = useRef<HTMLButtonElement | null>(null);
+  const downloadInput = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!downloadOpen) return;
+    downloadInput.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { setDownloadOpen(false); downloadTrigger.current?.focus(); }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [downloadOpen]);
 
   if (!publication) return <NotFound />;
   const files = publication.files ?? [];
-
   const citation = `${publication.authors.join(', ')} (${publication.date.slice(0, 4)}). ${publication.title}. ${publication.organization}, Asia AI4D Observatory.${publication.doi ? ` https://doi.org/${publication.doi}` : ''}`;
+
+  function completePrototypeDownload() {
+    const url = URL.createObjectURL(new Blob(['Asia AI4D Observatory prototype download receipt. The publication file is illustrative and is not connected.'], { type: 'text/plain' }));
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'observatory-prototype-download-receipt.txt';
+    anchor.click();
+    URL.revokeObjectURL(url);
+    setDownloadNotice('Prototype receipt downloaded. No email or download record was stored.');
+    setDownloadReady(false);
+    setDownloadOpen(false);
+  }
 
   async function copy(kind: 'citation' | 'link' | 'citation2', value: string) {
     setCopied(await copyToClipboard(value) ? kind : 'unavailable');
@@ -136,6 +163,7 @@ export function PublicationDetail({ slug }: { slug: string }) {
             </div>
 
             <div className="mt-7 flex flex-wrap gap-3">
+              <Button type="button" onClick={(event) => { downloadTrigger.current = event.currentTarget; setDownloadReady(false); if (publication.gatedDownload) setDownloadOpen(true); else completePrototypeDownload(); }}><DownloadIcon className="h-4 w-4" aria-hidden="true" />{publication.gatedDownload ? 'Request access to PDF' : 'Download prototype copy'}</Button>
               {files.map((file) => <Button key={file.url} type="button" disabled={!file.url}>
                 <DownloadIcon className="h-4 w-4" aria-hidden="true" />
                 Download {file.type} · {file.size}
@@ -161,6 +189,7 @@ export function PublicationDetail({ slug }: { slug: string }) {
                 {copied === 'link' ? 'Link copied' : copied === 'unavailable' ? 'Copy unavailable' : 'Copy link'}
               </Button>
             </div>
+            <p role="status" aria-live="polite" className="mt-2 text-meta text-ink-muted">{downloadNotice}</p>
             <p role="status" aria-live="polite" className="mt-3 min-h-[1.25rem] text-meta text-ink-muted">
               {copied === 'citation' ? 'Citation copied.' : copied === 'link' ? 'Link copied.' : copied === 'shared' ? 'Share sheet opened.' : copied === 'unavailable' ? 'Copying is unavailable in this browser.' : ''}
             </p>
@@ -301,6 +330,7 @@ export function PublicationDetail({ slug }: { slug: string }) {
           <ConnectedContent groups={groups} />
         </div>
       </Container>
+      {downloadOpen && <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget) { setDownloadOpen(false); downloadTrigger.current?.focus(); } }}><section role="dialog" aria-modal="true" aria-labelledby="download-dialog-title" className="w-full max-w-lg rounded-lg border border-line bg-surface p-6 shadow-panel"><h2 id="download-dialog-title" className="font-serif text-2xl text-ink">Access this resource</h2><p className="mt-2 text-sm leading-relaxed text-ink-soft">Enter your email address to demonstrate the optional gated-download flow. This prototype does not transmit or store your address.</p>{downloadReady ? <><p role="status" className="mt-4 border border-[#b9d6c6] bg-[#edf5ef] p-3 text-sm text-[#28613e]">Access request accepted for this preview. Continue to download the prototype receipt.</p><div className="mt-5 flex flex-wrap gap-3"><Button type="button" onClick={completePrototypeDownload}>Download prototype receipt</Button><Button variant="secondary" type="button" onClick={() => { setDownloadOpen(false); downloadTrigger.current?.focus(); }}>Close</Button></div></> : <form className="mt-5" onSubmit={(event) => { event.preventDefault(); setDownloadReady(true); }}><label htmlFor="download-email" className="block text-sm font-medium text-ink">Email address</label><input ref={downloadInput} id="download-email" type="email" required value={downloadEmail} onChange={(event) => setDownloadEmail(event.target.value)} className="mt-2 min-h-[44px] w-full rounded border border-line-strong bg-canvas px-3 text-sm text-ink" /><p className="mt-3 text-meta leading-relaxed text-ink-muted">By continuing, you acknowledge your email would be processed for this request under the approved privacy notice. <Link to="/privacy" className="text-accent underline">Privacy notice</Link></p><div className="mt-5 flex flex-wrap gap-3"><Button type="submit">Continue to download</Button><Button variant="secondary" type="button" onClick={() => { setDownloadOpen(false); downloadTrigger.current?.focus(); }}>Cancel</Button></div></form>}</section></div>}
     </>);
 
 }

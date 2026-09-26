@@ -68,6 +68,7 @@ export const publications: Publication[] = [
   relatedDatasets: ['ds-1'],
   relatedUseCases: ['uc-1'],
   relatedPeople: ['p-4', 'p-1']
+  ,gatedDownload: true
 },
 {
   id: 'pub-3',

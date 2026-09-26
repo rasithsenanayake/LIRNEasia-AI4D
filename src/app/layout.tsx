@@ -8,7 +8,9 @@ export const metadata: Metadata = {
     default: 'Asia AI4D Observatory',
     template: '%s | Asia AI4D Observatory'
   },
-  description: 'A policy and innovation network on responsible AI across Asia.',
+  description: 'A regional knowledge repository connecting research, data, policy, organisations and responsible AI innovation across South Asia and Southeast Asia.',
+  openGraph: { type: 'website', title: 'Asia AI4D Observatory', description: 'Research and evidence on responsible AI across South Asia and Southeast Asia.' },
+  twitter: { card: 'summary', title: 'Asia AI4D Observatory', description: 'Research and evidence on responsible AI across South Asia and Southeast Asia.' },
   icons: {
     icon: '/imagers/fav%20icon.png',
     shortcut: '/imagers/fav%20icon.png',

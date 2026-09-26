@@ -31,6 +31,8 @@ export function ResourceCard({ record, view = 'card' }: Props) {
               </Link>
             </h3>
             <p className="mt-1 text-meta text-ink-muted">{meta}</p>
+            {record.matchedInDocument && <p className="mt-2 text-meta font-medium text-accent">PDF text match · illustrative prototype snippet</p>}
+            {record.matchSnippet && <blockquote className="mt-1 border-l-2 border-line-strong pl-3 text-meta leading-relaxed text-ink-soft">“{record.matchSnippet}”</blockquote>}
           </div>
           <div className="flex shrink-0 flex-wrap gap-1.5">
             {record.topics.slice(0, 2).map((t) =>
@@ -63,6 +65,7 @@ export function ResourceCard({ record, view = 'card' }: Props) {
       </h3>
 
       <p className="mt-2 line-clamp-3 text-[0.9375rem] leading-relaxed text-ink-soft">{record.description}</p>
+      {record.matchedInDocument && <div className="mt-3 rounded border border-accent-soft bg-accent-wash p-3"><p className="text-meta font-semibold text-accent-dark">Match inside document · prototype example</p><p className="mt-1 text-meta leading-relaxed text-ink-soft">“{record.matchSnippet}”</p><p className="mt-1 text-[0.6875rem] text-ink-muted">PDF · {record.documentName}</p></div>}
 
       <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-meta text-ink-muted">
         {record.country &&

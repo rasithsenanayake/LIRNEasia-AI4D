@@ -1,39 +1,25 @@
 # Asia AI4D Observatory
 
-The Asia AI4D Observatory is a regional knowledge platform for discovering and connecting research, data, people, organisations and responsible AI work across Asia.
+The Asia AI4D Observatory is a regional knowledge platform for discovering and connecting research, data, people, organisations and responsible AI work across South and Southeast Asia.
 
-## Public website
+## Prototype Coverage
 
-The website includes:
+- Searchable research repository with metadata filters and an illustrative PDF text-match state.
+- Five Data & Maps experiences: Research & Knowledge, AI Indices, Innovations, Policy Mapping and Experts & Organisations.
+- Country-focused map tiles, table alternatives, sources, update context and clear prototype labels.
+- Connected publication, use-case, dataset, country, organisation and people records.
+- CMS preview for publications, use cases, datasets, events, media, analytics and users/roles.
+- Dataset import steps, download engagement records, gated-download interaction, and publication revision-history preview.
+- Public newsletter archive, accessibility and privacy information, events, learning resources and opportunities.
 
-- A homepage introducing the Observatory and highlighting important research and data.
-- An explore area for searching and filtering the knowledge repository.
-- Research and publication pages for reports, policy briefs, mapping studies, research briefs and commentary.
-- Responsible AI use-case pages showing initiatives across different countries and sectors.
-- Country profiles that connect local research, organisations, people, datasets and use cases.
-- Dataset pages and data maps for presenting regional evidence and insights.
-- Directories for people, organisations, experts and partners.
-- Events, opportunities, learning resources and newsletter content.
-- About, contact, accessibility and privacy pages.
+## RFP Clarification Alignment
 
-The content is connected so visitors can follow relationships between countries, topics, publications, datasets, organisations and people.
+The visible prototype covers all five data experiences, the structured repository and filters, a clearly illustrative document-search result, expanded Responsible AI use-case fields, a dataset upload/mapping/validation/preview workflow, optional email-gated downloads, CSV engagement export, draft/preview/publish and revision-history concepts, Administrator and Editor roles, accessibility and privacy information, newsletter archive structure, external registration and resource links, and regional research metadata.
 
-## Admin panel
+## Prototype vs Production
 
-The project also includes an Observatory admin panel for managing the platform’s content and operations. It contains:
+Prototype values, sample records, analytics, role accounts, import validation, engagement counts and document snippets are illustrative. Admin actions and download form details are not persisted or transmitted. Policy mapping is a schema preview and makes no factual country policy claims. Existing public data itself is marked illustrative where applicable.
 
-- Dashboard with content summaries, recent updates, upcoming events and items requiring attention.
-- Publications management with publication records, statuses and an editor for creating drafts or publishing content.
-- Responsible AI use-case management.
-- Dataset management.
-- Event management.
-- Media library.
-- Analytics overview with illustrative engagement and content statistics.
-- Users and roles section for administrators and editors.
-- Website settings.
+## Proposed Production Architecture
 
-The admin panel is designed as a CMS preview. Its content, media, users and analytics are illustrative, and changes are not persisted because the CMS, authentication and database are not connected yet.
-
-## Project status
-
-This is a functional visual prototype of the proposed Asia AI4D Observatory experience. The pages, navigation, search, filters, relationships and admin interactions demonstrate the intended product structure. Final research content, production CMS integration, database, authentication, file storage and analytics will be added in the production version.
+See [docs/PRODUCTION_ARCHITECTURE.md](docs/PRODUCTION_ARCHITECTURE.md) for a proposed client-owned, maintainable production approach. Database, CMS, authentication, permanent file storage, PDF extraction, analytics and email integrations are deferred to production.

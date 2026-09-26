@@ -22,7 +22,10 @@ const publicationRecords: SearchRecord[] = publications.map((p) => ({
   organization: p.organization,
   year: year(p.date),
   date: p.date,
-  keywords: [p.title, p.summary, p.authors.join(' '), p.organization, p.topics.join(' '), p.countries.join(' ')].
+  matchedInDocument: p.id === 'pub-1',
+  documentName: p.id === 'pub-1' ? 'ai-governance-and-accountability-south-asia.pdf' : undefined,
+  matchSnippet: p.id === 'pub-1' ? 'Illustrative PDF text match: institutional accountability mechanisms for responsible artificial intelligence.' : undefined,
+  keywords: [p.title, p.summary, p.authors.join(' '), p.organization, p.topics.join(' '), p.countries.join(' '), ...(p.id === 'pub-1' ? ['institutional accountability mechanisms responsible artificial intelligence'] : [])].
   join(' ').
   toLowerCase()
 }));
