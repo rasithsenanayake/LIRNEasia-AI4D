@@ -18,6 +18,7 @@ import {
   FileImage,
   FileText,
   FolderKanban,
+  Info,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -125,7 +126,7 @@ function StatusBadge({ status }: { status: ContentStatus }) {
   return <span className={cn('inline-flex rounded border px-2 py-1 text-[0.6875rem] font-semibold uppercase tracking-[0.06em]', styles[status])}>{status}</span>;
 }
 
-function Sidebar({ activeView, onNavigate, mobileOpen, onClose }: { activeView: AdminView; onNavigate: (view: AdminView) => void; mobileOpen: boolean; onClose: () => void }) {
+function Sidebar({ activeView, onNavigate, mobileOpen, onClose, onAlert }: { activeView: AdminView; onNavigate: (view: AdminView) => void; mobileOpen: boolean; onClose: () => void; onAlert: (message: string) => void }) {
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
@@ -176,7 +177,7 @@ function Sidebar({ activeView, onNavigate, mobileOpen, onClose }: { activeView: 
 
         <div className="relative shrink-0 border-t border-white/10 p-4">
           {profileOpen && <div className="absolute bottom-[calc(100%-8px)] left-4 right-4 rounded-lg border border-white/10 bg-[#204650] p-2 shadow-lg">
-            <button type="button" onClick={() => window.alert('Profile editing will be available when the CMS account API is connected.')} className="flex min-h-[40px] w-full items-center gap-3 rounded px-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white"><UserRound className="h-4 w-4" />Edit profile</button>
+            <button type="button" onClick={() => { onAlert('Profile editing will be available when the CMS account API is connected.'); setProfileOpen(false); }} className="flex min-h-[40px] w-full items-center gap-3 rounded px-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white"><UserRound className="h-4 w-4" />Edit profile</button>
             <button type="button" onClick={() => { window.location.href = '/'; }} className="flex min-h-[40px] w-full items-center gap-3 rounded px-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white"><LogOut className="h-4 w-4" />Return to public site</button>
           </div>}
           <button type="button" onClick={() => setProfileOpen((open) => !open)} aria-expanded={profileOpen} className="flex w-full items-center gap-3 rounded bg-white/7 p-3 text-left hover:bg-white/10">
@@ -193,7 +194,7 @@ function Sidebar({ activeView, onNavigate, mobileOpen, onClose }: { activeView: 
   );
 }
 
-function Topbar({ title, onOpenMenu, search, onSearch }: { title: string; onOpenMenu: () => void; search: string; onSearch: (value: string) => void }) {
+function Topbar({ title, onOpenMenu, search, onSearch, onAlert }: { title: string; onOpenMenu: () => void; search: string; onSearch: (value: string) => void; onAlert: (message: string) => void }) {
   return (
     <header className="sticky top-0 z-30 flex min-h-[76px] items-center justify-between gap-4 border-b border-line bg-canvas/95 px-5 backdrop-blur sm:px-8 lg:px-10">
       <div className="flex min-w-0 items-center gap-3">
@@ -211,7 +212,7 @@ function Topbar({ title, onOpenMenu, search, onSearch }: { title: string; onOpen
           <input value={search} onChange={(event) => onSearch(event.target.value)} className="min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-ink-muted" placeholder="Search content" aria-label="Search content" />
           <kbd className="rounded border border-line bg-raised px-1.5 py-0.5 text-[0.625rem] text-ink-muted">⌘K</kbd>
         </label>
-        <button type="button" onClick={() => window.alert('No new notifications')} className="relative inline-flex h-10 w-10 items-center justify-center rounded border border-line bg-surface text-ink-soft hover:bg-raised" aria-label="Notifications">
+        <button type="button" onClick={() => onAlert('No new notifications in this preview.')} className="relative inline-flex h-10 w-10 items-center justify-center rounded border border-line bg-surface text-ink-soft hover:bg-raised" aria-label="Notifications">
           <Bell className="h-[17px] w-[17px]" />
           <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#b97839]" aria-hidden="true" />
         </button>
@@ -484,8 +485,14 @@ function AnalyticsView() {
 }
 
 function UsersView() {
-  const users = [['Ruwani Senanayake', 'ruwani@lirneasia.net', 'Administrator', 'Active', '20 Sep 2026'], ['Nadeesha Perera', 'nadeesha@lirneasia.net', 'Editor', 'Active', '19 Sep 2026'], ['Maya Fernando', 'maya@lirneasia.net', 'Editor', 'Active', '17 Sep 2026'], ['Amal Jayasinghe', 'amal@lirneasia.net', 'Editor', 'Invited', '—']];
-  return <div className="space-y-6"><PageHeading title="Users & roles" description="Control who can create, review, publish, and manage the observatory." action={<button type="button" disabled title="User invitations require the CMS account API" className="inline-flex min-h-[42px] cursor-not-allowed items-center gap-2 self-start rounded bg-accent px-4 text-sm font-medium text-white opacity-60"><Plus className="h-4 w-4" />Invite user</button>} /><section className="border border-line bg-surface"><div className="flex items-center justify-between border-b border-line px-5 py-4"><div><h2 className="text-sm font-semibold text-ink">Team members</h2><p className="mt-1 text-xs text-ink-muted">Administrator: manage content, users, taxonomies, settings, publishing and exports. Editor: create and edit content, upload media, maintain metadata, preview and publish per configured permissions. These role examples are illustrative; authentication is not connected.</p></div><button type="button" disabled title="Role permissions require the CMS account API" className="text-xs font-medium text-accent opacity-60 disabled:cursor-not-allowed">Role permissions</button></div><div className="overflow-x-auto"><table className="w-full min-w-[680px] text-left text-sm"><thead className="bg-raised/65 text-xs text-ink-muted"><tr><th className="px-5 py-3 font-medium">Name</th><th className="px-3 py-3 font-medium">Role</th><th className="px-3 py-3 font-medium">Status</th><th className="px-3 py-3 font-medium">Last login</th><th className="px-5 py-3" /></tr></thead><tbody className="divide-y divide-line">{users.map(([name, email, role, status, lastLogin]) => <tr key={email} className="hover:bg-raised/40"><td className="px-5 py-4"><span className="block font-medium text-ink">{name}</span><span className="mt-1 block text-xs text-ink-muted">{email}</span></td><td className="px-3 py-4 text-ink-soft">{role}</td><td className="px-3 py-4"><span className={cn('inline-flex rounded border px-2 py-1 text-[0.6875rem] font-semibold uppercase tracking-[0.06em]', status === 'Active' ? 'border-[#b9d6c6] bg-[#edf5ef] text-[#28613e]' : 'border-[#c9d6e7] bg-[#eef3f8] text-[#315a7d]')}>{status}</span></td><td className="px-3 py-4 text-xs text-ink-muted">{lastLogin}</td><td className="px-5 py-4 text-right"><button type="button" disabled title="User actions require the CMS account API" className="rounded p-1.5 text-ink-muted disabled:cursor-not-allowed disabled:opacity-50" aria-label={`More actions for ${name}`}><MoreHorizontal className="h-4 w-4" /></button></td></tr>)}</tbody></table></div></section></div>;
+  const users = [
+    ['Kamal Amara', 'admin@example.invalid', 'Administrator'],
+    ['Test user 01', 'test01@example.invalid', 'Test user'],
+    ['Test user 02', 'test02@example.invalid', 'Test user'],
+    ['Test user 03', 'test03@example.invalid', 'Test user'],
+    ['Test user 04', 'test04@example.invalid', 'Test user'],
+  ];
+  return <div className="space-y-6"><PageHeading title="Users & roles" description="Control who can create, review, publish, and manage the observatory." action={<button type="button" disabled title="User invitations require the CMS account API" className="inline-flex min-h-[42px] cursor-not-allowed items-center gap-2 self-start rounded bg-accent px-4 text-sm font-medium text-white opacity-60"><Plus className="h-4 w-4" />Invite user</button>} /><section className="border border-line bg-surface"><div className="flex flex-col items-start gap-3 border-b border-line px-5 py-4 sm:flex-row sm:items-center sm:justify-between"><div className="min-w-0"><h2 className="text-sm font-semibold text-ink">Team members</h2><p className="mt-1 text-xs leading-relaxed text-ink-muted">Five illustrative account records: one administrator and four test users. Authentication and login records are not connected.</p></div><button type="button" disabled title="Role permissions require the CMS account API" className="shrink-0 text-xs font-medium text-accent opacity-60 disabled:cursor-not-allowed">Role permissions</button></div><div className="overflow-x-auto"><table className="w-full min-w-[600px] text-left text-sm"><thead className="bg-raised/65 text-xs text-ink-muted"><tr><th className="px-5 py-3 font-medium">Name</th><th className="px-3 py-3 font-medium">Role</th><th className="px-3 py-3 font-medium">Account access</th><th className="px-5 py-3"><span className="sr-only">Actions</span></th></tr></thead><tbody className="divide-y divide-line">{users.map(([name, email, role]) => <tr key={email} className="hover:bg-raised/40"><td className="px-5 py-4"><span className="block font-medium text-ink">{name}</span><span className="mt-1 block text-xs text-ink-muted">{email}</span></td><td className="px-3 py-4 text-ink-soft">{role}</td><td className="px-3 py-4"><span className="inline-flex rounded border border-[#c9d6e7] bg-[#eef3f8] px-2 py-1 text-[0.6875rem] font-semibold uppercase tracking-[0.06em] text-[#315a7d]">Preview only</span></td><td className="px-5 py-4 text-right"><button type="button" disabled title="User actions require the CMS account API" className="rounded p-1.5 text-ink-muted disabled:cursor-not-allowed disabled:opacity-50" aria-label={`More actions for ${name}`}><MoreHorizontal className="h-4 w-4" /></button></td></tr>)}</tbody></table></div></section></div>;
 }
 
 export function Admin() {
@@ -494,6 +501,7 @@ export function Admin() {
   const { view: activeView, editorOpen } = getAdminView(pathname);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [search, setSearch] = useState('');
+  const [alert, setAlert] = useState('');
 
   const navigate = (view: AdminView, editor = false) => {
     router.push(editor ? `${adminRoutes[view]}/new` : adminRoutes[view]);
@@ -502,5 +510,5 @@ export function Admin() {
 
   const title = activeView === 'use-cases' ? 'Responsible AI use cases' : activeView === 'datasets' ? 'Datasets' : activeView === 'events' ? 'Events' : activeView === 'structure' ? 'Content structure' : activeView === 'media' ? 'Media library' : activeView === 'analytics' ? 'Analytics overview' : activeView === 'users' ? 'Users & roles' : activeView === 'settings' ? 'Settings' : activeView === 'publications' ? 'Publications' : 'Dashboard';
 
-  return <div className="flex h-[100dvh] overflow-hidden bg-canvas text-ink"><Sidebar activeView={activeView} onNavigate={navigate} mobileOpen={mobileNavOpen} onClose={() => setMobileNavOpen(false)} /><div className="flex min-h-0 min-w-0 flex-1 flex-col"><Topbar title={title} onOpenMenu={() => setMobileNavOpen(true)} search={search} onSearch={setSearch} /><main id="admin-main" className="min-h-0 flex-1 overflow-y-auto px-5 py-7 sm:px-8 lg:px-10 lg:py-9"><div className="mx-auto max-w-[1440px]">{activeView === 'dashboard' && <Dashboard onNavigate={navigate} onAddPublication={() => navigate('publications', true)} onAddUseCase={() => navigate('use-cases', true)} />}{activeView === 'publications' && <PublicationsView initialEditor={editorOpen} onOpenEditor={() => navigate('publications', true)} onCloseEditor={() => navigate('publications')} />}{activeView === 'use-cases' && <UseCasesView initialEditor={editorOpen} onOpenEditor={() => navigate('use-cases', true)} onCloseEditor={() => navigate('use-cases')} />}{activeView === 'datasets' && <DatasetsView />}{activeView === 'events' && <EventsView />}{activeView === 'structure' && <ContentStructureView />}{activeView === 'media' && <MediaView />}{activeView === 'analytics' && <AnalyticsView />}{activeView === 'users' && <UsersView />}{activeView === 'settings' && <SettingsView />}</div></main></div></div>;
+  return <div className="flex h-[100dvh] overflow-hidden bg-canvas text-ink"><Sidebar activeView={activeView} onNavigate={navigate} mobileOpen={mobileNavOpen} onClose={() => setMobileNavOpen(false)} onAlert={setAlert} /><div className="flex min-h-0 min-w-0 flex-1 flex-col"><Topbar title={title} onOpenMenu={() => setMobileNavOpen(true)} search={search} onSearch={setSearch} onAlert={setAlert} />{alert && <div role="status" aria-live="polite" className="mx-5 mt-3 flex shrink-0 items-start gap-3 border border-accent-soft bg-accent-wash px-4 py-3 text-sm text-ink sm:mx-8 lg:mx-10"><Info className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" /><p className="min-w-0 flex-1 break-words">{alert}</p><button type="button" onClick={() => setAlert('')} aria-label="Dismiss alert" className="-mr-2 -mt-1 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded text-ink-muted hover:bg-white/70 hover:text-ink"><X className="h-4 w-4" aria-hidden="true" /></button></div>}<main id="admin-main" className="min-h-0 flex-1 overflow-y-auto px-5 py-7 sm:px-8 lg:px-10 lg:py-9"><div className="mx-auto max-w-[1440px]">{activeView === 'dashboard' && <Dashboard onNavigate={navigate} onAddPublication={() => navigate('publications', true)} onAddUseCase={() => navigate('use-cases', true)} />}{activeView === 'publications' && <PublicationsView initialEditor={editorOpen} onOpenEditor={() => navigate('publications', true)} onCloseEditor={() => navigate('publications')} />}{activeView === 'use-cases' && <UseCasesView initialEditor={editorOpen} onOpenEditor={() => navigate('use-cases', true)} onCloseEditor={() => navigate('use-cases')} />}{activeView === 'datasets' && <DatasetsView />}{activeView === 'events' && <EventsView />}{activeView === 'structure' && <ContentStructureView />}{activeView === 'media' && <MediaView />}{activeView === 'analytics' && <AnalyticsView />}{activeView === 'users' && <UsersView />}{activeView === 'settings' && <SettingsView />}</div></main></div></div>;
 }

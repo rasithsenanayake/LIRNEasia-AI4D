@@ -3,7 +3,7 @@ import type { Country } from '../../types';
 import { cn } from '../../utils/cn';
 
 function flagFor(code: string) {
-  const common = { className: 'h-6 w-9 overflow-hidden rounded-[2px] border border-black/10 shadow-sm', viewBox: '0 0 3 2', role: 'img' as const };
+  const common = { className: 'h-4 w-6 overflow-hidden rounded-[2px] border border-black/10 shadow-sm sm:h-6 sm:w-9', viewBox: '0 0 3 2', role: 'img' as const };
 
   switch (code.toUpperCase()) {
     case 'AF':
@@ -19,7 +19,7 @@ function flagFor(code: string) {
     case 'BD':
       return <svg {...common} aria-label="Bangladesh flag"><rect width="3" height="2" fill="#006a4e" /><circle cx="1.35" cy="1" r=".58" fill="#f42a41" /></svg>;
     case 'LK':
-      return <img src="/flags/sri-lanka.svg" alt="Sri Lanka flag" className="h-6 w-12 overflow-hidden rounded-[2px] border border-black/10 shadow-sm" />;
+      return <img src="/flags/sri-lanka.svg" alt="Sri Lanka flag" className="h-4 w-8 overflow-hidden rounded-[2px] border border-black/10 shadow-sm sm:h-6 sm:w-12" />;
     case 'MV':
       return <svg {...common} aria-label="Maldives flag"><rect width="3" height="2" fill="#d21034" /><rect x=".65" y=".4" width="1.7" height="1.2" fill="#007e3a" /><path d="M1.35.67a.38.38 0 1 0 0 .66.3.3 0 1 1 0-.66z" fill="#f7f7f2" /></svg>;
     case 'MM':
@@ -113,12 +113,12 @@ export function RegionMap({
                 backgroundColor: `rgba(14, 82, 101, ${0.08 + intensity * 0.82})`
               }}>
               
-              <span aria-hidden="true" className="leading-none">
+              <span aria-hidden="true" className="hidden leading-none sm:block">
                 {flagFor(country.code)}
               </span>
               <span
                 className={cn(
-                  'font-serif text-sm leading-none sm:text-base',
+                  'font-serif text-xs leading-none sm:text-base',
                   dark ? 'text-white' : 'text-ink'
                 )}>
                 
@@ -127,7 +127,7 @@ export function RegionMap({
               <span className="sr-only">
                 {country.name}, {value} {unit ?? ''}
               </span>
-              <span role="tooltip" className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 max-w-[calc(100vw-2rem)] -translate-x-1/2 whitespace-nowrap rounded bg-ink px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+              <span role="tooltip" className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 hidden max-w-[calc(100vw-2rem)] -translate-x-1/2 whitespace-nowrap rounded bg-ink px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 sm:block">
                 {country.name}
               </span>
             </button>);
