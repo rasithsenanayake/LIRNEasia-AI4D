@@ -181,9 +181,9 @@ function Sidebar({ activeView, onNavigate, mobileOpen, onClose, onAlert }: { act
             <button type="button" onClick={() => { window.location.href = '/'; }} className="flex min-h-[40px] w-full items-center gap-3 rounded px-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white"><LogOut className="h-4 w-4" />Return to public site</button>
           </div>}
           <button type="button" onClick={() => setProfileOpen((open) => !open)} aria-expanded={profileOpen} className="flex w-full items-center gap-3 rounded bg-white/7 p-3 text-left hover:bg-white/10">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#d8c5ad] text-xs font-semibold text-[#4f3d2a]">KA</span>
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#d8c5ad] text-xs font-semibold text-[#4f3d2a]">TA</span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-medium text-white">Kamal Amara</p>
+              <p className="truncate text-xs font-medium text-white">Test Admin</p>
               <p className="text-[0.6875rem] text-white/50">Administrator</p>
             </div>
             <ChevronDown className={cn('h-4 w-4 text-white/45 transition-transform', profileOpen && 'rotate-180')} />
@@ -217,8 +217,8 @@ function Topbar({ title, onOpenMenu, search, onSearch, onAlert }: { title: strin
           <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#b97839]" aria-hidden="true" />
         </button>
         <span className="hidden h-8 w-px bg-line sm:block" aria-hidden="true" />
-        <span className="hidden text-right sm:block"><span className="block text-xs font-medium text-ink">Kamal Amara</span><span className="block text-[0.6875rem] text-ink-muted">Administrator</span></span>
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#d8c5ad] text-xs font-semibold text-[#4f3d2a] sm:hidden" aria-hidden="true">KA</span>
+        <span className="hidden text-right sm:block"><span className="block text-xs font-medium text-ink">Test Admin</span><span className="block text-[0.6875rem] text-ink-muted">Administrator</span></span>
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#d8c5ad] text-xs font-semibold text-[#4f3d2a] sm:hidden" aria-hidden="true">TA</span>
       </div>
     </header>
   );
@@ -486,7 +486,7 @@ function AnalyticsView() {
 
 function UsersView() {
   const users = [
-    ['Kamal Amara', 'admin@example.invalid', 'Administrator'],
+    ['Test Admin', 'admin@example.invalid', 'Administrator'],
     ['Test user 01', 'test01@example.invalid', 'Test user'],
     ['Test user 02', 'test02@example.invalid', 'Test user'],
     ['Test user 03', 'test03@example.invalid', 'Test user'],
