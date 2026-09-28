@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { ChevronDownIcon, MenuIcon, SearchIcon } from 'lucide-react';
+import { ChevronDownIcon, LayoutDashboardIcon, MenuIcon, SearchIcon } from 'lucide-react';
 import { navGroups } from '../../data/navigation';
 import { SearchDialog } from '../search/SearchDialog';
 import { MobileNav } from './MobileNav';
@@ -53,7 +53,7 @@ export function Header() {
       <header
         onMouseLeave={() => setOpenMenu(null)}
         className="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/85">
-        <div className="mx-auto flex h-16 max-w-[96rem] items-center gap-4 px-5 sm:px-8 lg:h-[72px] lg:gap-8 lg:px-12">
+        <div className="mx-auto flex h-16 max-w-[96rem] items-center gap-2 px-5 sm:gap-4 sm:px-8 lg:h-[72px] lg:gap-8 lg:px-12">
           <Link to="/" className="flex shrink-0 items-center gap-2.5 rounded" aria-label="Asia AI4D Observatory — home">
             <Image src="/imagers/fav%20icon.png" alt="" width={36} height={36} priority className="h-9 w-9 rounded object-cover" />
             {/* <span aria-hidden="true" className="flex h-9 w-9 items-center justify-center rounded bg-accent">
@@ -155,6 +155,15 @@ export function Header() {
           </div>
 
           <div className="ml-auto flex items-center gap-1.5 lg:gap-3">
+            <Link
+              to="/admin"
+              aria-label="Admin panel"
+              aria-current={matchesPath(pathname, '/admin') ? 'page' : undefined}
+              className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-md px-2.5 text-ink-soft transition-colors duration-150 ease-out hover:bg-raised hover:text-ink sm:min-w-0 sm:border sm:border-line sm:bg-raised/60 sm:pr-3">
+              <LayoutDashboardIcon className="h-5 w-5" aria-hidden="true" />
+              <span className="hidden text-meta sm:inline">Admin</span>
+            </Link>
+
             <button
               ref={searchButtonRef}
               type="button"
